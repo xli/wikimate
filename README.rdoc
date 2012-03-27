@@ -1,0 +1,3 @@
+= WikiMate
+
+WikiMate is inspired by Smallest-Federated-Wiki project
