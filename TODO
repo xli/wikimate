@@ -1,0 +1,14 @@
+* edit text paragraph
+** should not fire change event when nothing changed
+** should fire change event after changed
+* add new element
+* image plugin
+** drag&drop image onto panel
+* delete element
+* move element by drag&drop element
+* journal
+** highlight journal event change
+* layout element
+* extract element editor&render as plugin
+* chart element
+! default text editor
