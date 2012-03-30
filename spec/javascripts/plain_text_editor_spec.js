@@ -50,15 +50,21 @@ describe("Plain Text Editor", function() {
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
   });
 
-  it("should create new paragraph and save current paragraph when paragraph ends with 2 new lines", function() {
+  it("should save editing paragraph and create new paragraph following the paragraph when paragraph ends with 2 new lines", function() {
     wikimate.wiki('#sandbox').story([
-      { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }
+      { "id": "1", "type": "paragraph", "text": "paragraph 1\n" },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]);
     $('#1').dblclick();
     Keyboard.hit($('#1 textarea'), "\n");
-
-    expect($('#1 p').text()).toEqual("paragraph 1\n");
     expect($('#1 textarea').length).toEqual(0);
     expect($('#sandbox div textarea')).toBeDefined();
+    $('#sandbox div textarea').text("hello world");
+    $('#sandbox div textarea').focusout();
+
+    var paragraphs = $.map($('#sandbox p'), function(item) {
+      return $(item).text();
+    });
+    expect(paragraphs).toEqual(["paragraph 1\n", "hello world", "paragraph 2"])
   });
 });

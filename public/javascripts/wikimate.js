@@ -21,7 +21,11 @@ wikimate = {
   },
   renderItem: function(item) {
     var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
-    wikimate.panel.append(div);
+    if (item.after) {
+      $('#' + item.after).after(div);
+    } else {
+      wikimate.panel.append(div);
+    }
     wikimate.applyPlugin(div, item);
   },
   textEditor: function(div, item) {
@@ -42,7 +46,7 @@ wikimate = {
       if (e.which == KeyCode.RETURN && reg.test(textarea.val())) {
         e.preventDefault();
         textarea.focusout();
-        var newItem = {id: wikimate.generateId(), type: item.type, newItem: true, text: ''};
+        var newItem = {id: wikimate.generateId(), type: item.type, newItem: true, after: item.id, text: ''};
         wikimate.renderItem(newItem);
         $("#" + newItem.id).dblclick();
       }
