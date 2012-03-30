@@ -20,6 +20,9 @@ wikimate = {
   },
   textEditor: function(div, item) {
     textarea = $("<textarea>" + item.text + "</textarea>").focusout(function() {
+      if (textarea.val() == item.text) {
+        return;
+      }
       item.text = textarea.val();
       $(wikimate).trigger('change', {
         id: item.id,
