@@ -47,5 +47,18 @@ describe("Plain Text Editor", function() {
     $('#1 textarea').focusout();
     
     expect(changes.length).toEqual(0);
+    expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
+  });
+
+  it("should create new paragraph and save current paragraph when paragraph ends with 2 new lines", function() {
+    wikimate.wiki('#sandbox').story([
+      { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }
+    ]);
+    $('#1').dblclick();
+    Keyboard.hit($('#1 textarea'), "\n");
+
+    expect($('#1 p').text()).toEqual("paragraph 1\n");
+    expect($('#1 textarea').length).toEqual(0);
+    expect($('#sandbox div textarea')).toBeDefined();
   });
 });

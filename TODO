@@ -1,11 +1,12 @@
 * body
-** render story elements
+!! render story elements
 ** append a text paragraph after double clicked anywhere inside body but not on any element
 ** move element by drag&drop element
 * plain text editor
-** should not fire change event when nothing changed
-** should fire change event after changed
-** should create new paragraph and finish current paragraph when user input 2 new lines
+!! should not fire change event when nothing changed
+!! should fire change event after changed
+!! should create new paragraph and finish current paragraph when user input new line following a new line in paragraph
+** should fire new item event(type=new) after saved new item
 * journal
 ** list journal events at bottom
 ** highlight journal event change
@@ -19,6 +20,7 @@
 **** regex pattern based substitutions
 **** substitute [[<text>]] as link
 **** substitute http://xxxx or https://xxxx as link
+**** when paragraph have multi lines, render each line (end with a \n) in <p/> tag
 ** layout element plugin
 ** image plugin
 *** drag&drop image onto panel

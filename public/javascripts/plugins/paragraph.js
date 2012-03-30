@@ -1,4 +1,5 @@
 wikimate.plugins.paragraph = {
+  // item: { "id": "1", "type": "paragraph", "text": "paragraph 1" }
   emit: function(div, item) {
     return div.append("<p>" + item.text + "</p>");
   },
