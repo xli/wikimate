@@ -1,7 +1,7 @@
 * body
-!! render story elements
-** append a text paragraph after double clicked anywhere inside body but not on any element
-** move element by drag&drop element
+!! render story items
+** append a text paragraph after double clicked anywhere inside body but not on any item
+** move item by drag&drop
 * plain text editor
 !! should not fire change event when nothing changed
 !! should fire change event after changed
@@ -10,11 +10,11 @@
 * journal
 ** list journal events at bottom
 ** highlight journal event change
-* a toolbar for element plugin to put in icon for drag&drop adding element
+* a toolbar for element plugin to put in icon for drag&drop adding item
 * plugins
 ** paragraph
 *** double click to edit by plain text editor and click outside to save
-*** delete paragraph when no content exists unless it's the only one element in story
+*** delete paragraph when no content exists unless it's the only one item in story
 *** CMD + S/CTRL + S to save
 *** be able to add substitutions for rendering
 **** regex pattern based substitutions
