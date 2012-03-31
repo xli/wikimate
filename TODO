@@ -1,12 +1,12 @@
 * body
 !! render story items
-** append a text paragraph after double clicked anywhere inside body but not on any item
+!! append a text paragraph after double clicked anywhere inside body but not on any item
 ** move item by drag&drop
 * plain text editor
 !! should not fire change event when nothing changed
 !! should fire change event after changed
 !! should create new paragraph and finish current paragraph when user input new line following a new line in paragraph
-** should fire new item event(type=new) after saved new item
+!! should fire new item event(type=new) after saved new item
 * journal
 ** list journal events at bottom
 ** highlight journal event change

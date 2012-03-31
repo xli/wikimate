@@ -68,6 +68,20 @@ describe("Plain Text Editor", function() {
     expect(paragraphs).toEqual(["paragraph 1\n", "hello world", "paragraph 2"])
   });
 
+  it("should not save editing paragraph that only has 2 new lines inside", function() {
+    var changes = [];
+    $(wikimate).bind('change', function(event, action) {
+      changes.push(action);
+    });
+    wikimate.wiki('#sandbox');
+    $('#sandbox').dblclick();
+    Keyboard.hit($('#sandbox div textarea'), "\n");
+    Keyboard.hit($('#sandbox div textarea'), "\n");
+    expect($('#sandbox div').length).toEqual(1);
+    expect($('#sandbox div textarea').length).toEqual(1);
+    expect(changes.length).toEqual(0);
+  });
+
   it("should fire new item change event when save a new item", function() {
     var changes = [];
     $(wikimate).bind('change', function(event, action) {

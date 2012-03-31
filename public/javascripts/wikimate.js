@@ -30,7 +30,7 @@
         }
         applyPlugin(div.empty(), item);
       }).bind('keypress', function(e) {
-        var reg = /\n$/m;
+        var reg = /.+\n$/m;
         if (e.which == KeyCode.RETURN && reg.test(textarea.val())) {
           e.preventDefault();
           textarea.focusout();
