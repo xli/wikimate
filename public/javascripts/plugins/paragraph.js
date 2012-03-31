@@ -4,7 +4,8 @@ wikimate.plugins.paragraph = {
     return div.append("<p>" + item.text + "</p>");
   },
   bind: function(div, item) {
-    return div.dblclick(function() {
+    return div.dblclick(function(e) {
+      e.stopPropagation();
       return wikimate.textEditor(div, item);
     });
   }

@@ -67,4 +67,7 @@ describe("Plain Text Editor", function() {
     });
     expect(paragraphs).toEqual(["paragraph 1\n", "hello world", "paragraph 2"])
   });
+
+  it("should fire item added change event when save a new item", function() {
+  });
 });

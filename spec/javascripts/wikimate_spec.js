@@ -19,4 +19,10 @@ describe("WikiMate", function() {
     expect(paragraphs).toEqual(["paragraph 1", 'paragraph 2', 'paragraph 3']);
   });
 
+  it("should be able to dbclick anywhere in panel to create new text paragraph item", function() {
+    wikimate.wiki('#sandbox');
+    $('#sandbox').dblclick();
+    expect($('#sandbox div').length).toEqual(1);
+    expect($('#sandbox div textarea').length).toEqual(1);
+  });
 });

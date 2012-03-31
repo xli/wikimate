@@ -5,7 +5,12 @@ wikimate = {
   version: '0.0.1',
   plugins: {},
   wiki: function(id) {
-    wikimate.panel = $(id).addClass('wikimate-story');
+    wikimate.panel = $(id).addClass('wikimate-story').bind('dblclick', function(e) {
+      if (e.target == $(id)[0]) {
+        e.stopPropagation();
+        wikimate.renderNewItem().dblclick();
+      }
+    });
     return {
       story: function(elements) {
         $.each(elements, function(i, item) {
@@ -14,11 +19,25 @@ wikimate = {
       }
     };
   },
+
   applyPlugin: function(div, item) {
     var plugin = wikimate.plugins[item.type];
     plugin.emit(div, item);
     plugin.bind(div, item);
   },
+
+  renderNewItem: function(attrs) {
+    return wikimate.renderItem(wikimate.newItem(attrs))
+  },
+
+  newItem: function(attrs) {
+    var item = {id: wikimate.generateId(), type: 'paragraph', newItem: true, text: ''};
+    if (attrs) {
+      jQuery.extend(item, attrs)
+    }
+    return item
+  },
+
   renderItem: function(item) {
     var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
     if (item.after) {
@@ -27,7 +46,9 @@ wikimate = {
       wikimate.panel.append(div);
     }
     wikimate.applyPlugin(div, item);
+    return div;
   },
+
   textEditor: function(div, item) {
     var textarea = $("<textarea>" + item.text + "</textarea>").focusout(function() {
       if (textarea.val() != item.text) {
@@ -46,9 +67,7 @@ wikimate = {
       if (e.which == KeyCode.RETURN && reg.test(textarea.val())) {
         e.preventDefault();
         textarea.focusout();
-        var newItem = {id: wikimate.generateId(), type: item.type, newItem: true, after: item.id, text: ''};
-        wikimate.renderItem(newItem);
-        $("#" + newItem.id).dblclick();
+        wikimate.renderNewItem({type: item.type, after: item.id}).dblclick();
       }
     });
     div.html(textarea);
