@@ -24,7 +24,7 @@
           item.text = textarea.val();
           $(wikimate).trigger('change', {
             id: item.id,
-            type: 'edit',
+            type: item.newItem ? 'new' : 'edit',
             item: item
           })
         }

@@ -68,6 +68,22 @@ describe("Plain Text Editor", function() {
     expect(paragraphs).toEqual(["paragraph 1\n", "hello world", "paragraph 2"])
   });
 
-  it("should fire item added change event when save a new item", function() {
+  it("should fire new item change event when save a new item", function() {
+    var changes = [];
+    $(wikimate).bind('change', function(event, action) {
+      changes.push(action);
+    });
+
+    wikimate.wiki('#sandbox');
+    $('#sandbox').dblclick();
+    $('#sandbox div textarea').text("hello world");
+    $('#sandbox div textarea').focusout();
+    expect(changes.length).toEqual(1);
+
+    expect(changes[0]['id']).toBeDefined();
+    expect(changes[0]['type']).toEqual('new');
+    expect(changes[0]['item']['type']).toEqual('paragraph');
+    expect(changes[0]['item']['text']).toEqual('hello world');
+    expect(changes[0]['item']['after']).toBeUndefined();
   });
 });
