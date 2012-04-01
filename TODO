@@ -12,6 +12,7 @@
 ** auto increase height when user inputs more content
 ** same height with paragraph when entering edit
 * journal
+** remember all event history on wikimate obj? (or only for test?)
 ** list journal events at bottom
 ** highlight journal event change
 * a toolbar for element plugin to put in icon for drag&drop adding item
@@ -19,7 +20,7 @@
 ** paragraph
 !!! break into p elements for text lines
 *** CMD + S/CTRL + S to save
-*** Esc to cancel
+!!! Esc to cancel
 *** be able to add substitutions for rendering
 **** regex pattern based substitutions
 **** substitute [[<text>]] as link

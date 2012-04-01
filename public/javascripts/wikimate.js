@@ -19,34 +19,7 @@
       };
     },
     textEditor: function(div, item) {
-      var textarea = $("<textarea>" + item.text + "</textarea>").addClass('plain-text-editor').focusout(function() {
-        if (textarea.val() == '') {
-          $(wikimate).trigger('change', {
-            id: item.id,
-            type: 'delete',
-            item: item
-          });
-          div.remove();
-        } else {
-          if (textarea.val() != item.text) {
-            item.text = textarea.val();
-            $(wikimate).trigger('change', {
-              id: item.id,
-              type: item.newItem ? 'new' : 'edit',
-              item: item
-            });
-          }
-          applyPlugin(div.empty(), item);
-        }
-      }).bind('keypress', function(e) {
-        if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
-          e.preventDefault();
-          textarea.focusout();
-          renderNewItem({type: item.type, after: item.id}).dblclick();
-        }
-      });
-      div.html(textarea);
-      return textarea.focus();
+      return createPlainTextEditor(div, item).focus();
     }
   };
 
@@ -55,6 +28,51 @@
     RETURN:   13,
     ESC:      27
   };
+
+  function createPlainTextEditor(div, item) {
+    function cancelEdit() {
+      applyPlugin(div.empty(), item);
+    };
+    function deleteItem() {
+      $(wikimate).trigger('change', {
+        id: item.id,
+        type: 'delete',
+        item: item
+      });
+      div.remove();
+    }
+    function updateItem(text) {
+      item.text = text;
+      $(wikimate).trigger('change', {
+        id: item.id,
+        type: item.newItem ? 'new' : 'edit',
+        item: item
+      });
+      applyPlugin(div.empty(), item);
+    }
+    function save(textarea) {
+      if (textarea.val() == '') {
+        deleteItem();
+      } else if (textarea.val() != item.text) {
+        updateItem(textarea.val());
+      } else {
+        cancelEdit();
+      }
+    }
+    var textarea = $("<textarea>" + item.text + "</textarea>").addClass('plain-text-editor').focusout(function() {
+      save(textarea);
+    }).bind('keydown', function(e) {
+      if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
+        e.preventDefault();
+        textarea.focusout();
+        renderNewItem({type: item.type, after: item.id}).dblclick();
+      } else if (e.which == KeyCode.ESC) {
+        cancelEdit();
+      }
+    });
+    div.html(textarea);
+    return textarea;
+  }
 
   function generateId() {
     return randomBytes(8);

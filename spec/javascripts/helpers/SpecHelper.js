@@ -7,6 +7,9 @@ var Keyboard = {
   },
   hitEnter: function(element) {
     Keyboard.hit(element, 13);
-  } 
+  },
+  hitEsc: function(element) {
+    Keyboard.hit(element, 27);
+  }
 }
 
