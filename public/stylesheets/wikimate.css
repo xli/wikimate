@@ -1,7 +1,13 @@
 .wikimate-story {
   min-height: 100px;
+  padding: 5px;
 }
 
 .wikimate-story .item {
   
+}
+
+.wikimate-story .item .plain-text-editor {
+  width: 99%;
+  min-height: 100px;
 }

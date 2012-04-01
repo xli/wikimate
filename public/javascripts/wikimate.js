@@ -19,7 +19,7 @@
       };
     },
     textEditor: function(div, item) {
-      var textarea = $("<textarea>" + item.text + "</textarea>").focusout(function() {
+      var textarea = $("<textarea>" + item.text + "</textarea>").addClass('plain-text-editor').focusout(function() {
         if (textarea.val() == '') {
           $(wikimate).trigger('change', {
             id: item.id,
