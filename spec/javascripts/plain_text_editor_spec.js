@@ -65,7 +65,7 @@ describe("Plain Text Editor", function() {
     var paragraphs = $.map($('#sandbox p'), function(item) {
       return $(item).text();
     });
-    expect(paragraphs).toEqual(["paragraph 1\n", "hello world", "paragraph 2"])
+    expect(paragraphs).toEqual(["paragraph 1", "hello world", "paragraph 2"])
   });
 
   it("should not save editing paragraph that only has 2 new lines inside", function() {

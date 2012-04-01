@@ -14,4 +14,14 @@ describe("Paragraph Element", function() {
     $('#1').dblclick();
     expect($('#sandbox textarea').text()).toEqual("paragraph 1");
   });
+
+  it("renders multi lines text as multi p elements", function() {
+    wikimate.wiki('#sandbox').story([
+      { "id": "1", "type": "paragraph", "text": "p 1 \n p 2 \n p 3" },
+    ]);
+    var paragraphs = $.map($('#sandbox #1 p'), function(item) {
+      return $(item).text();
+    });
+    expect(paragraphs).toEqual(['p 1 ', ' p 2 ', ' p 3']);
+  });
 });

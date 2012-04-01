@@ -9,13 +9,15 @@
 !! should fire new item event(type=new) after saved new item
 !! double click to edit by plain text editor and click outside to save
 !! delete item when there is content after edited
+** auto increase height when user inputs more content
+** same height with paragraph when entering edit
 * journal
 ** list journal events at bottom
 ** highlight journal event change
 * a toolbar for element plugin to put in icon for drag&drop adding item
 * plugins
 ** paragraph
-*** break into lines for text new lines
+!!! break into p elements for text lines
 *** CMD + S/CTRL + S to save
 *** Esc to cancel
 *** be able to add substitutions for rendering
