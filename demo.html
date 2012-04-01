@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WikiMate demo</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+    <meta content='width=device-width, height=device-height, initial-scale=1.0, user-scalable=no' name='viewport'>
+    <link href='public/stylesheets/wikimate.css' rel='stylesheet' type='text/css'>
+    <script src='public/javascripts/jquery-1.7.2.js' type='text/javascript'></script>
+    <script src='public/javascripts/d3.v2.js' type='text/javascript'></script>
+    <script src='public/javascripts/wikimate.js' type='text/javascript'></script>
+    <script src='public/javascripts/plugins/paragraph.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      $(document).ready(function() {
+        wikimate.wiki('.wikimate').story(eval($('.store textarea').val()));
+      });
+    </script>
+    <style>
+      .wikimate {
+        width: 48%;
+        height: 99%;
+        min-height: 600px;
+        float: left;
+        border: 1px solid blue;
+      }
+      .store {
+        width: 48%;
+        min-height: 600px;
+        height: 99%;
+        float: right;
+      }
+      .store textarea {
+        width: 99%;
+        height: 99%;
+        min-height: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <header></header>
+    <div class='main'>
+      <div id='wiki' class='wikimate'>
+      </div>
+      <div class='store'>
+        <textarea>[]</textarea>
+      </div>
+    </div>
+    <footer class='login'>
+    </footer>
+  </body>
+</html>
