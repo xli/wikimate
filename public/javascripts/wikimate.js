@@ -1,4 +1,4 @@
-(function() {
+(function($) {
   window.wikimate = {
     version: '0.0.1',
     plugins: {},
@@ -106,7 +106,7 @@
   function newItem(attrs) {
     var item = {id: generateId(), type: 'paragraph', newItem: true, text: ''};
     if (attrs) {
-      jQuery.extend(item, attrs)
+      $.extend(item, attrs)
     }
     return item
   };
@@ -121,4 +121,4 @@
     applyPlugin(div, item);
     return div;
   };
-})();
+})(jQuery);
