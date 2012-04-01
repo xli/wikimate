@@ -11,8 +11,8 @@
         }
       });
       return {
-        story: function(elements) {
-          $.each(elements, function(i, item) {
+        story: function(items) {
+          $.each(items, function(i, item) {
             renderItem(item);
           });
         }
@@ -39,8 +39,7 @@
           applyPlugin(div.empty(), item);
         }
       }).bind('keypress', function(e) {
-        var reg = /.+\n$/m;
-        if (e.which == KeyCode.RETURN && reg.test(textarea.val())) {
+        if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
           e.preventDefault();
           textarea.focusout();
           renderNewItem({type: item.type, after: item.id}).dblclick();
@@ -49,17 +48,22 @@
       div.html(textarea);
       return textarea.focus();
     }
-  }
+  };
 
   var KeyCode = {
-    RETURN: 10
+    TAB:       9,
+    RETURN:   13,
+    ESC:      27
   };
+
   function generateId() {
     return randomBytes(8);
   };
+
   function randomByte() {
     return (((1 + Math.random()) * 0x100) | 0).toString(16).substring(1);
   };
+
   function randomBytes(n) {
     return ((function() {
       var _i, _results;

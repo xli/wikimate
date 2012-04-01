@@ -1,13 +1,12 @@
 
 var Keyboard = {
-  hit: function(element, c) {
-    var code = c.charCodeAt(0);
+  hit: function(element, code) {
     element.trigger({type: 'keydown', which: code});
     element.trigger({type: 'keypress', which: code});
     element.trigger({type: 'keyup', which: code});
-    if (c == "\n") {
-      element.text(element.text() + c);
-    }
-  }
+  },
+  hitEnter: function(element) {
+    Keyboard.hit(element, 13);
+  } 
 }
 

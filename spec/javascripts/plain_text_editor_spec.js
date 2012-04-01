@@ -56,7 +56,7 @@ describe("Plain Text Editor", function() {
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]);
     $('#1').dblclick();
-    Keyboard.hit($('#1 textarea'), "\n");
+    Keyboard.hitEnter($('#1 textarea'), 13);
     expect($('#1 textarea').length).toEqual(0);
     expect($('#sandbox div textarea')).toBeDefined();
     $('#sandbox div textarea').text("hello world");
@@ -75,8 +75,8 @@ describe("Plain Text Editor", function() {
     });
     wikimate.wiki('#sandbox');
     $('#sandbox').dblclick();
-    Keyboard.hit($('#sandbox div textarea'), "\n");
-    Keyboard.hit($('#sandbox div textarea'), "\n");
+    Keyboard.hitEnter($('#sandbox div textarea'));
+    Keyboard.hitEnter($('#sandbox div textarea'));
     expect($('#sandbox div').length).toEqual(1);
     expect($('#sandbox div textarea').length).toEqual(1);
     expect(changes.length).toEqual(0);

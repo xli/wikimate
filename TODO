@@ -15,7 +15,9 @@
 * a toolbar for element plugin to put in icon for drag&drop adding item
 * plugins
 ** paragraph
+*** break into lines for text new lines
 *** CMD + S/CTRL + S to save
+*** Esc to cancel
 *** be able to add substitutions for rendering
 **** regex pattern based substitutions
 **** substitute [[<text>]] as link
