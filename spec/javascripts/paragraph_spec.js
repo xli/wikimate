@@ -14,5 +14,4 @@ describe("Paragraph Element", function() {
     $('#1').dblclick();
     expect($('#sandbox textarea').text()).toEqual("paragraph 1");
   });
-
 });

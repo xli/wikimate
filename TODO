@@ -7,14 +7,14 @@
 !! should fire change event after changed
 !! should create new paragraph and finish current paragraph when user input new line following a new line in paragraph
 !! should fire new item event(type=new) after saved new item
+!! double click to edit by plain text editor and click outside to save
+!! delete item when there is content after edited
 * journal
 ** list journal events at bottom
 ** highlight journal event change
 * a toolbar for element plugin to put in icon for drag&drop adding item
 * plugins
 ** paragraph
-*** double click to edit by plain text editor and click outside to save
-*** delete paragraph when no content exists unless it's the only one item in story
 *** CMD + S/CTRL + S to save
 *** be able to add substitutions for rendering
 **** regex pattern based substitutions
@@ -26,6 +26,8 @@
 *** drag&drop image onto panel
 ** chart element
 
+* a demo
+** 2 columns, left is wiki, right is a textarea as data store
 
 ! extract element editor&render as plugin
 ! default text editor

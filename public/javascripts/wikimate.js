@@ -20,15 +20,24 @@
     },
     textEditor: function(div, item) {
       var textarea = $("<textarea>" + item.text + "</textarea>").focusout(function() {
-        if (textarea.val() != item.text) {
-          item.text = textarea.val();
+        if (textarea.val() == '') {
           $(wikimate).trigger('change', {
             id: item.id,
-            type: item.newItem ? 'new' : 'edit',
+            type: 'delete',
             item: item
-          })
+          });
+          div.remove();
+        } else {
+          if (textarea.val() != item.text) {
+            item.text = textarea.val();
+            $(wikimate).trigger('change', {
+              id: item.id,
+              type: item.newItem ? 'new' : 'edit',
+              item: item
+            });
+          }
+          applyPlugin(div.empty(), item);
         }
-        applyPlugin(div.empty(), item);
       }).bind('keypress', function(e) {
         var reg = /.+\n$/m;
         if (e.which == KeyCode.RETURN && reg.test(textarea.val())) {

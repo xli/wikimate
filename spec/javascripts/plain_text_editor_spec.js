@@ -100,4 +100,27 @@ describe("Plain Text Editor", function() {
     expect(changes[0]['item']['text']).toEqual('hello world');
     expect(changes[0]['item']['after']).toBeUndefined();
   });
+
+  it("should delete paragraph item when there is content after edited", function() {
+    var changes = [];
+    $(wikimate).bind('change', function(event, action) {
+      changes.push(action);
+    });
+
+    wikimate.wiki('#sandbox').story([
+      { "id": "1", "type": "paragraph", "text": "paragraph 1" }
+    ]);
+    $('#1').dblclick();
+    $('#1 textarea').text('');
+    $('#1 textarea').focusout();
+
+    expect(changes.length).toEqual(1);
+
+    expect(changes[0]['id']).toEqual('1');
+    expect(changes[0]['type']).toEqual('delete');
+    expect(changes[0]['item']['id']).toEqual('1');
+    expect(changes[0]['item']['type']).toEqual('paragraph');
+    expect(changes[0]['item']['text']).toEqual('paragraph 1');
+    expect($('#sandbox #1')[0]).toBeUndefined();
+  });
 });
