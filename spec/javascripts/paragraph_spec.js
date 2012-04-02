@@ -7,18 +7,18 @@ describe("Paragraph Element", function() {
   })
 
   it("opens plain textarea editor for text paragraph by double click", function() {
-    $('#sandbox').wikimate([
+    $('#sandbox').wikimate({ story: [
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-    ]);
+    ]});
     $('#1').dblclick();
     expect($('#sandbox textarea').text()).toEqual("paragraph 1");
   });
 
   it("renders multi lines text as multi p elements", function() {
-    $('#sandbox').wikimate([
+    $('#sandbox').wikimate({ story: [
       { "id": "1", "type": "paragraph", "text": "p 1 \n p 2 \n p 3" },
-    ]);
+    ]});
     var paragraphs = $.map($('#sandbox #1 p'), function(item) {
       return $(item).text();
     });

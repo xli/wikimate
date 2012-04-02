@@ -1,15 +1,14 @@
 (function($) {
 
+  var Events = {
+    CHANGE: 'change'
+  };
   var plugins = {
     apply: function(div, item) {
       var plugin = this[item.type];
       plugin.emit(div, item);
       plugin.bind(div, item);
     }
-  };
-
-  var Event = {
-    CHANGE: 'change'
   };
 
   var renderer = {
@@ -42,11 +41,12 @@
     },
 
     triggerEvent: function(action, item) {
-      this.panel.trigger(Event.CHANGE, {
+      var action = {
         id: item.id,
         type: action,
         item: item
-      });
+      }
+      this.panel.trigger(Events.CHANGE, action);
     }
   };
 
@@ -64,8 +64,15 @@
     }
   };
 
-  $.fn.wikimate = function(items) {
-    window.wikimate.init(this, items);
+  $.fn.wikimate = function(options) {
+    var settings = $.extend({
+      story: [],
+      change: null
+    }, options);
+    window.wikimate.init(this, settings.story);
+    if (settings.change) {
+      this.bind(Events.CHANGE, settings.change);
+    }
     return this;
   }
 

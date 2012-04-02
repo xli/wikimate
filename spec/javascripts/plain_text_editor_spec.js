@@ -6,10 +6,10 @@ describe("Plain Text Editor", function() {
     $('#sandbox').remove();
   });
   it("updates text paragraph after edited", function() {
-    $('#sandbox').wikimate([
+    $('#sandbox').wikimate({ story: [
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-    ]);
+    ]});
     $('#1').dblclick();
     $('#1 textarea').text('hello world');
     $('#1 textarea').focusout();
@@ -18,13 +18,13 @@ describe("Plain Text Editor", function() {
 
   it("fires element changed event after edit finished", function() {
     var changes = [];
-    $('#sandbox').bind('change', function(event, action) {
-      changes.push(action);
+    $('#sandbox').wikimate({
+      story: [
+        { "id": "1", "type": "paragraph", "text": "paragraph 1" },
+        { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+      ],
+      change: function(event, action) { changes.push(action); }
     });
-    $('#sandbox').wikimate([
-      { "id": "1", "type": "paragraph", "text": "paragraph 1" },
-      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-    ]);
     $('#2').dblclick();
     $('#2 textarea').text('hello world');
     $('#2 textarea').focusout();
@@ -35,13 +35,13 @@ describe("Plain Text Editor", function() {
 
   it("should not fire element changed event when nothing changed after edit finished", function() {
     var changes = [];
-    $('#sandbox').bind('change', function(event, action) {
-      changes.push(action);
+    $('#sandbox').wikimate({
+      story: [
+        { "id": "1", "type": "paragraph", "text": "paragraph 1" },
+        { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+      ],
+      change: function(event, action) { changes.push(action); }
     });
-    $('#sandbox').wikimate([
-      { "id": "1", "type": "paragraph", "text": "paragraph 1" },
-      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-    ]);
     $('#1').dblclick();
     $('#1 textarea').text('paragraph 1');
     $('#1 textarea').focusout();
@@ -50,10 +50,10 @@ describe("Plain Text Editor", function() {
   });
 
   it("should save editing paragraph and create new paragraph following the paragraph when paragraph ends with 2 new lines", function() {
-    $('#sandbox').wikimate([
+    $('#sandbox').wikimate({ story: [
       { "id": "1", "type": "paragraph", "text": "paragraph 1\n" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-    ]);
+    ]});
     $('#1').dblclick();
     Keyboard.hitEnter($('#1 textarea'));
     expect($('#1 textarea').length).toEqual(0);
@@ -69,10 +69,7 @@ describe("Plain Text Editor", function() {
 
   it("should not save editing paragraph that only has 2 new lines inside", function() {
     var changes = [];
-    $('#sandbox').bind('change', function(event, action) {
-      changes.push(action);
-    });
-    $('#sandbox').wikimate([]);
+    $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
     $('#sandbox').dblclick();
     Keyboard.hitEnter($('#sandbox div textarea'));
     Keyboard.hitEnter($('#sandbox div textarea'));
@@ -83,11 +80,8 @@ describe("Plain Text Editor", function() {
 
   it("should fire new item change event when save a new item", function() {
     var changes = [];
-    $('#sandbox').bind('change', function(event, action) {
-      changes.push(action);
-    });
+    $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 
-    $('#sandbox').wikimate([]);
     $('#sandbox').dblclick();
     $('#sandbox div textarea').text("hello world");
     $('#sandbox div textarea').focusout();
@@ -102,13 +96,11 @@ describe("Plain Text Editor", function() {
 
   it("should delete paragraph item when there is content after edited", function() {
     var changes = [];
-    $('#sandbox').bind('change', function(event, action) {
-      changes.push(action);
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }],
+      change: function(event, action) { changes.push(action) }
     });
 
-    $('#sandbox').wikimate([
-      { "id": "1", "type": "paragraph", "text": "paragraph 1" }
-    ]);
     $('#1').dblclick();
     $('#1 textarea').text('');
     $('#1 textarea').focusout();
@@ -125,12 +117,10 @@ describe("Plain Text Editor", function() {
 
   it("should cancel edit when user hit ESC key", function() {
     var changes = [];
-    $('#sandbox').bind('change', function(event, action) {
-      changes.push(action);
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }],
+      change: function(event, action) { changes.push(action) }
     });
-    $('#sandbox').wikimate([
-      { "id": "1", "type": "paragraph", "text": "paragraph 1" }
-    ]);
     $('#1').dblclick();
     Keyboard.hitEsc($('#1 textarea'));
     expect(changes.length).toEqual(0);
