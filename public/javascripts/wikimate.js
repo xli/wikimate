@@ -1,7 +1,7 @@
 (function($) {
 
   var Events = {
-    CHANGE: 'change'
+    CHANGE: 'storyChanged'
   };
   var plugins = {
     apply: function(div, item) {

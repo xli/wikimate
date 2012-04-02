@@ -9,6 +9,7 @@
 !! should fire new item event(type=new) after saved new item
 !! double click to edit by plain text editor and click outside to save
 !! delete item when there is content after edited
+!! textarea change event should not conflict with wikimate change event
 ** auto increase height when user inputs more content
 ** same height with paragraph when entering edit
 * journal
