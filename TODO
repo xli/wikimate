@@ -17,6 +17,7 @@
 ** highlight journal event change
 * a toolbar for element plugin to put in icon for drag&drop adding item
 * plugins
+** handle can not find plugin error
 ** paragraph
 !!! break into p elements for text lines
 *** CMD + S/CTRL + S to save

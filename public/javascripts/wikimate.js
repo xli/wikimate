@@ -1,18 +1,50 @@
 (function($) {
 
-  window.wikimate = {
-    version: '0.0.1',
-    plugins: {},
-    panel: null,
-    init: function(element, items) {
+  var plugins = {
+    apply: function(div, item) {
+      var plugin = this[item.type];
+      plugin.emit(div, item);
+      plugin.bind(div, item);
+    }
+  };
+
+  var renderer = {
+    init: function(element) {
       this.panel = element.addClass('wikimate-story').bind('dblclick', function(e) {
         if (e.target == element[0]) {
           e.stopPropagation();
-          renderNewItem().dblclick();
+          renderer.show(newItem()).dblclick();
         }
       });
+    },
+
+    show: function(item) {
+      var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
+      if (item.after) {
+        $('#' + item.after).after(div);
+      } else {
+        this.panel.append(div);
+      }
+      plugins.apply(div, item);
+      return div;
+    },
+
+    update: function(div, item) {
+      plugins.apply(div.empty(), item);
+    },
+
+    delete: function(div) {
+      div.remove();
+    }
+  };
+
+  window.wikimate = {
+    version: '0.0.1',
+    plugins: plugins,
+    init: function(element, items) {
+      renderer.init(element);
       $.each(items, function(i, item) {
-        renderItem(item);
+        renderer.show(item);
       });
     },
     plainTextEditor: function(div, item) {
@@ -31,32 +63,17 @@
     ESC:      27
   };
 
-  function renderNewItem(attrs) {
-    return renderItem(newItem(attrs))
-  };
-
-  function renderItem(item) {
-    var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
-    if (item.after) {
-      $('#' + item.after).after(div);
-    } else {
-      wikimate.panel.append(div);
-    }
-    applyPlugin(div, item);
-    return div;
-  };
-
   function newItem(attrs) {
     var item = {id: generateId(), type: 'paragraph', newItem: true, text: ''};
     if (attrs) {
-      $.extend(item, attrs)
+      $.extend(item, attrs);
     }
-    return item
+    return item;
   };
 
   function createPlainTextEditor(div, item) {
     function cancelEdit() {
-      applyPlugin(div.empty(), item);
+      renderer.update(div, item);
     };
     function deleteItem() {
       $(wikimate).trigger('change', {
@@ -64,8 +81,8 @@
         type: 'delete',
         item: item
       });
-      div.remove();
-    }
+      renderer.delete(div);
+    };
     function updateItem(text) {
       item.text = text;
       $(wikimate).trigger('change', {
@@ -73,24 +90,24 @@
         type: item.newItem ? 'new' : 'edit',
         item: item
       });
-      applyPlugin(div.empty(), item);
-    }
-    function save(textarea) {
-      if (textarea.val() == '') {
+      renderer.update(div, item);
+    };
+    function save(text) {
+      if (text == '') {
         deleteItem();
-      } else if (textarea.val() != item.text) {
-        updateItem(textarea.val());
+      } else if (text != item.text) {
+        updateItem(text);
       } else {
         cancelEdit();
       }
-    }
+    };
     var textarea = $("<textarea>" + item.text + "</textarea>").addClass('plain-text-editor').focusout(function() {
-      save(textarea);
+      save(textarea.val());
     }).bind('keydown', function(e) {
       if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
         e.preventDefault();
         textarea.focusout();
-        renderNewItem({type: item.type, after: item.id}).dblclick();
+        renderer.show(newItem({type: item.type, after: item.id})).dblclick();
       } else if (e.which == KeyCode.ESC) {
         cancelEdit();
       }
@@ -116,12 +133,6 @@
       }
       return _results;
     })()).join('');
-  };
-
-  function applyPlugin(div, item) {
-    var plugin = wikimate.plugins[item.type];
-    plugin.emit(div, item);
-    plugin.bind(div, item);
   };
 
 })(jQuery);
