@@ -6,7 +6,7 @@ describe("Plain Text Editor", function() {
     $('#sandbox').remove();
   });
   it("updates text paragraph after edited", function() {
-    wikimate.wiki('#sandbox').story([
+    $('#sandbox').wikimate([
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]);
@@ -21,7 +21,7 @@ describe("Plain Text Editor", function() {
     $(wikimate).bind('change', function(event, action) {
       changes.push(action);
     });
-    wikimate.wiki('#sandbox').story([
+    $('#sandbox').wikimate([
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]);
@@ -38,7 +38,7 @@ describe("Plain Text Editor", function() {
     $(wikimate).bind('change', function(event, action) {
       changes.push(action);
     });
-    wikimate.wiki('#sandbox').story([
+    $('#sandbox').wikimate([
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]);
@@ -51,7 +51,7 @@ describe("Plain Text Editor", function() {
   });
 
   it("should save editing paragraph and create new paragraph following the paragraph when paragraph ends with 2 new lines", function() {
-    wikimate.wiki('#sandbox').story([
+    $('#sandbox').wikimate([
       { "id": "1", "type": "paragraph", "text": "paragraph 1\n" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]);
@@ -73,7 +73,7 @@ describe("Plain Text Editor", function() {
     $(wikimate).bind('change', function(event, action) {
       changes.push(action);
     });
-    wikimate.wiki('#sandbox');
+    $('#sandbox').wikimate([]);
     $('#sandbox').dblclick();
     Keyboard.hitEnter($('#sandbox div textarea'));
     Keyboard.hitEnter($('#sandbox div textarea'));
@@ -88,7 +88,7 @@ describe("Plain Text Editor", function() {
       changes.push(action);
     });
 
-    wikimate.wiki('#sandbox');
+    $('#sandbox').wikimate([]);
     $('#sandbox').dblclick();
     $('#sandbox div textarea').text("hello world");
     $('#sandbox div textarea').focusout();
@@ -107,7 +107,7 @@ describe("Plain Text Editor", function() {
       changes.push(action);
     });
 
-    wikimate.wiki('#sandbox').story([
+    $('#sandbox').wikimate([
       { "id": "1", "type": "paragraph", "text": "paragraph 1" }
     ]);
     $('#1').dblclick();
@@ -129,7 +129,7 @@ describe("Plain Text Editor", function() {
     $(wikimate).bind('change', function(event, action) {
       changes.push(action);
     });
-    wikimate.wiki('#sandbox').story([
+    $('#sandbox').wikimate([
       { "id": "1", "type": "paragraph", "text": "paragraph 1" }
     ]);
     $('#1').dblclick();

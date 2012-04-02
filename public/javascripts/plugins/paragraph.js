@@ -10,7 +10,7 @@
     bind: function(div, item) {
       return div.dblclick(function(e) {
         e.stopPropagation();
-        return wikimate.textEditor(div, item);
+        return wikimate.plainTextEditor(div, item);
       });
     }
   }

@@ -1,32 +1,57 @@
 (function($) {
+
   window.wikimate = {
     version: '0.0.1',
     plugins: {},
     panel: null,
-    wiki: function(id) {
-      wikimate.panel = $(id).addClass('wikimate-story').bind('dblclick', function(e) {
-        if (e.target == $(id)[0]) {
+    init: function(element, items) {
+      this.panel = element.addClass('wikimate-story').bind('dblclick', function(e) {
+        if (e.target == element[0]) {
           e.stopPropagation();
           renderNewItem().dblclick();
         }
       });
-      return {
-        story: function(items) {
-          $.each(items, function(i, item) {
-            renderItem(item);
-          });
-        }
-      };
+      $.each(items, function(i, item) {
+        renderItem(item);
+      });
     },
-    textEditor: function(div, item) {
+    plainTextEditor: function(div, item) {
       return createPlainTextEditor(div, item).focus();
     }
   };
+
+  $.fn.wikimate = function(items) {
+    window.wikimate.init(this, items);
+    return this;
+  }
 
   var KeyCode = {
     TAB:       9,
     RETURN:   13,
     ESC:      27
+  };
+
+  function renderNewItem(attrs) {
+    return renderItem(newItem(attrs))
+  };
+
+  function renderItem(item) {
+    var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
+    if (item.after) {
+      $('#' + item.after).after(div);
+    } else {
+      wikimate.panel.append(div);
+    }
+    applyPlugin(div, item);
+    return div;
+  };
+
+  function newItem(attrs) {
+    var item = {id: generateId(), type: 'paragraph', newItem: true, text: ''};
+    if (attrs) {
+      $.extend(item, attrs)
+    }
+    return item
   };
 
   function createPlainTextEditor(div, item) {
@@ -99,26 +124,4 @@
     plugin.bind(div, item);
   };
 
-  function renderNewItem(attrs) {
-    return renderItem(newItem(attrs))
-  };
-
-  function newItem(attrs) {
-    var item = {id: generateId(), type: 'paragraph', newItem: true, text: ''};
-    if (attrs) {
-      $.extend(item, attrs)
-    }
-    return item
-  };
-
-  function renderItem(item) {
-    var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
-    if (item.after) {
-      $('#' + item.after).after(div);
-    } else {
-      wikimate.panel.append(div);
-    }
-    applyPlugin(div, item);
-    return div;
-  };
 })(jQuery);
