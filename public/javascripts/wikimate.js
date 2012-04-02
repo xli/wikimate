@@ -21,10 +21,10 @@
       });
     },
 
-    show: function(item) {
+    show: function(item, options) {
       var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
-      if (item.after) {
-        $('#' + item.after).after(div);
+      if (options && options['after']) {
+        $('#' + options['after']).after(div);
       } else {
         this.panel.append(div);
       }
@@ -119,7 +119,7 @@
       if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
         e.preventDefault();
         textarea.focusout();
-        renderer.show(newItem({type: item.type, after: item.id})).dblclick();
+        renderer.show(newItem({type: item.type}), {after: item.id}).dblclick();
       } else if (e.which == KeyCode.ESC) {
         cancelEdit();
       }
