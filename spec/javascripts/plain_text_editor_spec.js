@@ -127,4 +127,36 @@ describe("Plain Text Editor", function() {
     expect(changes.length).toEqual(0);
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
   });
+
+  it("should not fire any event when added new item and then delete it", function() {
+    var changes = [];
+    $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
+
+    // add
+    $('#sandbox').dblclick();
+    $('#sandbox div textarea').text("hello").focusout();
+
+    // edit
+    $('#' + changes[0].id).dblclick();
+    $('#sandbox div textarea').text("world").focusout();
+
+    // delete
+    $('#' + changes[0].id).dblclick();
+    $('#sandbox div textarea').text("").focusout();
+
+    expect(changes.length).toEqual(3);
+    expect(changes[0].type).toEqual('new');
+    expect(changes[1].type).toEqual('edit');
+    expect(changes[2].type).toEqual('delete');
+  });
+
+  it("create new item, edit and delete it", function() {
+    var changes = [];
+    $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
+
+    $('#sandbox').dblclick();
+    $('#sandbox div textarea').text("");
+    $('#sandbox div textarea').focusout();
+    expect(changes.length).toEqual(0);
+  });
 });

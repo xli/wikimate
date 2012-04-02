@@ -12,6 +12,7 @@
 !! textarea change event should not conflict with wikimate change event
 ** auto increase height when user inputs more content
 ** same height with paragraph when entering edit
+** what should we do if user added a new item that only has a new line char
 * journal
 ** remember all event history on wikimate obj? (or only for test?)
 ** list journal events at bottom

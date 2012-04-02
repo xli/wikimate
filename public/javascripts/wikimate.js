@@ -96,8 +96,10 @@
     }
     function save(text) {
       if (text == '') {
-        renderer.delete(div, item);
-        renderer.triggerEvent('delete', item);
+        if (!item['newItem']) {
+          renderer.delete(div, item);
+          renderer.triggerEvent('delete', item);
+        }
       } else if (text != item.text) {
         item.text = text;
         renderer.update(div, item);
