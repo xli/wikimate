@@ -92,6 +92,7 @@ describe("Plain Text Editor", function() {
     expect(changes[0]['item']['type']).toEqual('paragraph');
     expect(changes[0]['item']['text']).toEqual('hello world');
     expect(changes[0]['item']['after']).toBeUndefined();
+    expect(changes[0]['item']['newItem']).toBeUndefined();
   });
 
   it("should delete paragraph item when there is content after edited", function() {

@@ -101,7 +101,12 @@
       } else if (text != item.text) {
         item.text = text;
         renderer.update(div, item);
-        renderer.triggerEvent(item.newItem ? 'new' : 'edit', item);
+        if (item['newItem']) {
+          delete item['newItem'];
+          renderer.triggerEvent('new', item);
+        } else {
+          renderer.triggerEvent('edit', item);
+        }
       } else {
         cancelEdit();
       }
