@@ -11,8 +11,7 @@ describe("Plain Text Editor", function() {
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]});
     $('#1').dblclick();
-    $('#1 textarea').text('hello world');
-    $('#1 textarea').focusout();
+    $('#1 textarea').text('hello world').focusout();
     expect($('#sandbox #1 p').text()).toEqual('hello world');
   });
 
@@ -26,8 +25,7 @@ describe("Plain Text Editor", function() {
       change: function(event, action) { changes.push(action); }
     });
     $('#2').dblclick();
-    $('#2 textarea').text('hello world');
-    $('#2 textarea').focusout();
+    $('#2 textarea').text('hello world').focusout();
     
     expect(changes.length).toEqual(1);
     expect(changes[0]).toEqual({id: '2', type: 'edit', item: { "id": "2", "type": "paragraph", "text": "hello world" }});
@@ -43,8 +41,7 @@ describe("Plain Text Editor", function() {
       change: function(event, action) { changes.push(action); }
     });
     $('#1').dblclick();
-    $('#1 textarea').text('paragraph 1');
-    $('#1 textarea').focusout();
+    $('#1 textarea').text('paragraph 1').focusout();
     expect(changes.length).toEqual(0);
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
   });
@@ -56,10 +53,11 @@ describe("Plain Text Editor", function() {
     ]});
     $('#1').dblclick();
     Keyboard.hitEnter($('#1 textarea'));
+
     expect($('#1 textarea').length).toEqual(0);
     expect($('#sandbox div textarea')).toBeDefined();
-    $('#sandbox div textarea').text("hello world");
-    $('#sandbox div textarea').focusout();
+
+    $('#sandbox div textarea').text("hello world").focusout();
 
     var paragraphs = $.map($('#sandbox p'), function(item) {
       return $(item).text();
@@ -83,8 +81,7 @@ describe("Plain Text Editor", function() {
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 
     $('#sandbox').dblclick();
-    $('#sandbox div textarea').text("hello world");
-    $('#sandbox div textarea').focusout();
+    $('#sandbox div textarea').text("hello world").focusout();
     expect(changes.length).toEqual(1);
 
     expect(changes[0]['id']).toBeDefined();
@@ -103,8 +100,7 @@ describe("Plain Text Editor", function() {
     });
 
     $('#1').dblclick();
-    $('#1 textarea').text('');
-    $('#1 textarea').focusout();
+    $('#1 textarea').text('').focusout();
 
     expect(changes.length).toEqual(1);
 
