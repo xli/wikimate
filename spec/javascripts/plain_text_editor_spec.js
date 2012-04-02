@@ -18,7 +18,7 @@ describe("Plain Text Editor", function() {
 
   it("fires element changed event after edit finished", function() {
     var changes = [];
-    $(wikimate).bind('change', function(event, action) {
+    $('#sandbox').bind('change', function(event, action) {
       changes.push(action);
     });
     $('#sandbox').wikimate([
@@ -35,7 +35,7 @@ describe("Plain Text Editor", function() {
 
   it("should not fire element changed event when nothing changed after edit finished", function() {
     var changes = [];
-    $(wikimate).bind('change', function(event, action) {
+    $('#sandbox').bind('change', function(event, action) {
       changes.push(action);
     });
     $('#sandbox').wikimate([
@@ -45,7 +45,6 @@ describe("Plain Text Editor", function() {
     $('#1').dblclick();
     $('#1 textarea').text('paragraph 1');
     $('#1 textarea').focusout();
-    
     expect(changes.length).toEqual(0);
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
   });
@@ -70,7 +69,7 @@ describe("Plain Text Editor", function() {
 
   it("should not save editing paragraph that only has 2 new lines inside", function() {
     var changes = [];
-    $(wikimate).bind('change', function(event, action) {
+    $('#sandbox').bind('change', function(event, action) {
       changes.push(action);
     });
     $('#sandbox').wikimate([]);
@@ -84,7 +83,7 @@ describe("Plain Text Editor", function() {
 
   it("should fire new item change event when save a new item", function() {
     var changes = [];
-    $(wikimate).bind('change', function(event, action) {
+    $('#sandbox').bind('change', function(event, action) {
       changes.push(action);
     });
 
@@ -103,7 +102,7 @@ describe("Plain Text Editor", function() {
 
   it("should delete paragraph item when there is content after edited", function() {
     var changes = [];
-    $(wikimate).bind('change', function(event, action) {
+    $('#sandbox').bind('change', function(event, action) {
       changes.push(action);
     });
 
@@ -126,7 +125,7 @@ describe("Plain Text Editor", function() {
 
   it("should cancel edit when user hit ESC key", function() {
     var changes = [];
-    $(wikimate).bind('change', function(event, action) {
+    $('#sandbox').bind('change', function(event, action) {
       changes.push(action);
     });
     $('#sandbox').wikimate([

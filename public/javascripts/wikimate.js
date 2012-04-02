@@ -8,6 +8,10 @@
     }
   };
 
+  var Event = {
+    CHANGE: 'change'
+  };
+
   var renderer = {
     init: function(element) {
       this.panel = element.addClass('wikimate-story').bind('dblclick', function(e) {
@@ -35,6 +39,14 @@
 
     delete: function(div) {
       div.remove();
+    },
+
+    triggerEvent: function(action, item) {
+      this.panel.trigger(Event.CHANGE, {
+        id: item.id,
+        type: action,
+        item: item
+      });
     }
   };
 
@@ -48,7 +60,7 @@
       });
     },
     plainTextEditor: function(div, item) {
-      return createPlainTextEditor(div, item).focus();
+      return createPlainTextEditor(div, item);
     }
   };
 
@@ -64,7 +76,7 @@
   };
 
   function newItem(attrs) {
-    var item = {id: generateId(), type: 'paragraph', newItem: true, text: ''};
+    var item = {id: utils.generateId(), type: 'paragraph', newItem: true, text: ''};
     if (attrs) {
       $.extend(item, attrs);
     }
@@ -74,29 +86,15 @@
   function createPlainTextEditor(div, item) {
     function cancelEdit() {
       renderer.update(div, item);
-    };
-    function deleteItem() {
-      $(wikimate).trigger('change', {
-        id: item.id,
-        type: 'delete',
-        item: item
-      });
-      renderer.delete(div);
-    };
-    function updateItem(text) {
-      item.text = text;
-      $(wikimate).trigger('change', {
-        id: item.id,
-        type: item.newItem ? 'new' : 'edit',
-        item: item
-      });
-      renderer.update(div, item);
-    };
+    }
     function save(text) {
       if (text == '') {
-        deleteItem();
+        renderer.delete(div, item);
+        renderer.triggerEvent('delete', item);
       } else if (text != item.text) {
-        updateItem(text);
+        item.text = text;
+        renderer.update(div, item);
+        renderer.triggerEvent(item.newItem ? 'new' : 'edit', item);
       } else {
         cancelEdit();
       }
@@ -116,23 +114,22 @@
     return textarea;
   }
 
-  function generateId() {
-    return randomBytes(8);
-  };
+  var utils = {
+    generateId: function() {
+      return this.randomBytes(8);
+    },
 
-  function randomByte() {
-    return (((1 + Math.random()) * 0x100) | 0).toString(16).substring(1);
-  };
-
-  function randomBytes(n) {
-    return ((function() {
-      var _i, _results;
-      _results = [];
-      for (_i = 1; 1 <= n ? _i <= n : _i >= n; 1 <= n ? _i++ : _i--) {
-        _results.push(randomByte());
+    randomBytes: function(n) {
+      var results = [];
+      for (var i = 1; 1 <= n ? i <= n : i >= n; 1 <= n ? i++ : i--) {
+        results.push(this.randomByte());
       }
-      return _results;
-    })()).join('');
+      return results.join('');
+    },
+
+    randomByte: function() {
+      return (((1 + Math.random()) * 0x100) | 0).toString(16).substring(1);
+    }
   };
 
 })(jQuery);
