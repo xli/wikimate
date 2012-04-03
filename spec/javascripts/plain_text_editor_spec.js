@@ -76,7 +76,7 @@ describe("Plain Text Editor", function() {
     expect(changes.length).toEqual(0);
   });
 
-  it("should fire new item change event when save a new item", function() {
+  it("should fire add item change event when save a new item", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 
@@ -85,14 +85,13 @@ describe("Plain Text Editor", function() {
     expect(changes.length).toEqual(1);
 
     expect(changes[0]['id']).toBeDefined();
-    expect(changes[0]['type']).toEqual('new');
+    expect(changes[0]['type']).toEqual('add');
     expect(changes[0]['item']['type']).toEqual('paragraph');
     expect(changes[0]['item']['text']).toEqual('hello world');
-    expect(changes[0]['item']['after']).toBeUndefined();
-    expect(changes[0]['item']['newItem']).toBeUndefined();
+    expect(changes[0]['after']).toBeUndefined();
   });
 
-  it("should delete paragraph item when there is content after edited", function() {
+  it("should remove paragraph item when there is content after edited", function() {
     var changes = [];
     $('#sandbox').wikimate({
       story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }],
@@ -105,7 +104,7 @@ describe("Plain Text Editor", function() {
     expect(changes.length).toEqual(1);
 
     expect(changes[0]['id']).toEqual('1');
-    expect(changes[0]['type']).toEqual('delete');
+    expect(changes[0]['type']).toEqual('remove');
     expect(changes[0]['item']['id']).toEqual('1');
     expect(changes[0]['item']['type']).toEqual('paragraph');
     expect(changes[0]['item']['text']).toEqual('paragraph 1');
@@ -124,7 +123,7 @@ describe("Plain Text Editor", function() {
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
   });
 
-  it("should not fire any event when added new item and then delete it", function() {
+  it("create new item, edit and delete it", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 
@@ -141,12 +140,12 @@ describe("Plain Text Editor", function() {
     $('#sandbox div textarea').text("").focusout();
 
     expect(changes.length).toEqual(3);
-    expect(changes[0].type).toEqual('new');
+    expect(changes[0].type).toEqual('add');
     expect(changes[1].type).toEqual('edit');
-    expect(changes[2].type).toEqual('delete');
+    expect(changes[2].type).toEqual('remove');
   });
 
-  it("create new item, edit and delete it", function() {
+  it("should not fire any event when added new item and then delete it", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 

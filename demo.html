@@ -14,7 +14,7 @@
         var story = eval($('.store textarea').val());
         $('.wikimate').wikimate({story: story, change: function(event, action) {
           var data = eval($('.store textarea').val());
-          if (action.type == 'new') {
+          if (action.type == 'add') {
             data.push(action.item);
           } else if (action.type == 'edit') {
             $.each(data, function(i, item) {
@@ -22,7 +22,7 @@
                 item.text = action.item.text;
               }
             });
-          } else if (action.type == 'delete') {
+          } else if (action.type == 'remove') {
             $.each(data, function(i, item) {
               if (item.id == action.id) {
                 data.splice(i, 1);

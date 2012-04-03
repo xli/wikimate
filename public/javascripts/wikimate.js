@@ -3,6 +3,7 @@
   var Events = {
     CHANGE: 'storyChanged'
   };
+
   var plugins = {
     apply: function(div, item) {
       var plugin = this[item.type];
@@ -11,22 +12,62 @@
     }
   };
 
+  function action(type, item) {
+    return {
+      id: item.id,
+      type: type,
+      item: item
+    }
+  };
+  function newItem(attrs) {
+    var item = {id: utils.generateId(), type: 'paragraph', text: ''};
+    if (attrs) {
+      $.extend(item, attrs);
+    }
+    return item;
+  };
+
   var renderer = {
     init: function(element) {
       this.panel = element.addClass('wikimate-story').bind('dblclick', function(e) {
         if (e.target == element[0]) {
           e.stopPropagation();
-          renderer.show(newItem()).dblclick();
+          renderer.show(newItem(), {new: true}).dblclick();
         }
       });
     },
 
+    edit: function(div, item, changes) {
+      var editItem = $.extend(item, changes);
+      this.update(div, item);
+      if (div.data('new')) {
+        div.removeData('new');
+        this.trigger(action('add', editItem));
+      } else {
+        this.trigger(action('edit', editItem));
+      }
+      return div;
+    },
+
+    remove: function(div, item) {
+      if (div.data('new')) {
+        div.remove();
+      } else {
+        div.remove();
+        this.trigger(action('remove', item));
+      }
+      return div;
+    },
+
     show: function(item, options) {
       var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
-      if (options && options['after']) {
+      if (options['after']) {
         $('#' + options['after']).after(div);
       } else {
         this.panel.append(div);
+      }
+      if (options['new']) {
+        div.data('new', true);
       }
       plugins.apply(div, item);
       return div;
@@ -36,16 +77,7 @@
       plugins.apply(div.empty(), item);
     },
 
-    delete: function(div) {
-      div.remove();
-    },
-
-    triggerEvent: function(action, item) {
-      var action = {
-        id: item.id,
-        type: action,
-        item: item
-      }
+    trigger: function(action) {
       this.panel.trigger(Events.CHANGE, action);
     }
   };
@@ -56,7 +88,7 @@
     init: function(element, items) {
       renderer.init(element);
       $.each(items, function(i, item) {
-        renderer.show(item);
+        renderer.show(item, {});
       });
     },
     plainTextEditor: function(div, item) {
@@ -82,33 +114,15 @@
     ESC:      27
   };
 
-  function newItem(attrs) {
-    var item = {id: utils.generateId(), type: 'paragraph', newItem: true, text: ''};
-    if (attrs) {
-      $.extend(item, attrs);
-    }
-    return item;
-  };
-
   function createPlainTextEditor(div, item) {
     function cancelEdit() {
       renderer.update(div, item);
-    }
+    };
     function save(text) {
       if (text == '') {
-        if (!item['newItem']) {
-          renderer.delete(div, item);
-          renderer.triggerEvent('delete', item);
-        }
+        renderer.remove(div, item);
       } else if (text != item.text) {
-        item.text = text;
-        renderer.update(div, item);
-        if (item['newItem']) {
-          delete item['newItem'];
-          renderer.triggerEvent('new', item);
-        } else {
-          renderer.triggerEvent('edit', item);
-        }
+        renderer.edit(div, item, {text: text});
       } else {
         cancelEdit();
       }
@@ -119,7 +133,7 @@
       if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
         e.preventDefault();
         textarea.focusout();
-        renderer.show(newItem({type: item.type}), {after: item.id}).dblclick();
+        renderer.show(newItem({type: item.type}), {after: item.id, new: true}).dblclick();
       } else if (e.which == KeyCode.ESC) {
         cancelEdit();
       }
