@@ -154,4 +154,15 @@ describe("Plain Text Editor", function() {
     $('#sandbox div textarea').focusout();
     expect(changes.length).toEqual(0);
   });
+
+  it("should not fire edit event for \n started text", function(){
+    var changes = [];
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "\nparagraph 1" }],
+      change: function(event, action) { changes.push(action) }
+    });
+    $('#1').dblclick();
+    $('#sandbox div textarea').focusout();
+    expect(changes.length).toEqual(0);
+  });
 });

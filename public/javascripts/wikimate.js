@@ -127,7 +127,7 @@
         cancelEdit();
       }
     };
-    var textarea = $("<textarea>" + item.text + "</textarea>").addClass('plain-text-editor').focusout(function() {
+    var textarea = $("<textarea></textarea>").text(item.text).addClass('plain-text-editor').focusout(function() {
       save(textarea.val());
     }).bind('keydown', function(e) {
       if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
