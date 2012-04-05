@@ -176,4 +176,20 @@ describe("Plain Text Editor", function() {
     $('#1').dblclick();
     expect($('#1 textarea').height()).toEqual(heightInShowMode);
   });
+
+  it('should increase editor height when input more content', function() {
+    var changes = [];
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc" }],
+      change: function(event, action) { changes.push(action) }
+    });
+
+    $('#1').dblclick();
+    var height = $('#1 textarea').innerHeight();
+    $('#1 textarea').text("a\nb\nc\nd\ne\nf\ng\nh");
+    
+    Keyboard.hitEnter($('#1 textarea'));
+
+    expect($('#1 textarea').innerHeight()).toBeGreaterThan(height);
+  });
 });

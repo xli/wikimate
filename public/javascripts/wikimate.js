@@ -118,10 +118,17 @@
     var textarea = $("<textarea/>").text(item.text).css('height', div.innerHeight()).addClass('plain-text-editor').focusout(function() {
       save(textarea.val());
     }).bind('keydown', function(e) {
-      if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
-        e.preventDefault();
-        textarea.focusout();
-        renderer.show(newItem({type: item.type}), {after: item.id, new: true}).dblclick();
+      if (e.which == KeyCode.RETURN) {
+        if (textarea.val().match(/.+\n$/m)) {
+          e.preventDefault();
+          textarea.focusout();
+          renderer.show(newItem({type: item.type}), {after: item.id, new: true}).dblclick();
+        } else {
+          if (textarea.prop('scrollHeight') > textarea.innerHeight()) {
+            var delta = textarea.innerHeight() - textarea.height();
+            textarea.height(textarea.prop('scrollHeight') + delta);
+          }
+        }
       } else if (e.which == KeyCode.ESC) {
         cancelEdit();
       }
