@@ -125,6 +125,8 @@
       } else if (e.which == KeyCode.ESC) {
         cancelEdit();
       }
+    }).bind('dblclick', function(e) {
+      return false;
     });
     div.html(textarea);
     return textarea;

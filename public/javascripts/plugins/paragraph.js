@@ -9,8 +9,10 @@
     },
     bind: function(div, item) {
       return div.unbind('dblclick').dblclick(function(e) {
-        e.stopPropagation();
-        return wikimate.plainTextEditor(div, item).focus();
+        if (e.target == div[0]) {
+          e.stopPropagation();
+          return wikimate.plainTextEditor(div, item).focus();
+        }
       });
     }
   }
