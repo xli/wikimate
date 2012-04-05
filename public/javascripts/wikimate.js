@@ -125,7 +125,7 @@
           renderer.show(newItem({type: item.type}), {after: item.id, new: true}).dblclick();
         } else {
           if (textarea.prop('scrollHeight') > textarea.innerHeight()) {
-            var delta = textarea.innerHeight() - textarea.height();
+            var delta = Math.abs(textarea.innerHeight() - textarea.height()) + 6;
             textarea.height(textarea.prop('scrollHeight') + delta);
           }
         }

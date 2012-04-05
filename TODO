@@ -10,9 +10,9 @@
 !! double click to edit by plain text editor and click outside to save
 !! delete item when there is content after edited
 !! textarea change event should not conflict with wikimate change event
-** same font size with show mode
-** auto increase height when user inputs more content
-** same height with paragraph when entering edit
+!! same font size with show mode
+!! auto increase height when user inputs more content
+!! same height with paragraph when entering edit
 ** what should we do if user added a new item that only has a new line char
 * journal
 ** remember all event history on wikimate obj? (or only for test?)
