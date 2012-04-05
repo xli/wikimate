@@ -165,4 +165,15 @@ describe("Plain Text Editor", function() {
     $('#sandbox div textarea').focusout();
     expect(changes.length).toEqual(0);
   });
+
+  it('should open editor same height with content showed in the page', function() {
+    var changes = [];
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc\nd\ne\nf\ng\nh" }],
+      change: function(event, action) { changes.push(action) }
+    });
+    var heightInShowMode = $('#1').innerHeight();
+    $('#1').dblclick();
+    expect($('#1 textarea').height()).toEqual(heightInShowMode);
+  });
 });

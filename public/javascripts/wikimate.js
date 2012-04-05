@@ -115,19 +115,7 @@
   };
 
   function createPlainTextEditor(div, item) {
-    function cancelEdit() {
-      renderer.update(div, item);
-    };
-    function save(text) {
-      if (text == '') {
-        renderer.remove(div, item);
-      } else if (text != item.text) {
-        renderer.edit(div, item, {text: text});
-      } else {
-        cancelEdit();
-      }
-    };
-    var textarea = $("<textarea></textarea>").text(item.text).addClass('plain-text-editor').focusout(function() {
+    var textarea = $("<textarea/>").text(item.text).css('height', div.innerHeight()).addClass('plain-text-editor').focusout(function() {
       save(textarea.val());
     }).bind('keydown', function(e) {
       if (e.which == KeyCode.RETURN && textarea.val().match(/.+\n$/m)) {
@@ -140,6 +128,19 @@
     });
     div.html(textarea);
     return textarea;
+
+    function cancelEdit() {
+      renderer.update(div, item);
+    };
+    function save(text) {
+      if (text == '') {
+        renderer.remove(div, item);
+      } else if (text != item.text) {
+        renderer.edit(div, item, {text: text});
+      } else {
+        cancelEdit();
+      }
+    };
   }
 
   var utils = {

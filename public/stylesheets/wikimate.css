@@ -4,10 +4,9 @@
 }
 
 .wikimate-story .item {
-  
 }
 
 .wikimate-story .item .plain-text-editor {
   width: 99%;
-  min-height: 100px;
+  min-height: 50px;
 }
