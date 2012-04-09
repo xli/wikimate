@@ -8,11 +8,10 @@
       return div.html(html);
     },
     bind: function(div, item) {
+      // dblclick e.target is div p, should we move dblclick to div p?
       return div.unbind('dblclick').dblclick(function(e) {
-        if (e.target == div[0]) {
-          e.stopPropagation();
-          return wikimate.plainTextEditor(div, item).focus();
-        }
+        e.stopPropagation();
+        return wikimate.plainTextEditor(div, item).focus();
       });
     }
   }
