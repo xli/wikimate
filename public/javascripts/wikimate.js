@@ -115,28 +115,55 @@
   };
 
   function createPlainTextEditor(div, item) {
-    var textarea = $("<textarea/>").text(item.text).css('height', div.innerHeight()).addClass('plain-text-editor').focusout(function() {
+    var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
       save(textarea.val());
     }).bind('keydown', function(e) {
       if (e.which == KeyCode.RETURN) {
-        if (textarea.val().match(/.+\n$/m)) {
-          e.preventDefault();
-          textarea.focusout();
-          renderer.show(newItem({type: item.type}), {after: item.id, new: true}).dblclick();
-        } else {
-          if (textarea.prop('scrollHeight') > textarea.innerHeight()) {
-            var delta = Math.abs(textarea.innerHeight() - textarea.height()) + 6;
-            textarea.height(textarea.prop('scrollHeight') + delta);
-          }
-        }
+        syncHeight(textarea);
       } else if (e.which == KeyCode.ESC) {
         cancelEdit();
+      }
+    }).bind('keyup', function(e) {
+      // in keyup so that we can findout the new RETURN is added into last line
+      // I didn't find out a way to do this in keydown
+      if (e.which == KeyCode.RETURN) {
+        // Is it same on Windows?
+        var text = textarea.val();
+        if (text.trim().length > 0 && text.substr(-2) == "\n\n") {
+          e.preventDefault();
+          textarea.val(text.substr(0, text.length - 1));
+          textarea.focusout();
+          renderer.show(newItem({type: item.type}), {after: item.id, new: true}).dblclick();
+        }
       }
     }).bind('dblclick', function(e) {
       return false;
     });
+
     div.html(textarea);
+    syncHeight(textarea);
+
     return textarea;
+
+    function syncHeight(textarea) {
+      var expectedHeight = expectedTextHeight(textarea);
+      if (expectedHeight > textarea.height()) {
+        textarea.height(expectedHeight);
+      }
+    };
+
+    function expectedTextHeight(textarea) {
+      var lines = textarea.val().split("\n");
+      return (lines.length + 1) * lineHeight(textarea);
+    };
+
+    function lineHeight(textarea) {
+      var lh = parseInt(textarea.css('line-height').replace('px', ''), 10);
+      if (isNaN(lh)) {
+        throw "Can't get line height! css line-height value is: " + textarea.css('line-height');
+      }
+      return lh;
+    };
 
     function cancelEdit() {
       renderer.update(div, item);

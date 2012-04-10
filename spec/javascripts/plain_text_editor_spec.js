@@ -26,7 +26,7 @@ describe("Plain Text Editor", function() {
     });
     $('#2').dblclick();
     $('#2 textarea').text('hello world').focusout();
-    
+
     expect(changes.length).toEqual(1);
     expect(changes[0]).toEqual({id: '2', type: 'edit', item: { "id": "2", "type": "paragraph", "text": "hello world" }});
   });
@@ -63,6 +63,18 @@ describe("Plain Text Editor", function() {
       return $(item).text();
     });
     expect(paragraphs).toEqual(["paragraph 1", "hello world", "paragraph 2"])
+  });
+
+  it("should not contain last new line when paragraph is saved by user enter second new line at the end", function() {
+    var changes = [];
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }
+    ], change: function(event, action) { changes.push(action) }});
+    $('#1').dblclick()
+    $('#1 textarea').text("hello world\n");
+    Keyboard.hitEnter($('#1 textarea'));
+
+    expect(changes[0].item.text).toEqual("hello world\n");
   });
 
   it("should not save editing paragraph that only has 2 new lines inside", function() {
@@ -166,15 +178,15 @@ describe("Plain Text Editor", function() {
     expect(changes.length).toEqual(0);
   });
 
-  it('should open editor same height with content showed in the page', function() {
+  it('should open editor with all text showed in viewport', function() {
     var changes = [];
     $('#sandbox').wikimate({
       story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc\nd\ne\nf\ng\nh" }],
       change: function(event, action) { changes.push(action) }
     });
-    var heightInShowMode = $('#1').innerHeight();
     $('#1').dblclick();
-    expect($('#1 textarea').height()).toEqual(heightInShowMode);
+    expect($('#1 textarea').scrollTop()).toEqual(0);
+    expect($('#1 textarea').prop('scrollHeight')).toEqual($('#1 textarea').innerHeight());
   });
 
   it('should increase editor height when input more content', function() {
