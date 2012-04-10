@@ -1,9 +1,15 @@
 .wikimate-story {
   min-height: 100px;
-  padding: 5px;
 }
 
 .wikimate-story .item {
+}
+.wikimate-story .item:hover { 
+  background-color: #FFFFCC;
+  box-shadow: 0 0 5px rgba(0,0,0,1);
+    -moz-box-shadow: 0 0 5px rgba(0,0,0,1);
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,1);
+    -o-box-shadow: 0 0 5px rgba(0,0,0,1);
 }
 
 .wikimate-story .item .plain-text-editor {
