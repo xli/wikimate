@@ -15,5 +15,4 @@
   line-height: 1em; /*must have, used for calculate textarea expected text height*/
   overflow: hidden;
   min-height: 50px;
-  width: 99%;
 }
