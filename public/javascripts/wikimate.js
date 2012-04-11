@@ -1,14 +1,24 @@
 (function($) {
 
   var Events = {
-    CHANGE: 'storyChanged'
+    CHANGE: 'wikimate:change',
+    NEW: 'wikimate:new',
+    EDIT: 'wikimate:edit'
   };
 
   var plugins = {
     apply: function(div, item) {
       var plugin = this[item.type];
-      plugin.emit(div, item);
-      plugin.bind(div, item);
+      // add another div inside for removing conflict highlighting with text area
+      // after changed to edit mode
+      var content = $('<div />').addClass('item-content');
+      div.html(content).click(function(e) {
+        return content.click();
+      }).dblclick(function(e) {
+        return content.dblclick();
+      });
+      plugin.emit(content, item);
+      plugin.bind(content, item);
     }
   };
 
@@ -29,10 +39,13 @@
 
   var renderer = {
     init: function(element) {
-      this.panel = element.addClass('wikimate-story').bind('dblclick', function(e) {
-        if (e.target == element[0]) {
-          e.stopPropagation();
-          renderer.show(newItem(), {new: true}).dblclick();
+      this.panel = element.addClass('wikimate-story').bind(Events.NEW, function(e) {
+        renderer.show(newItem(), {new: true}).trigger(Events.EDIT);
+      }).bind('dblclick', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.target == $(this)[0]) {
+          $(this).trigger(Events.NEW);
         }
       });
     },
@@ -60,7 +73,9 @@
     },
 
     show: function(item, options) {
-      var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id);
+      var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id).bind(Events.EDIT, function(e) {
+        createPlainTextEditor($(this), item);
+      });
       if (options['after']) {
         $('#' + options['after']).after(div);
       } else {
@@ -85,14 +100,12 @@
   window.wikimate = {
     version: '0.0.1',
     plugins: plugins,
+    events: Events,
     init: function(element, items) {
       renderer.init(element);
       $.each(items, function(i, item) {
         renderer.show(item, {});
       });
-    },
-    plainTextEditor: function(div, item) {
-      return createPlainTextEditor(div, item);
     }
   };
 
@@ -133,17 +146,23 @@
           e.preventDefault();
           textarea.val(text.substr(0, text.length - 1));
           textarea.focusout();
-          renderer.show(newItem({type: item.type}), {after: item.id, new: true}).dblclick();
+          renderer.show(newItem({type: item.type}), {after: item.id, new: true}).trigger(Events.EDIT);
         }
       }
-    }).bind('dblclick', function(e) {
+    }).bind('dblclick', function() {
       return false;
-    });
+    }).focus();
 
     div.html(textarea);
     syncHeight(textarea);
+    setCursor(item.text.length);
 
     return textarea;
+
+    function setCursor(pos) {
+      textarea[0].selectionStart = pos;
+      textarea[0].selectionEnd = pos;
+    }
 
     function syncHeight(textarea) {
       var expectedHeight = expectedTextHeight(textarea);

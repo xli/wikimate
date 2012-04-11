@@ -7,11 +7,11 @@
       }).join('');
       return div.html(html);
     },
-    bind: function(div, item) {
-      // dblclick e.target is div p, should we move dblclick to div p?
-      return div.unbind('dblclick').dblclick(function(e) {
+    bind: function(div, item, plainTextEditor) {
+      div.bind('click', function(e) {
         e.stopPropagation();
-        return wikimate.plainTextEditor(div, item).focus();
+        e.preventDefault();
+        div.trigger(wikimate.events.EDIT);
       });
     }
   }

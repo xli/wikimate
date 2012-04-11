@@ -4,15 +4,13 @@
 
 .wikimate-story .item {
 }
-.wikimate-story .item:hover { 
-  background-color: #FFFFCC;
-  box-shadow: 0 0 5px rgba(0,0,0,1);
-    -moz-box-shadow: 0 0 5px rgba(0,0,0,1);
-    -webkit-box-shadow: 0 0 5px rgba(0,0,0,1);
-    -o-box-shadow: 0 0 5px rgba(0,0,0,1);
+.wikimate-story .item .item-content:hover { 
+  background-color: #FFFFEE;
+  box-shadow: 0 0 5px rgba(255,102,0,0.5);
 }
 
 .wikimate-story .item .plain-text-editor {
+  background-color: #FFFFEE;
   font-size: 1em;
   line-height: 1em; /*must have, used for calculate textarea expected text height*/
   overflow: hidden;
