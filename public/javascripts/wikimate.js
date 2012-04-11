@@ -39,7 +39,7 @@
 
   var renderer = {
     init: function(element) {
-      this.panel = element.addClass('wikimate-story').bind(Events.NEW, function(e) {
+      this.panel = element.addClass('wikimate').bind(Events.NEW, function(e) {
         renderer.show(newItem(), {new: true}).trigger(Events.EDIT);
       }).bind('dblclick', function(e) {
         e.preventDefault();

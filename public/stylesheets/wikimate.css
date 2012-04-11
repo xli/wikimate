@@ -1,15 +1,15 @@
-.wikimate-story {
+.wikimate {
   min-height: 100px;
 }
 
-.wikimate-story .item {
+.wikimate .item {
 }
-.wikimate-story .item .item-content:hover { 
+.wikimate .item .item-content:hover { 
   background-color: #FFFFEE;
   box-shadow: 0 0 5px rgba(255,102,0,0.5);
 }
 
-.wikimate-story .item .plain-text-editor {
+.wikimate .item .plain-text-editor {
   background-color: #FFFFEE;
   font-size: 1em;
   line-height: 1em; /*must have, used for calculate textarea expected text height*/
