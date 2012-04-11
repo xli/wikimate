@@ -24,4 +24,10 @@ describe("WikiMate", function() {
     expect($('#sandbox div').length).toEqual(1);
     expect($('#sandbox div textarea').length).toEqual(1);
   });
+  it("should bind item data with div element", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "paragraph", "text": "paragraph 1" }
+    ]});
+    expect($('#1').data('item')).toBeDefined();
+  });
 });

@@ -75,7 +75,7 @@
     show: function(item, options) {
       var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id).bind(Events.EDIT, function(e) {
         createPlainTextEditor($(this), item);
-      });
+      }).data('item', item);
       if (options['after']) {
         $('#' + options['after']).after(div);
       } else {
