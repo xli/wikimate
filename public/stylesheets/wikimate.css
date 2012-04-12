@@ -4,6 +4,32 @@
 
 .wikimate .item {
 }
+
+.wikimate .item .item-handle {
+  background-image: url("./../images/drag_hand.png");
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  height: 16px;
+  width: 16px;
+  display: none;
+}
+
+.wikimate .item .grab-item {
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+.wikimate .item .grabing-item {
+  cursor: grabing;
+  cursor: -moz-grabing;
+  cursor: -webkit-grabing;
+}
+
+.wikimate .item .item-content {
+  position: relative;
+}
+
 .wikimate .item .item-content:hover { 
   background-color: #FFFFEE;
   box-shadow: 0 0 5px rgba(255,102,0,0.5);

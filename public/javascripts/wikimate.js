@@ -6,6 +6,32 @@
     EDIT: 'wikimate:edit'
   };
 
+  var Handle = {
+    appendTo: function(div) {
+      var handle = Handle.create();
+      div.append(handle).mouseover(function(e) {
+        handle.show();
+      }).mouseout(function(e) {
+        handle.hide();
+      }).click(function(e) {
+        return false;
+      });
+    },
+    create: function() {
+      return Handle.grab($('<div />')).addClass('item-handle').mousedown(function(e) {
+        Handle.grabing($(this));
+      }).mouseup(function() {
+        Handle.grab($(this));
+      });
+    },
+    grab: function(handle) {
+      return handle.css('cursor', 'grab').css('cursor', '-moz-grab').css('cursor', '-webkit-grab');
+    },
+    grabing: function(handle) {
+      return handle.css('cursor', 'grabbing').css('cursor', '-moz-grabbing').css('cursor', '-webkit-grabbing');
+    }
+  }
+
   var plugins = {
     apply: function(div, item) {
       var plugin = this[item.type];
@@ -19,6 +45,7 @@
       });
       plugin.emit(content, item);
       plugin.bind(content, item);
+      Handle.appendTo(content);
     }
   };
 
@@ -47,7 +74,7 @@
         if (e.target == $(this)[0]) {
           $(this).trigger(Events.NEW);
         }
-      });
+      }).sortable({handle: '.item-handle'});
     },
 
     edit: function(div, item, changes) {
