@@ -15,17 +15,6 @@
   display: none;
 }
 
-.wikimate .item .grab-item {
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-}
-.wikimate .item .grabing-item {
-  cursor: grabing;
-  cursor: -moz-grabing;
-  cursor: -webkit-grabing;
-}
-
 .wikimate .item .item-content {
   position: relative;
 }
