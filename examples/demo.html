@@ -28,6 +28,10 @@
                 data.splice(i, 1);
               }
             });
+          } else if (action.type == 'move') {
+            data.sort(function(a, b) {
+              return action.order.indexOf(a.id) - action.order.indexOf(b.id);
+            });
           } else {
             alert("Unknown action type: " + action.type);
           }

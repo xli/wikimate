@@ -74,7 +74,9 @@
         if (e.target == $(this)[0]) {
           $(this).trigger(Events.NEW);
         }
-      }).sortable({handle: '.item-handle'});
+      }).sortable({handle: '.item-handle', update: function(event, ui){
+        renderer.moved(ui.item);
+      }});
     },
 
     edit: function(div, item, changes) {
@@ -117,6 +119,17 @@
 
     update: function(div, item) {
       plugins.apply(div.empty(), item);
+    },
+
+    moved: function(div) {
+      var order = div.parent().children().map(function(_, item) {
+        return $(item).data('item').id;
+      }).toArray();
+      this.trigger({
+        id: div.data('item').id,
+        type: 'move',
+        order: order
+      })
     },
 
     trigger: function(action) {
