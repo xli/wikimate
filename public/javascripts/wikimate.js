@@ -49,12 +49,13 @@
     }
   };
 
-  function action(type, item) {
+  function action(type, item, after) {
     return {
       id: item.id,
       type: type,
-      item: item
-    }
+      item: item,
+      after: after
+    };
   };
   function newItem(attrs) {
     var item = {id: utils.generateId(), type: 'paragraph', text: ''};
@@ -84,7 +85,9 @@
       this.update(div, item);
       if (div.data('new')) {
         div.removeData('new');
-        this.trigger(action('add', editItem));
+        var prevItem = div.prev().data('item');
+        var after = prevItem ? prevItem.id : undefined;
+        this.trigger(action('add', editItem, after));
       } else {
         this.trigger(action('edit', editItem));
       }

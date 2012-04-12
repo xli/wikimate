@@ -15,7 +15,18 @@
         $('.wikimate').wikimate({story: story, change: function(event, action) {
           var data = eval($('.store textarea').val());
           if (action.type == 'add') {
-            data.push(action.item);
+            if (action.after) {
+              var r = [];
+              $.each(data, function(i, item) {
+                r.push(item);
+                if (item.id == action.after) {
+                  r.push(action.item);
+                }
+              });
+              data = r;
+            } else {
+              data.push(action.item);
+            }
           } else if (action.type == 'edit') {
             $.each(data, function(i, item) {
               if (item.id == action.id) {

@@ -103,6 +103,26 @@ describe("Plain Text Editor", function() {
     expect(changes[0]['after']).toBeUndefined();
   });
 
+  it("should fire add item change event with 'after' attr set to prev item id", function() {
+    var changes = [];
+    $('#sandbox').wikimate({ story: [
+        { "id": "1", "type": "paragraph", "text": "paragraph 1\n" },
+        { "id": "2", "type": "paragraph", "text": "paragraph 2\n" }
+      ], change: function(event, action) { changes.push(action) }
+    });
+
+    $('#1').click();
+    Keyboard.hitEnter($('#1 textarea'));
+    $('#sandbox div textarea').text("hello world").focusout();
+    expect(changes.length).toEqual(1);
+    
+    expect(changes[0]['id']).toBeDefined();
+    expect(changes[0]['type']).toEqual('add');
+    expect(changes[0]['item']['type']).toEqual('paragraph');
+    expect(changes[0]['item']['text']).toEqual('hello world');
+    expect(changes[0]['after']).toEqual('1');
+  });
+
   it("should remove paragraph item when there is content after edited", function() {
     var changes = [];
     $('#sandbox').wikimate({

@@ -2,8 +2,8 @@
 !! render story items
 !! append a text paragraph after double clicked anywhere inside body but not on any item
 # ** move item by drag&drop
-** remove item by drag&drop into a trash
-** add item should have attr after to describe where it added into
+# ** add item should have attr after to describe where it added into
+** remove item by drag&drop into a trash????
 * plain text editor
 !! should not fire change event when nothing changed
 !! should fire change event after changed
