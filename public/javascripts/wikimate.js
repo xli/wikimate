@@ -75,9 +75,15 @@
         if (e.target == $(this)[0]) {
           $(this).trigger(Events.NEW);
         }
-      }).sortable({handle: '.item-handle', update: function(event, ui){
+      }).bind(Events.EDIT, this.editHandler).sortable({handle: '.item-handle', update: function(event, ui){
         renderer.moved(ui.item);
       }});
+    },
+
+    editHandler: function(e) {
+      // e.target should be item-content or item
+      var div = $(e.target).data('item') ? $(e.target) : $(e.target).parent();
+      createPlainTextEditor(div, div.data('item'));
     },
 
     edit: function(div, item, changes) {
@@ -105,9 +111,7 @@
     },
 
     show: function(item, options) {
-      var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id).bind(Events.EDIT, function(e) {
-        createPlainTextEditor($(this), item);
-      }).data('item', item);
+      var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id).data('item', item);
       if (options['after']) {
         $('#' + options['after']).after(div);
       } else {
