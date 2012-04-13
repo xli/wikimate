@@ -4,7 +4,6 @@
 # ** move item by drag&drop
 # ** add item should have attr after to describe where it added into
 ** remove item by drag&drop into a trash????
-** remove item by click trash, iphone notes trash way!..
 * plain text editor
 !! should not fire change event when nothing changed
 !! should fire change event after changed
@@ -16,13 +15,13 @@
 !! same font size with show mode
 !! auto increase height when user inputs more content
 !! same height with paragraph when entering edit
-** CMD + S/CTRL + S to save
-** show save/cancel somewhere in editor
+# ** CMD + S/CTRL + S to save
+# ** show save/cancel somewhere in editor
 ** tab to jump to next item
 ** should not open another editor when click outside of current editing editor
 ** what should we do if user added a new item that only has a new line char
 ** undo an action
-** save link/button
+# ** save link/button
 * journal
 ** remember all event history on wikimate obj? (or only for test?)
 ** list journal events at bottom
