@@ -9,8 +9,8 @@
 .wikimate .item .item-handle {
   background-image: url("./../images/drag_hand.png");
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: 2px;
+  top: 2px;
   height: 16px;
   width: 16px;
   display: none;
@@ -19,7 +19,7 @@
 .wikimate .item .item-action-bar {
   position: absolute;
   right: 0px;
-  bottom: 5px;
+  bottom: 2px;
   height: 16px;
   width: 16px;
   display: none;

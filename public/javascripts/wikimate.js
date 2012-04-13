@@ -65,12 +65,6 @@
       plugin.emit(content, item);
       plugin.bind(content, item);
       Handle.appendTo(content)
-      ItemActionBar.appendTo(content).append($('<a href="#" title="Remove"></a>').text('x').click(function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        renderer.remove(div, item);
-      }));
-      console.log(content);
     }
   };
 
