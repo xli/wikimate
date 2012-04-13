@@ -65,12 +65,12 @@
       plugin.emit(content, item);
       plugin.bind(content, item);
       Handle.appendTo(content)
-
       ItemActionBar.appendTo(content).append($('<a href="#" title="Remove"></a>').text('x').click(function(e) {
         e.stopPropagation();
         e.preventDefault();
         renderer.remove(div, item);
       }));
+      console.log(content);
     }
   };
 
@@ -227,7 +227,7 @@
 
     div.html(textarea);
 
-    var bar = ItemActionBar.appendTo(div).append($('<a href="#">*</a>').attr('title', 'Click me/outside to save. ESC to cancel'));
+    var bar = ItemActionBar.appendTo(div).append($('<a href="#">*</a>').attr('title', 'Click me/outside to save. ESC to cancel').css('color', 'red'));
     textarea.bind('keydown.item_action_bar', function() {
       textarea.unbind('.item_action_bar');
       bar.show();
