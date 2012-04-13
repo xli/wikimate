@@ -18,7 +18,10 @@
 ** CMD + S/CTRL + S to save
 ** show save/cancel somewhere in editor
 ** tab to jump to next item
+** should not open another editor when click outside of current editing editor
 ** what should we do if user added a new item that only has a new line char
+** undo an action
+** save link/button
 * journal
 ** remember all event history on wikimate obj? (or only for test?)
 ** list journal events at bottom
