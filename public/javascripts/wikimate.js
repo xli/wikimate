@@ -66,12 +66,11 @@
       plugin.bind(content, item);
       Handle.appendTo(content)
 
-      var deleteLink = $('<a href="#"></a>').text('delete').click(function(e) {
+      ItemActionBar.appendTo(content).append($('<a href="#" title="Remove"></a>').text('x').click(function(e) {
         e.stopPropagation();
         e.preventDefault();
         renderer.remove(div, item);
-      });
-      ItemActionBar.appendTo(content).append(deleteLink);
+      }));
     }
   };
 
@@ -227,6 +226,13 @@
     }).focus();
 
     div.html(textarea);
+
+    var bar = ItemActionBar.appendTo(div).append($('<a href="#">*</a>').attr('title', 'Click me/outside to save. ESC to cancel'));
+    textarea.bind('keydown.item_action_bar', function() {
+      textarea.unbind('.item_action_bar');
+      bar.show();
+    });
+
     syncHeight(textarea);
     setCursor(item.text.length);
 

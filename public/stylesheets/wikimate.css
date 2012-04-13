@@ -3,6 +3,7 @@
 }
 
 .wikimate .item {
+  position: relative;
 }
 
 .wikimate .item .item-handle {
@@ -17,11 +18,16 @@
 
 .wikimate .item .item-action-bar {
   position: absolute;
-  right: 28px;
+  right: 0px;
   bottom: 5px;
   height: 16px;
   width: 16px;
   display: none;
+}
+
+.item-action-bar a {
+  color: #555;
+  text-decoration: none;
 }
 
 .wikimate .item .item-content {

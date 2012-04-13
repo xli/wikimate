@@ -21,8 +21,8 @@ describe("WikiMate", function() {
 
   it("should be able to dbclick anywhere in panel to create new text paragraph item", function() {
     $('#sandbox').wikimate({}).dblclick();
-    expect($('#sandbox div').length).toEqual(1);
-    expect($('#sandbox div textarea').length).toEqual(1);
+    expect($('#sandbox .item').length).toEqual(1);
+    expect($('#sandbox .item textarea').length).toEqual(1);
   });
   it("should bind item data with div element", function() {
     $('#sandbox').wikimate({ story: [

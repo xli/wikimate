@@ -83,8 +83,8 @@ describe("Plain Text Editor", function() {
     $('#sandbox').dblclick();
     Keyboard.hitEnter($('#sandbox div textarea'));
     Keyboard.hitEnter($('#sandbox div textarea'));
-    expect($('#sandbox div').length).toEqual(1);
-    expect($('#sandbox div textarea').length).toEqual(1);
+    expect($('#sandbox .item').length).toEqual(1);
+    expect($('#sandbox .item textarea').length).toEqual(1);
     expect(changes.length).toEqual(0);
   });
 
