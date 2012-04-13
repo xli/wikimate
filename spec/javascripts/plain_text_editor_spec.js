@@ -224,6 +224,21 @@ describe("Plain Text Editor", function() {
 
     expect($('#1 textarea').innerHeight()).toBeGreaterThan(height);
   });
+
+  it("should save item when user press cmd+s after changed content", function() {
+    var changes = [];
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc" }],
+      change: function(event, action) { changes.push(action) }
+    });
+
+    $('#1').click();
+    $('#1 textarea').text('hello')
+    Keyboard.hitCmdS($('#1 textarea'));
+    expect(changes.length).toEqual(1);
+    expect(changes[0].type).toEqual('edit');
+    expect(changes[0].item.text).toEqual('hello');
+  });
   // remove icon is too close to drag&drop icon when the paragraph is just one line height
   // it('should show remove item link for deleting item when hover the item div', function() {
   //   var changes = [];

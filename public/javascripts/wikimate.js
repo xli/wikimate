@@ -190,7 +190,8 @@
   var KeyCode = {
     TAB:       9,
     RETURN:   13,
-    ESC:      27
+    ESC:      27,
+    s:        83
   };
 
   function createPlainTextEditor(div, item) {
@@ -201,6 +202,10 @@
         syncHeight(textarea);
       } else if (e.which == KeyCode.ESC) {
         cancelEdit();
+      } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
+        e.preventDefault();
+        e.stopPropagation();
+        textarea.focusout();
       }
     }).bind('keyup', function(e) {
       // in keyup so that we can findout the new RETURN is added into last line
