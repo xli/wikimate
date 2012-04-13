@@ -4,6 +4,7 @@
 # ** move item by drag&drop
 # ** add item should have attr after to describe where it added into
 ** remove item by drag&drop into a trash????
+** remove item by click trash, iphone notes trash way!..
 * plain text editor
 !! should not fire change event when nothing changed
 !! should fire change event after changed

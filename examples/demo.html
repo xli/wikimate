@@ -34,11 +34,13 @@
               }
             });
           } else if (action.type == 'remove') {
+            var r = [];
             $.each(data, function(i, item) {
-              if (item.id == action.id) {
-                data.splice(i, 1);
+              if (item.id != action.id) {
+                r.push(item);
               }
             });
+            data = r;
           } else if (action.type == 'move') {
             data.sort(function(a, b) {
               return action.order.indexOf(a.id) - action.order.indexOf(b.id);

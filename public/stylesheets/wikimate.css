@@ -15,6 +15,15 @@
   display: none;
 }
 
+.wikimate .item .item-action-bar {
+  position: absolute;
+  right: 28px;
+  bottom: 5px;
+  height: 16px;
+  width: 16px;
+  display: none;
+}
+
 .wikimate .item .item-content {
   position: relative;
 }

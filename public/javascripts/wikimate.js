@@ -6,12 +6,31 @@
     EDIT: 'wikimate:edit'
   };
 
+  var ItemActionBar = {
+    appendTo: function(div) {
+      var bar = ItemActionBar.create(div);
+      // delegate event?
+      div.append(bar).hover(function(e) {
+        bar.show();
+      }, function(e) {
+        bar.hide();
+      }).click(function(e) {
+        return false;
+      });
+      return bar;
+    },
+    create: function(div) {
+      return $('<div />').addClass('item-action-bar');
+    }
+  }
+
   var Handle = {
     appendTo: function(div) {
       var handle = Handle.create();
-      div.append(handle).mouseover(function(e) {
+      // delegate event?
+      div.append(handle).hover(function(e) {
         handle.show();
-      }).mouseout(function(e) {
+      }, function(e) {
         handle.hide();
       }).click(function(e) {
         return false;
@@ -45,7 +64,14 @@
       });
       plugin.emit(content, item);
       plugin.bind(content, item);
-      Handle.appendTo(content);
+      Handle.appendTo(content)
+
+      var deleteLink = $('<a href="#"></a>').text('delete').click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        renderer.remove(div, item);
+      });
+      ItemActionBar.appendTo(content).append(deleteLink);
     }
   };
 
