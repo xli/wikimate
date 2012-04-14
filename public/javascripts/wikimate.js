@@ -310,22 +310,23 @@
     };
   }
 
-  var utils = {
-    generateId: function() {
-      return this.randomBytes(8);
-    },
-
-    randomBytes: function(n) {
+  var utils = (function() {
+    function randomBytes(n) {
       var results = [];
       for (var i = 1; 1 <= n ? i <= n : i >= n; 1 <= n ? i++ : i--) {
-        results.push(this.randomByte());
+        results.push(randomByte());
       }
       return results.join('');
-    },
-
-    randomByte: function() {
+    };
+    function randomByte() {
       return (((1 + Math.random()) * 0x100) | 0).toString(16).substring(1);
+    };
+
+    return {
+      generateId: function() {
+        return randomBytes(8);
+      }
     }
-  };
+  })();
 
 })(jQuery);
