@@ -40,32 +40,35 @@
     }
   }
 
-  var Handle = {
-    appendTo: function(div) {
-      var handle = Handle.create();
-      // delegate event?
-      div.append(handle).hover(function(e) {
-        handle.show();
-      }, function(e) {
-        handle.hide();
-      }).click(function(e) {
-        return false;
-      });
-    },
-    create: function() {
-      return Handle.grab($('<div />')).addClass('item-handle').mousedown(function(e) {
-        Handle.grabing($(this));
-      }).mouseup(function() {
-        Handle.grab($(this));
-      });
-    },
-    grab: function(handle) {
-      return handle.css('cursor', 'grab').css('cursor', '-moz-grab').css('cursor', '-webkit-grab');
-    },
-    grabing: function(handle) {
-      return handle.css('cursor', 'grabbing').css('cursor', '-moz-grabbing').css('cursor', '-webkit-grabbing');
+  var Handle = (function() {
+    var cursor = {
+      grab: function() {
+        return this.css('cursor', 'grab').css('cursor', '-moz-grab').css('cursor', '-webkit-grab');
+      },
+      grabing: function() {
+        return this.css('cursor', 'grabbing').css('cursor', '-moz-grabbing').css('cursor', '-webkit-grabbing');
+      }
     }
-  }
+    function createHandle() {
+      var handle = $('<div />').addClass('item-handle').extend(cursor).grab();
+      return handle.mousedown(function(e) {
+        handle.grabing();
+      }).mouseup(function() {
+        handle.grab();
+      });
+    }
+    return {
+      appendTo: function(div) {
+        var handle = createHandle();
+        // delegate event?
+        div.append(handle).hover(function(e) {
+          handle.show();
+        }, function(e) {
+          handle.hide();
+        });
+      }
+    }
+  })();
 
   var plugins = {
     apply: function(div, item) {
