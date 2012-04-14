@@ -20,7 +20,7 @@ describe("WikiMate", function() {
   });
 
   it("should be able to dbclick anywhere in panel to create new text paragraph item", function() {
-    $('#sandbox').wikimate({}).dblclick();
+    $('#sandbox').wikimate({}).find('.wikimate-panel').dblclick();
     expect($('#sandbox .item').length).toEqual(1);
     expect($('#sandbox .item textarea').length).toEqual(1);
   });

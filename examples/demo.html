@@ -10,46 +10,137 @@
     <script src='../public/javascripts/wikimate.js' type='text/javascript'></script>
     <script src='../public/javascripts/plugins/paragraph.js' type='text/javascript'></script>
     <script type='text/javascript'>
-      $(document).ready(function() {
-        var story = eval($('.store textarea').val());
-        $('.wikimate').wikimate({story: story, change: function(event, action) {
-          var data = eval($('.store textarea').val());
-          if (action.type == 'add') {
-            if (action.after) {
-              var r = [];
-              $.each(data, function(i, item) {
-                r.push(item);
-                if (item.id == action.after) {
-                  r.push(action.item);
-                }
-              });
-              data = r;
-            } else {
-              data.push(action.item);
+      var wiki = {
+        "story": [
+          {
+            "type": "paragraph",
+            "id": "7b56f22a4b9ee974",
+            "text": "A wiki is a website whose users can add, modify, or delete its content via a web browser using a simplified markup language or a rich-text editor."
+          },
+          {
+            "type": "paragraph",
+            "id": "1a23f23b2b9ee974",
+            "text": "Ward Cunningham, the developer of the first wiki software, WikiWikiWeb, originally described it as the simplest online database that could possibly work. Wiki (pronounced [ˈwiti] or [ˈviti]) is a Hawaiian word meaning fast or quick."
+          },
+          {
+            "type": "paragraph",
+            "id": "ee416d431ebf4fb4",
+            "text": "WikiWikiWeb was the first wiki.[6] Ward Cunningham started developing WikiWikiWeb in Portland, Oregon, in 1994, and installed it on the Internet domain c2.com on March 25, 1995. It was named by Cunningham, who remembered a Honolulu International Airport counter employee telling him to take the Wiki Wiki Shuttle bus that runs between the airport's terminals."
+          }
+        ],
+        "journal": [
+          {
+            "id": "7b56f22a4b9ee974",
+            "type": "add",
+            "item": {
+              "text": "A wiki is a website whose users can add, modify, or delete its content via a web browser using a simplified markup language or a rich-text editor.",
+              "id": "7b56f22a4b9ee974",
+              "type": "paragraph"
             }
-          } else if (action.type == 'edit') {
-            $.each(data, function(i, item) {
-              if (item.id == action.id) {
-                item.text = action.item.text;
-              }
-            });
-          } else if (action.type == 'remove') {
+          },
+          {
+            "id": "ee416d431ebf4fb4",
+            "type": "add",
+            "item": {
+              "text": "WikiWikiWeb was the first wiki.[6] Ward Cunningham started developing WikiWikiWeb in Portland, Oregon, in 1994, and installed it on the Internet domain c2.com on March 25, 1995.",
+              "id": "ee416d431ebf4fb4",
+              "type": "paragraph"
+            }
+          },
+          {
+            "id": "1a23f23b2b9ee974",
+            "type": "add",
+            "item": {
+              "text": "Ward Cunningham, the developer of the first wiki software, WikiWikiWeb, originally described it as the simplest online database that could possibly work. Wiki (pronounced [ˈwiti] or [ˈviti]) is a Hawaiian word meaning fast or quick.",
+              "id": "1a23f23b2b9ee974",
+              "type": "paragraph"
+            }
+          },
+          {
+            "id": "ee416d431ebf4fb4",
+            "type": "edit",
+            "item": {
+              "text": "WikiWikiWeb was the first wiki.[6] Ward Cunningham started developing WikiWikiWeb in Portland, Oregon, in 1994, and installed it on the Internet domain c2.com on March 25, 1995. It was named by Cunningham, who remembered a Honolulu International Airport counter employee telling him to take the Wiki Wiki Shuttle bus that runs between the airport's terminals.",
+              "id": "ee416d431ebf4fb4",
+              "type": "paragraph"
+            }
+          },
+          {
+            "id": "ef2982011019939f",
+            "type": "add",
+            "item": {
+              "text": "hello world",
+              "id": "ef2982011019939f",
+              "type": "paragraph"
+            }
+          },
+          {
+            "id": "ef2982011019939f",
+            "type": "remove",
+            "item": {
+              "text": "hello world",
+              "id": "ef2982011019939f",
+              "type": "paragraph"
+            }
+          },
+          {
+            "id": "1a23f23b2b9ee974",
+            "type": "move",
+            "order": [
+              "7b56f22a4b9ee974",
+              "1a23f23b2b9ee974",
+              "ee416d431ebf4fb4"
+            ]
+          }
+        ]
+      };
+      function storyChanged(event, action) {
+        console.log($.parseJSON($('#wiki-data').val()));
+        var data = $.parseJSON($('#wiki-data').val()).story;
+        if (action.type == 'add') {
+          if (action.after) {
             var r = [];
             $.each(data, function(i, item) {
-              if (item.id != action.id) {
-                r.push(item);
+              r.push(item);
+              if (item.id == action.after) {
+                r.push(action.item);
               }
             });
             data = r;
-          } else if (action.type == 'move') {
-            data.sort(function(a, b) {
-              return action.order.indexOf(a.id) - action.order.indexOf(b.id);
-            });
           } else {
-            alert("Unknown action type: " + action.type);
+            data.push(action.item);
           }
-          $('.store textarea').text(JSON.stringify(data));
-        }});
+        } else if (action.type == 'edit') {
+          $.each(data, function(i, item) {
+            if (item.id == action.id) {
+              item.text = action.item.text;
+            }
+          });
+        } else if (action.type == 'remove') {
+          var r = [];
+          $.each(data, function(i, item) {
+            if (item.id != action.id) {
+              r.push(item);
+            }
+          });
+          data = r;
+        } else if (action.type == 'move') {
+          data.sort(function(a, b) {
+            return action.order.indexOf(a.id) - action.order.indexOf(b.id);
+          });
+        } else {
+          alert("Unknown action type: " + action.type);
+        }
+
+        var story = data
+        var journal = $('.wikimate').find('.wikimate-journal').data('actions');
+        $('#wiki-data').val(JSON.stringify({story: story, journal: journal}));
+      };
+      $(document).ready(function() {
+        $('#wiki-data').val(JSON.stringify(wiki));
+        var story = wiki.story;
+        var journal = wiki.journal;
+        $('.wikimate').wikimate($.extend(wiki, {change: storyChanged}));
       });
     </script>
     <style>
@@ -75,7 +166,7 @@
       }
       .store textarea {
         height: 99%;
-        min-height: 400px;
+        min-height: 200px;
       }
     </style>
   </head>
@@ -85,14 +176,8 @@
       <div id='wiki' class='wikimate'>
       </div>
       <div class='store'>
-        <textarea>
-          [
-            {"id":"43714eb542cffdc7","type":"paragraph","text":"sdf\nssssssddf\ndsf\ndsf\n"},
-            {"id":"43714eb542cffdc4","type":"paragraph","text":"sdf\nsdf\ndsf\ndsf\nlkjafd\nasdfjlajsdf\nasdlfjalfd\nsadfjslaf\nsdf"},
-            {"id":"43714eb542cffdc3","type":"paragraph","text":"sdf\nsdf\ndsdffdsff\ndsf\n"},
-            {"id":"43714eb542cffdc2","type":"paragraph","text":"sdf\nsdf\ndsffff\ndsf\n"}
-          ]
-        </textarea>
+<textarea id='wiki-data'>
+</textarea>
       </div>
     </div>
     <footer class='login'>

@@ -1,3 +1,5 @@
+* lines calculation has issue when there is long line
+* data-id instead of html id, avoid dup id?!, item div is the only one html id
 * body
 !! render story items
 !! append a text paragraph after double clicked anywhere inside body but not on any item
@@ -26,6 +28,7 @@
 ** remember all event history on wikimate obj? (or only for test?)
 ** list journal events at bottom
 ** highlight journal event change
+** float panel to follow up scrolling
 * a toolbar for element plugin to put in icon for drag&drop adding item
 * plugins
 ** handle can not find plugin error

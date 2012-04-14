@@ -5,6 +5,22 @@
     NEW: 'wikimate:new',
     EDIT: 'wikimate:edit'
   };
+  var Journal = (function() {
+    var journal = {
+      push: function(action) {
+        this.append($('<a href="#"/>').data('data', action).addClass('action ' + action.type).text(action.type.charAt(0)).hover(function(e) {
+          $('#' + action.id).addClass('highlight');
+        }, function(e) {
+          $('#' + action.id).removeClass('highlight');
+        }));
+      }
+    }
+    return {
+      create: function() {
+        return $('<div />').addClass('wikimate-journal').extend(journal);
+      }
+    }
+  })();
 
   var ItemActionBar = {
     appendTo: function(div) {
@@ -85,8 +101,10 @@
   };
 
   var renderer = {
-    init: function(element) {
-      this.panel = element.addClass('wikimate').bind(Events.NEW, function(e) {
+    // todo need clean
+    init: function(element, wiki) {
+      this.frame = element.addClass('wikimate');
+      this.panel = $('<div />').addClass('wikimate-panel').bind(Events.NEW, function(e) {
         renderer.show(newItem(), {new: true}).trigger(Events.EDIT);
       }).bind('dblclick', function(e) {
         e.preventDefault();
@@ -94,9 +112,20 @@
         if (e.target == $(this)[0]) {
           $(this).trigger(Events.NEW);
         }
-      }).bind(Events.EDIT, this.editHandler).sortable({handle: '.item-handle', update: function(event, ui){
-        renderer.moved(ui.item);
-      }});
+      }).bind(Events.EDIT, this.editHandler).sortable({
+        handle: '.item-handle',
+        update: function(event, ui){ renderer.moved(ui.item); }
+      });
+      this.journal = Journal.create();
+      this.frame.append(this.panel);
+      this.frame.append(this.journal);
+
+      $.each(wiki.story, function(i, item) {
+        renderer.show(item, {});
+      });
+      $.each(wiki.journal, function(i, action) {
+        renderer.journal.push(action);
+      });
     },
 
     editHandler: function(e) {
@@ -159,6 +188,7 @@
     },
 
     trigger: function(action) {
+      this.journal.push(action);
       this.panel.trigger(Events.CHANGE, action);
     }
   };
@@ -167,22 +197,20 @@
     version: '0.0.1',
     plugins: plugins,
     events: Events,
-    init: function(element, items) {
-      renderer.init(element);
-      $.each(items, function(i, item) {
-        renderer.show(item, {});
-      });
+    init: function(element, wiki) {
+      renderer.init(element, wiki);
     }
   };
 
   $.fn.wikimate = function(options) {
-    var settings = $.extend({
+    var wiki = $.extend({
       story: [],
+      journal: [],
       change: null
     }, options);
-    window.wikimate.init(this, settings.story);
-    if (settings.change) {
-      this.bind(Events.CHANGE, settings.change);
+    window.wikimate.init(this, wiki);
+    if (wiki.change) {
+      this.bind(Events.CHANGE, wiki.change);
     }
     return this;
   }
