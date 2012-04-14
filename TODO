@@ -1,4 +1,4 @@
-* lines calculation has issue when there is long line
+* more smooth way to auto increase textarea height
 * data-id instead of html id, avoid dup id?!, item div is the only one html id
 * body
 !! render story items

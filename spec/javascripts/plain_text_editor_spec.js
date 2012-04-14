@@ -209,6 +209,18 @@ describe("Plain Text Editor", function() {
     expect($('#1 textarea').prop('scrollHeight')).toEqual($('#1 textarea').innerHeight());
   });
 
+  it('should open editor with all text showed in viewport when paragraph text only has one long line', function() {
+    var changes = [];
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc " }],
+      change: function(event, action) { changes.push(action) }
+    });
+
+    $('#1').click();
+    expect($('#1 textarea').scrollTop()).toEqual(0);
+    expect($('#1 textarea').prop('scrollHeight')).toEqual($('#1 textarea').innerHeight());
+  });
+
   it('should increase editor height when input more content', function() {
     var changes = [];
     $('#sandbox').wikimate({
@@ -219,7 +231,7 @@ describe("Plain Text Editor", function() {
     $('#1').click();
     var height = $('#1 textarea').innerHeight();
     $('#1 textarea').text("a\nb\nc\nd\ne\nf\ng\nh");
-    
+
     Keyboard.hitEnter($('#1 textarea'));
 
     expect($('#1 textarea').innerHeight()).toBeGreaterThan(height);

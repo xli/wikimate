@@ -228,9 +228,7 @@
     var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
       save(textarea.val());
     }).bind('keydown', function(e) {
-      if (e.which == KeyCode.RETURN) {
-        syncHeight(textarea);
-      } else if (e.which == KeyCode.ESC) {
+      if (e.which == KeyCode.ESC) {
         cancelEdit();
       } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
         e.preventDefault();
@@ -238,8 +236,9 @@
         textarea.focusout();
       }
     }).bind('keyup', function(e) {
+      syncHeight(textarea);
       // in keyup so that we can findout the new RETURN is added into last line
-      // I didn't find out a way to do this in keydown
+      // could not find out a way to do this in keydown
       if (e.which == KeyCode.RETURN) {
         // Is it same on Windows?
         var text = textarea.val();
@@ -277,24 +276,24 @@
     }
 
     function syncHeight(textarea) {
-      var expectedHeight = expectedTextHeight(textarea);
-      if (expectedHeight > textarea.height()) {
-        textarea.height(expectedHeight);
+      var expectedTextHeight = textarea.prop('scrollHeight');
+      if (expectedTextHeight > textarea.innerHeight()) {
+        textarea.height(expectedTextHeight);
       }
     };
 
-    function expectedTextHeight(textarea) {
-      var lines = textarea.val().split("\n");
-      return (lines.length + 1) * lineHeight(textarea);
-    };
-
-    function lineHeight(textarea) {
-      var lh = parseInt(textarea.css('line-height').replace('px', ''), 10);
-      if (isNaN(lh)) {
-        throw "Can't get line height! css line-height value is: " + textarea.css('line-height');
-      }
-      return lh;
-    };
+    // function expectedTextHeight(textarea) {
+    //   var lines = textarea.val().split("\n");
+    //   return (lines.length + 1) * lineHeight(textarea);
+    // };
+    // 
+    // function lineHeight(textarea) {
+    //   var lh = parseInt(textarea.css('line-height').replace('px', ''), 10);
+    //   if (isNaN(lh)) {
+    //     throw "Can't get line height! css line-height value is: " + textarea.css('line-height');
+    //   }
+    //   return lh;
+    // };
 
     function cancelEdit() {
       renderer.update(div, item);
