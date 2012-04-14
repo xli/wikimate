@@ -22,23 +22,22 @@
     }
   })();
 
-  var ItemActionBar = {
-    appendTo: function(div) {
-      var bar = ItemActionBar.create(div);
-      // delegate event?
-      div.append(bar).hover(function(e) {
-        bar.show();
-      }, function(e) {
-        bar.hide();
-      }).click(function(e) {
-        return false;
-      });
-      return bar;
-    },
-    create: function(div) {
-      return $('<div />').addClass('item-action-bar');
+  var ItemActionBar = (function() {
+    return {
+      appendTo: function(div) {
+        var bar = $('<div />').addClass('item-action-bar');
+        // delegate event?
+        div.append(bar).hover(function(e) {
+          bar.show();
+        }, function(e) {
+          bar.hide();
+        }).click(function(e) {
+          return false;
+        });
+        return bar;
+      }
     }
-  }
+  })();
 
   var Handle = (function() {
     var cursor = {
@@ -257,7 +256,7 @@
 
     div.html(textarea);
 
-    var bar = ItemActionBar.appendTo(div).append($('<a href="#">*</a>').attr('title', 'Click me/outside to save. ESC to cancel').css('color', 'red'));
+    var bar = ItemActionBar.appendTo(div).append(saveDot());
     textarea.bind('keydown.item_action_bar', function() {
       textarea.unbind('.item_action_bar');
       bar.show();
@@ -267,6 +266,10 @@
     setCursor(item.text.length);
 
     return textarea;
+
+    function saveDot() {
+      return $('<a href="#">*</a>').attr('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel').css('color', 'red');
+    }
 
     function setCursor(pos) {
       textarea[0].selectionStart = pos;
