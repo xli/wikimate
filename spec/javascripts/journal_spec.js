@@ -82,7 +82,7 @@ describe("Journal", function() {
   it("undo remove action should add item back to removed position", function() {
     $('#sandbox').wikimate({});
 
-    $('#sandbox').wikimate('new', 'paragraph'); //.wikimate-story').dblclick();
+    $('#sandbox').wikimate('new');
 
     $('.wikimate-story textarea').text("hello\n");
     Keyboard.hitEnter($('.wikimate-story textarea'));
