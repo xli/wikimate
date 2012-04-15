@@ -9,7 +9,6 @@
 
   var Events = {
     CHANGE: 'wikimate:change',
-    NEW: 'wikimate:new',
     EDIT: 'wikimate:edit'
   };
 
@@ -39,6 +38,9 @@
           .append(story)
           .append(journal);
       },
+      new: function() {
+        return this.find('.wikimate-story').story('new');
+      },
       story: function() {
         return this.find('.wikimate-story').story('data');
       },
@@ -51,7 +53,7 @@
           return;
         }
         if(action.type == 'remove') {
-          this.find('.wikimate-story').story('add', action.item);
+          this.find('.wikimate-story').story('execute', action);
         }
         return action;
       }
@@ -102,13 +104,18 @@
       init: function(items) {
         var $this = this;
         $.each(items, function(i, item) {
-          $this.story('add', item);
+          $this.append($('<div/>').story_item({data: item}));
         });
         return this.story('bindChangeEvents').story('dblclickToNewItem');
       },
 
-      add: function(item) {
-        return this.append($('<div/>').story_item({data: item}));
+      execute: function(action) {
+        var item = $('<div/>').story_item({data: action.item});
+        if (action.after) {
+          item.insertAfter('#' + action.after);
+        } else {
+          this.prepend(item);
+        }
       },
 
       data: function() {
@@ -117,11 +124,14 @@
         });
       },
 
+      new: function() {
+        $('<div/>').story_item({new: true}).appendTo(this).trigger(Events.EDIT);
+        return this;
+      },
+
       bindChangeEvents: function() {
         var $this = this;
-        return this.on(Events.NEW, function(e) {
-          $('<div/>').story_item({new: true}).appendTo($this).trigger(Events.EDIT);
-        }).on(Events.EDIT, function(e) {
+        return this.on(Events.EDIT, function(e) {
           // e.target should be item-content or item
           // todo, something wrong here
           var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
@@ -144,7 +154,7 @@
           e.preventDefault();
           e.stopPropagation();
           if (e.target == $this[0]) {
-            $this.trigger(Events.NEW);
+            $this.story('new');
           }
         });
       }
@@ -231,8 +241,8 @@
         if (this.data('new')) {
           this.remove();
         } else {
-          this.trigger(Events.CHANGE, action('remove', this.story_item('data')))
-            .remove();
+          this.trigger(Events.CHANGE, action('remove', this.story_item('data'), this.prev().attr('id')));
+          this.remove();
         }
       },
 

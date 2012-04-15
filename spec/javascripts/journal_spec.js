@@ -78,4 +78,32 @@ describe("Journal", function() {
     expect(items.length).toEqual(1);
     expect(items[0].text).toEqual("hello2\n");
   });
+
+  it("undo remove action should add item back to removed position", function() {
+    $('#sandbox').wikimate({});
+
+    $('#sandbox').wikimate('new', 'paragraph'); //.wikimate-story').dblclick();
+
+    $('.wikimate-story textarea').text("hello\n");
+    Keyboard.hitEnter($('.wikimate-story textarea'));
+
+    $('#sandbox .wikimate-story').dblclick();
+    $('.wikimate-story textarea').text("hello2\n").focusout();
+    Keyboard.hitEnter($('.wikimate-story textarea'));
+
+    $('.wikimate-story .item:first').click();
+    $('.wikimate-story textarea').text("").focusout();
+
+    $('#sandbox').wikimate('undo');
+
+    var actions = $('#sandbox').wikimate('journal');
+    expect(actions.length).toEqual(2);
+    expect(actions[0].type).toEqual('add');
+    expect(actions[1].type).toEqual('add');
+
+    var items = $('#sandbox').wikimate('story');
+    expect(items.length).toEqual(2);
+    expect(items[0].text).toEqual("hello\n");
+    expect(items[1].text).toEqual("hello2\n");
+  });
 });
