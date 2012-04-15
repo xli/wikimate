@@ -271,21 +271,4 @@ describe("Plain Text Editor", function() {
     expect(changes[0].type).toEqual('edit');
     expect(changes[0].item.text).toEqual('hello');
   });
-  // remove icon is too close to drag&drop icon when the paragraph is just one line height
-  // it('should show remove item link for deleting item when hover the item div', function() {
-  //   var changes = [];
-  //   $('#sandbox').wikimate({
-  //     story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc" }],
-  //     change: function(event, action) { changes.push(action) }
-  //   });
-  // 
-  //   expect($('#1 a:visible').length).toEqual(0);
-  //   $('#1 .item-content').mouseover();
-  //   expect($('#1 a:visible').length).toEqual(1);
-  //   $('#1 a').click();
-  // 
-  //   expect($('#1').length).toEqual(0);
-  //   expect(changes.length).toEqual(1);
-  //   expect(changes[0].type).toEqual('remove');
-  // });
 });
