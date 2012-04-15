@@ -52,9 +52,7 @@
         if (!action) {
           return;
         }
-        if(action.type == 'remove') {
-          this.find('.wikimate-story').story('execute', action);
-        }
+        this.find('.wikimate-story').story('execute', action);
         return action;
       }
     }

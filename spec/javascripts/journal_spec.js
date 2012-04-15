@@ -83,27 +83,42 @@ describe("Journal", function() {
     $('#sandbox').wikimate({});
 
     $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello").focusout();
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello2").focusout();
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello3").focusout();
 
-    $('.wikimate-story textarea').text("hello\n");
-    Keyboard.hitEnter($('.wikimate-story textarea'));
+    var items = $('#sandbox').wikimate('story');
 
-    $('#sandbox .wikimate-story').dblclick();
-    $('.wikimate-story textarea').text("hello2\n").focusout();
-    Keyboard.hitEnter($('.wikimate-story textarea'));
+    $('#' + items[1].id).click();
+    $('#sandbox textarea').text("").focusout();
+    $('#' + items[0].id).click();
+    $('#sandbox textarea').text("").focusout();
 
-    $('.wikimate-story .item:first').click();
-    $('.wikimate-story textarea').text("").focusout();
+    $('#sandbox').wikimate('undo');
+    var actions = $('#sandbox').wikimate('journal');
+    expect(actions.length).toEqual(4);
+    expect(actions[0].type).toEqual('add');
+    expect(actions[1].type).toEqual('add');
+    expect(actions[2].type).toEqual('add');
+    expect(actions[3].type).toEqual('remove');
+    var items = $('#sandbox').wikimate('story');
+    expect(items.length).toEqual(2);
+    expect(items[0].text).toEqual("hello");
+    expect(items[1].text).toEqual("hello3");
 
     $('#sandbox').wikimate('undo');
 
     var actions = $('#sandbox').wikimate('journal');
-    expect(actions.length).toEqual(2);
+    expect(actions.length).toEqual(3);
     expect(actions[0].type).toEqual('add');
     expect(actions[1].type).toEqual('add');
-
+    expect(actions[2].type).toEqual('add');
     var items = $('#sandbox').wikimate('story');
-    expect(items.length).toEqual(2);
-    expect(items[0].text).toEqual("hello\n");
-    expect(items[1].text).toEqual("hello2\n");
+    expect(items.length).toEqual(3);
+    expect(items[0].text).toEqual("hello");
+    expect(items[1].text).toEqual("hello2");
+    expect(items[2].text).toEqual("hello3");
   });
 });
