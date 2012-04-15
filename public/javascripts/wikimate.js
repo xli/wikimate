@@ -5,22 +5,151 @@
     NEW: 'wikimate:new',
     EDIT: 'wikimate:edit'
   };
-  var Journal = (function() {
-    var journal = {
-      push: function(action) {
-        this.append($('<a href="#"/>').data('data', action).addClass('action ' + action.type).text(action.type.charAt(0)).hover(function(e) {
-          $('#' + action.id).addClass('highlight');
-        }, function(e) {
-          $('#' + action.id).removeClass('highlight');
-        }));
-      }
+
+  $.plugin = function(name, methods) {
+    $.fn[name] = function(method) {
+      // Method calling logic
+      if (methods[method]) {
+        return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+      } else if (typeof method === 'object' || !method) {
+        return methods.init.apply(this, arguments);
+      } else {
+        $.error('Method ' +  method + ' does not exist on jQuery.' + name);
+      };
+    };
+  }
+
+  $.plugin('journal', {
+    init: function(actions) {
+      return this.addClass('wikimate-journal').journal('pushAll', actions);
+    },
+    push: function(action) {
+      return this.append($('<a href="#"/>').data('data', action).addClass('action ' + action.type).text(action.type.charAt(0)).hover(function(e) {
+        $('#' + action.id).addClass('highlight');
+      }, function(e) {
+        $('#' + action.id).removeClass('highlight');
+      }));
+    },
+    pushAll: function(actions) {
+      var $this = this;
+      $.each(actions, function(i, action) {
+        $this.journal('push', action);
+      });
+      return this;
     }
-    return {
-      create: function() {
-        return $('<div />').addClass('wikimate-journal').extend(journal);
+  });
+
+  (function() {
+    function action(type, item, after) {
+      return {
+        id: item.id,
+        type: type,
+        item: item,
+        after: after
+      };
+    };
+
+    $.plugin('story_item', {
+      init: function(options) {
+        var item = this.story_item('data', options.data || {}).story_item('data');
+        return this.addClass("item " + item.type).attr("id", item.id).data('new', options.new).story_item('render');
+      },
+
+      data: function(attrs) {
+        if (attrs) {
+          var item = {id: utils.generateId(), type: 'paragraph', text: ''};
+          if (attrs) {
+            $.extend(item, attrs);
+          }
+          return this.data('data', item);
+        } else {
+          return this.data('data');
+        }
+      },
+
+      render: function() {
+        var item = this.story_item('data');
+        var plugin = plugins[item.type];
+        // add another div inside for removing conflict highlighting with text area
+        // after changed to edit mode
+        var content = $('<div />').addClass('item-content');
+        plugin.emit(content, item);
+        plugin.bind(content, item);
+        Handle.appendTo(content)
+        return this.html(content).click(function(e) {
+          return content.click();
+        }).dblclick(function(e) {
+          return content.dblclick();
+        });
+      },
+
+      remove: function() {
+        if (this.data('new')) {
+          this.remove();
+        } else {
+          this.story_item('changed', action('remove', this.story_item('data'))).remove();
+        }
+      },
+
+      save: function(changes) {
+        var item = $.extend(this.story_item('data'), changes);
+        if (this.data('new')) {
+          this.removeData('new').story_item('data', $.extend(item, changes)).story_item('render').story_item('changed', action('add', item, this.prev().attr('id')));
+        } else {
+          this.story_item('render');
+          this.story_item('changed', action('edit', $.extend(item, changes)));
+        }
+        return this;
+      },
+
+      changed: function(action) {
+        wikimate.journal.journal('push', action);
+        return this.trigger(Events.CHANGE, action);
       }
-    }
+    });
   })();
+
+  $.plugin('story', {
+    init: function(items) {
+      var $this = this;
+      $.each(items, function(i, item) {
+        $('<div/>').story_item({data: item}).appendTo($this);
+      });
+      return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
+    },
+
+    bindChangeEvents: function() {
+      var $this = this;
+      return this.on(Events.NEW, function(e) {
+        $('<div/>').story_item({new: true}).appendTo($this).trigger(Events.EDIT);
+      }).on(Events.EDIT, function(e) {
+        // e.target should be item-content or item
+        // todo, something wrong here
+        var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
+        createPlainTextEditor(div);
+      }).sortable({
+        handle: '.item-handle',
+        update: function(event, ui){
+          ui.item.story_item('changed', {
+            id: ui.item.id,
+            type: 'move',
+            order: _.pluck($this.find('.item'), 'id')
+          });
+        }
+      });
+    },
+
+    dblclickToNewItem: function() {
+      var $this = this;
+      return this.dblclick(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.target == $this[0]) {
+          $this.trigger(Events.NEW);
+        }
+      });
+    }
+  });
 
   var ItemActionBar = (function() {
     return {
@@ -70,129 +199,6 @@
   })();
 
   var plugins = {
-    apply: function(div, item) {
-      var plugin = this[item.type];
-      // add another div inside for removing conflict highlighting with text area
-      // after changed to edit mode
-      var content = $('<div />').addClass('item-content');
-      div.html(content).click(function(e) {
-        return content.click();
-      }).dblclick(function(e) {
-        return content.dblclick();
-      });
-      plugin.emit(content, item);
-      plugin.bind(content, item);
-      Handle.appendTo(content)
-    }
-  };
-
-  function action(type, item, after) {
-    return {
-      id: item.id,
-      type: type,
-      item: item,
-      after: after
-    };
-  };
-  function newItem(attrs) {
-    var item = {id: utils.generateId(), type: 'paragraph', text: ''};
-    if (attrs) {
-      $.extend(item, attrs);
-    }
-    return item;
-  };
-
-  var renderer = {
-    // todo need clean
-    init: function(element, wiki) {
-      this.frame = element.addClass('wikimate');
-      this.panel = $('<div />').addClass('wikimate-panel').bind(Events.NEW, function(e) {
-        renderer.show(newItem(), {new: true}).trigger(Events.EDIT);
-      }).bind('dblclick', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.target == $(this)[0]) {
-          $(this).trigger(Events.NEW);
-        }
-      }).bind(Events.EDIT, this.editHandler).sortable({
-        handle: '.item-handle',
-        update: function(event, ui){ renderer.moved(ui.item); }
-      });
-      this.journal = Journal.create();
-      this.frame.append(this.panel);
-      this.frame.append(this.journal);
-
-      $.each(wiki.story, function(i, item) {
-        renderer.show(item, {});
-      });
-      $.each(wiki.journal, function(i, action) {
-        renderer.journal.push(action);
-      });
-    },
-
-    editHandler: function(e) {
-      // e.target should be item-content or item
-      var div = $(e.target).data('item') ? $(e.target) : $(e.target).parent();
-      createPlainTextEditor(div, div.data('item'));
-    },
-
-    edit: function(div, item, changes) {
-      var editItem = $.extend(item, changes);
-      this.update(div, item);
-      if (div.data('new')) {
-        div.removeData('new');
-        var prevItem = div.prev().data('item');
-        var after = prevItem ? prevItem.id : undefined;
-        this.trigger(action('add', editItem, after));
-      } else {
-        this.trigger(action('edit', editItem));
-      }
-      return div;
-    },
-
-    remove: function(div, item) {
-      if (div.data('new')) {
-        div.remove();
-      } else {
-        div.remove();
-        this.trigger(action('remove', item));
-      }
-      return div;
-    },
-
-    show: function(item, options) {
-      var div = $("<div />").addClass("item").addClass(item.type).attr("id", item.id).data('item', item);
-      if (options['after']) {
-        $('#' + options['after']).after(div);
-      } else {
-        this.panel.append(div);
-      }
-      if (options['new']) {
-        div.data('new', true);
-      }
-      plugins.apply(div, item);
-      return div;
-    },
-
-    update: function(div, item) {
-      plugins.apply(div.empty(), item);
-    },
-
-    moved: function(div) {
-      var order = div.parent().children().map(function(_, item) {
-        return $(item).data('item').id;
-      }).toArray();
-      this.trigger({
-        id: div.data('item').id,
-        type: 'move',
-        order: order
-      })
-    },
-
-    trigger: function(action) {
-      this.journal.push(action);
-      this.panel.trigger(Events.CHANGE, action);
-    }
   };
 
   window.wikimate = {
@@ -200,7 +206,9 @@
     plugins: plugins,
     events: Events,
     init: function(element, wiki) {
-      renderer.init(element, wiki);
+      this.story = $('<div />').story(wiki.story);
+      this.journal = $('<div />').journal(wiki.journal);
+      return element.addClass('wikimate').append(this.story).append(this.journal);
     }
   };
 
@@ -212,7 +220,7 @@
     }, options);
     window.wikimate.init(this, wiki);
     if (wiki.change) {
-      this.bind(Events.CHANGE, wiki.change);
+      this.on(Events.CHANGE, '.item', wiki.change);
     }
     return this;
   }
@@ -224,10 +232,18 @@
     s:        83
   };
 
-  function createPlainTextEditor(div, item) {
+  function createPlainTextEditor(div) {
+    var item = div.story_item('data');
     var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
-      save(textarea.val());
-    }).bind('keydown', function(e) {
+      var text = textarea.val()
+      if (text == '') {
+        div.story_item('remove');
+      } else if (text != item.text) {
+        div.story_item('save', {text: text});
+      } else {
+        cancelEdit();
+      }
+    }).on('keydown', function(e) {
       if (e.which == KeyCode.ESC) {
         cancelEdit();
       } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
@@ -235,7 +251,7 @@
         e.stopPropagation();
         textarea.focusout();
       }
-    }).bind('keyup', function(e) {
+    }).on('keyup', function(e) {
       syncHeight(textarea);
       // in keyup so that we can findout the new RETURN is added into last line
       // could not find out a way to do this in keydown
@@ -246,18 +262,18 @@
           e.preventDefault();
           textarea.val(text.substr(0, text.length - 1));
           textarea.focusout();
-          renderer.show(newItem({type: item.type}), {after: item.id, new: true}).trigger(Events.EDIT);
+          $('<div/>').story_item({data: {type: item.type}, new: true}).insertAfter(div).trigger(Events.EDIT);
         }
       }
-    }).bind('dblclick', function() {
+    }).on('dblclick', function() {
       return false;
     }).focus();
 
     div.html(textarea);
 
     var bar = ItemActionBar.appendTo(div).append(saveDot());
-    textarea.bind('keydown.item_action_bar', function() {
-      textarea.unbind('.item_action_bar');
+    textarea.on('keydown.item_action_bar', function() {
+      textarea.off('.item_action_bar');
       bar.show();
     });
 
@@ -282,30 +298,8 @@
       }
     };
 
-    // function expectedTextHeight(textarea) {
-    //   var lines = textarea.val().split("\n");
-    //   return (lines.length + 1) * lineHeight(textarea);
-    // };
-    // 
-    // function lineHeight(textarea) {
-    //   var lh = parseInt(textarea.css('line-height').replace('px', ''), 10);
-    //   if (isNaN(lh)) {
-    //     throw "Can't get line height! css line-height value is: " + textarea.css('line-height');
-    //   }
-    //   return lh;
-    // };
-
     function cancelEdit() {
-      renderer.update(div, item);
-    };
-    function save(text) {
-      if (text == '') {
-        renderer.remove(div, item);
-      } else if (text != item.text) {
-        renderer.edit(div, item, {text: text});
-      } else {
-        cancelEdit();
-      }
+      div.story_item('render');
     };
   }
 

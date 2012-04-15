@@ -9,9 +9,9 @@ describe("Journal", function() {
   it("show add item action in journal panel", function() {
     $('#sandbox').wikimate({});
 
-    $('#sandbox .wikimate-panel').dblclick();
-    $('.wikimate-panel textarea').text("hello world\n");
-    Keyboard.hitEnter($('.wikimate-panel textarea'));
+    $('#sandbox .wikimate-story').dblclick();
+    $('.wikimate-story textarea').text("hello world\n");
+    Keyboard.hitEnter($('.wikimate-story textarea'));
 
     var actions = $('#sandbox .wikimate-journal .action');
     expect(actions.length).toEqual(1);
@@ -20,16 +20,16 @@ describe("Journal", function() {
   it("records actions", function() {
     $('#sandbox').wikimate({});
 
-    $('#sandbox .wikimate-panel').dblclick();
-    $('.wikimate-panel textarea').text("hello\n");
-    Keyboard.hitEnter($('.wikimate-panel textarea'));
+    $('#sandbox .wikimate-story').dblclick();
+    $('.wikimate-story textarea').text("hello\n");
+    Keyboard.hitEnter($('.wikimate-story textarea'));
 
-    $('.wikimate-panel .item').click();
-    $('.wikimate-panel textarea').text("hello2\n");
-    Keyboard.hitEnter($('.wikimate-panel textarea'));
+    $('.wikimate-story .item').click();
+    $('.wikimate-story textarea').text("hello2\n");
+    Keyboard.hitEnter($('.wikimate-story textarea'));
 
-    $('.wikimate-panel .item').click();
-    $('.wikimate-panel textarea').text("").focusout();
+    $('.wikimate-story .item').click();
+    $('.wikimate-story textarea').text("").focusout();
 
     var actions = $('#sandbox .wikimate-journal .action').map(function(_, element) {
       return $(element).data('data');

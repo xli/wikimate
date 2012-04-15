@@ -7,8 +7,8 @@
       }).join('');
       return div.html(html);
     },
-    bind: function(div, item, plainTextEditor) {
-      div.bind('click', function(e) {
+    bind: function(div, item) {
+      div.on('click', function(e) {
         e.stopPropagation();
         e.preventDefault();
         div.trigger(wikimate.events.EDIT);

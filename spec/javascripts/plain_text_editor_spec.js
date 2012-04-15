@@ -80,7 +80,7 @@ describe("Plain Text Editor", function() {
   it("should not save editing paragraph that only has 2 new lines inside", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
-    $('#sandbox .wikimate-panel').dblclick();
+    $('#sandbox .wikimate-story').dblclick();
     Keyboard.hitEnter($('#sandbox div textarea'));
     Keyboard.hitEnter($('#sandbox div textarea'));
     expect($('#sandbox .item').length).toEqual(1);
@@ -92,7 +92,7 @@ describe("Plain Text Editor", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 
-    $('#sandbox .wikimate-panel').dblclick();
+    $('#sandbox .wikimate-story').dblclick();
     $('#sandbox div textarea').text("hello world").focusout();
     expect(changes.length).toEqual(1);
 
@@ -123,7 +123,7 @@ describe("Plain Text Editor", function() {
     expect(changes[0]['after']).toEqual('1');
   });
 
-  it("should remove paragraph item when there is content after edited", function() {
+  it("should remove paragraph item when there is no content after edited", function() {
     var changes = [];
     $('#sandbox').wikimate({
       story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }],
@@ -160,7 +160,7 @@ describe("Plain Text Editor", function() {
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 
     // add
-    $('#sandbox .wikimate-panel').dblclick();
+    $('#sandbox .wikimate-story').dblclick();
     $('#sandbox div textarea').text("hello").focusout();
 
     // edit
@@ -181,7 +181,7 @@ describe("Plain Text Editor", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [], change: function(event, action) { changes.push(action) }});
 
-    $('#sandbox .wikimate-panel').dblclick();
+    $('#sandbox .wikimate-story').dblclick();
     $('#sandbox div textarea').text("");
     $('#sandbox div textarea').focusout();
     expect(changes.length).toEqual(0);

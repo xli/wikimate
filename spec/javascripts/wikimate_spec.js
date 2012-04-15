@@ -20,7 +20,7 @@ describe("WikiMate", function() {
   });
 
   it("should be able to dbclick anywhere in panel to create new text paragraph item", function() {
-    $('#sandbox').wikimate({}).find('.wikimate-panel').dblclick();
+    $('#sandbox').wikimate({}).find('.wikimate-story').dblclick();
     expect($('#sandbox .item').length).toEqual(1);
     expect($('#sandbox .item textarea').length).toEqual(1);
   });
@@ -28,6 +28,6 @@ describe("WikiMate", function() {
     $('#sandbox').wikimate({ story: [
       { "id": "1", "type": "paragraph", "text": "paragraph 1" }
     ]});
-    expect($('#1').data('item')).toBeDefined();
+    expect($('#1').data('data')).toBeDefined();
   });
 });
