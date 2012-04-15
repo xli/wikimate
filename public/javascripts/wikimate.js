@@ -169,7 +169,7 @@
           // e.target should be item-content or item
           // todo, something wrong here
           var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
-          div.plain_text_editor('init');
+          div.wikimate_text_editor('init');
         }).sortable({
           handle: '.item-handle',
           update: function(event, ui){
@@ -195,7 +195,7 @@
     };
   })());
 
-  $.plugin('plain_text_editor', (function() {
+  $.plugin('wikimate_text_editor', (function() {
     function createSaveDot() {
       return $('<a href="#">*</a>').attr('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel').css('color', 'red');
     }
@@ -231,11 +231,11 @@
           } else if (text != item.text) {
             $this.story_item('save', {text: text});
           } else {
-            $this.plain_text_editor('cancel');
+            $this.wikimate_text_editor('cancel');
           }
         }).on('keydown', function(e) {
           if (e.which == KeyCode.ESC) {
-            $this.plain_text_editor('cancel');
+            $this.wikimate_text_editor('cancel');
           } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
             e.preventDefault();
             e.stopPropagation();
@@ -265,7 +265,7 @@
 
         syncHeight(textarea);
 
-        return this.plain_text_editor('moveCursorTo', item.text.length);
+        return this.wikimate_text_editor('moveCursorTo', item.text.length);
       },
 
       moveCursorTo: function(pos) {
