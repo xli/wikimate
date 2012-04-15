@@ -1,5 +1,12 @@
 (function($) {
 
+  var KeyCode = {
+    TAB:       9,
+    RETURN:   13,
+    ESC:      27,
+    s:        83
+  };
+
   var Events = {
     CHANGE: 'wikimate:change',
     NEW: 'wikimate:new',
@@ -18,6 +25,23 @@
       };
     };
   }
+
+  $.plugin('wikimate', (function() {
+    return {
+      init: function(options) {
+        var wiki = $.extend({
+          story: [],
+          journal: [],
+          change: null
+        }, options);
+        window.wikimate.init(this, wiki);
+        if (wiki.change) {
+          this.on(Events.CHANGE, '.item', wiki.change);
+        }
+        return this;
+      }
+    }
+  })());
 
   $.plugin('journal', (function() {
 
@@ -48,6 +72,50 @@
         return this;
       }
     }
+  })());
+
+  $.plugin('story', (function() {
+    return {
+      init: function(items) {
+        var $this = this;
+        $.each(items, function(i, item) {
+          $('<div/>').story_item({data: item}).appendTo($this);
+        });
+        return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
+      },
+
+      bindChangeEvents: function() {
+        var $this = this;
+        return this.on(Events.NEW, function(e) {
+          $('<div/>').story_item({new: true}).appendTo($this).trigger(Events.EDIT);
+        }).on(Events.EDIT, function(e) {
+          // e.target should be item-content or item
+          // todo, something wrong here
+          var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
+          div.wikimate_text_editor('init');
+        }).sortable({
+          handle: '.item-handle',
+          update: function(event, ui){
+            ui.item.trigger(Events.CHANGE, {
+              id: ui.item.id,
+              type: 'move',
+              order: _.pluck($this.find('.item'), 'id')
+            });
+          }
+        });
+      },
+
+      dblclickToNewItem: function() {
+        var $this = this;
+        return this.dblclick(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.target == $this[0]) {
+            $this.trigger(Events.NEW);
+          }
+        });
+      }
+    };
   })());
 
   $.plugin('story_item', (function(){
@@ -112,7 +180,7 @@
 
       render: function() {
         var item = this.story_item('data');
-        var plugin = plugins[item.type];
+        var plugin = wikimate.plugins[item.type];
         // add another div inside for removing conflict highlighting with text area
         // after changed to edit mode
         var content = $('<div />').addClass('item-content');
@@ -149,50 +217,6 @@
         return this;
       }
     }
-  })());
-
-  $.plugin('story', (function() {
-    return {
-      init: function(items) {
-        var $this = this;
-        $.each(items, function(i, item) {
-          $('<div/>').story_item({data: item}).appendTo($this);
-        });
-        return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
-      },
-
-      bindChangeEvents: function() {
-        var $this = this;
-        return this.on(Events.NEW, function(e) {
-          $('<div/>').story_item({new: true}).appendTo($this).trigger(Events.EDIT);
-        }).on(Events.EDIT, function(e) {
-          // e.target should be item-content or item
-          // todo, something wrong here
-          var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
-          div.wikimate_text_editor('init');
-        }).sortable({
-          handle: '.item-handle',
-          update: function(event, ui){
-            ui.item.trigger(Events.CHANGE, {
-              id: ui.item.id,
-              type: 'move',
-              order: _.pluck($this.find('.item'), 'id')
-            });
-          }
-        });
-      },
-
-      dblclickToNewItem: function() {
-        var $this = this;
-        return this.dblclick(function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.target == $this[0]) {
-            $this.trigger(Events.NEW);
-          }
-        });
-      }
-    };
   })());
 
   $.plugin('wikimate_text_editor', (function() {
@@ -281,12 +305,9 @@
     }
   })());
 
-  var plugins = {
-  };
-
   window.wikimate = {
     version: '0.0.1',
-    plugins: plugins,
+    plugins: {},
     events: Events,
     init: function(element, wiki) {
       var story = $('<div />').story(wiki.story);
@@ -296,26 +317,6 @@
       });
       return element.addClass('wikimate').append(story).append(journal);
     }
-  };
-
-  $.fn.wikimate = function(options) {
-    var wiki = $.extend({
-      story: [],
-      journal: [],
-      change: null
-    }, options);
-    window.wikimate.init(this, wiki);
-    if (wiki.change) {
-      this.on(Events.CHANGE, '.item', wiki.change);
-    }
-    return this;
-  }
-
-  var KeyCode = {
-    TAB:       9,
-    RETURN:   13,
-    ESC:      27,
-    s:        83
   };
 
   var utils = (function() {
