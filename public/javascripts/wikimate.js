@@ -51,6 +51,36 @@
   })());
 
   $.plugin('story_item', (function(){
+    var Handle = (function() {
+      var cursor = {
+        grab: function() {
+          return this.css('cursor', 'grab').css('cursor', '-moz-grab').css('cursor', '-webkit-grab');
+        },
+        grabing: function() {
+          return this.css('cursor', 'grabbing').css('cursor', '-moz-grabbing').css('cursor', '-webkit-grabbing');
+        }
+      }
+      function createHandle() {
+        var handle = $('<div />').addClass('item-handle').extend(cursor).grab();
+        return handle.mousedown(function(e) {
+          handle.grabing();
+        }).mouseup(function() {
+          handle.grab();
+        });
+      }
+      return {
+        appendTo: function(div) {
+          var handle = createHandle();
+          // delegate event?
+          div.append(handle).hover(function(e) {
+            handle.show();
+          }, function(e) {
+            handle.hide();
+          });
+        }
+      }
+    })();
+
     function action(type, item, after) {
       return {
         id: item.id,
@@ -139,7 +169,7 @@
           // e.target should be item-content or item
           // todo, something wrong here
           var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
-          createPlainTextEditor(div);
+          div.plain_text_editor('init');
         }).sortable({
           handle: '.item-handle',
           update: function(event, ui){
@@ -165,6 +195,81 @@
     };
   })());
 
+  $.plugin('plain_text_editor', (function() {
+    function saveDot() {
+      return $('<a href="#">*</a>').attr('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel').css('color', 'red');
+    }
+
+    function setCursor(textarea, pos) {
+      textarea[0].selectionStart = pos;
+      textarea[0].selectionEnd = pos;
+    }
+
+    function syncHeight(textarea) {
+      var expectedTextHeight = textarea.prop('scrollHeight');
+      if (expectedTextHeight > textarea.innerHeight()) {
+        textarea.height(expectedTextHeight);
+      }
+    };
+
+    return {
+      init: function() {
+        var item = this.story_item('data');
+        var $this = this;
+        var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
+          var text = textarea.val();
+          if (text == '') {
+            $this.story_item('remove');
+          } else if (text != item.text) {
+            $this.story_item('save', {text: text});
+          } else {
+            $this.plain_text_editor('cancel');
+          }
+        }).on('keydown', function(e) {
+          if (e.which == KeyCode.ESC) {
+            $this.plain_text_editor('cancel');
+          } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
+            e.preventDefault();
+            e.stopPropagation();
+            textarea.focusout();
+          }
+        }).on('keyup', function(e) {
+          syncHeight(textarea);
+          // in keyup so that we can findout the new RETURN is added into last line
+          // could not find out a way to do this in keydown
+          if (e.which == KeyCode.RETURN) {
+            // Is it same on Windows?
+            var text = textarea.val();
+            if (text.trim().length > 0 && text.substr(-2) == "\n\n") {
+              e.preventDefault();
+              textarea.val(text.substr(0, text.length - 1));
+              textarea.focusout();
+              $('<div/>').story_item({data: {type: item.type}, new: true}).insertAfter($this).trigger(Events.EDIT);
+            }
+          }
+        }).on('dblclick', function() {
+          return false;
+        }).focus();
+        this.html(textarea);
+
+        var bar = ItemActionBar.appendTo(this).append(saveDot());
+        textarea.on('keydown.item_action_bar', function() {
+          textarea.off('.item_action_bar');
+          bar.show();
+        });
+
+        syncHeight(textarea);
+        setCursor(textarea, item.text.length);
+
+        return this;
+      },
+
+      cancel: function() {
+        return this.story_item('render');
+      }
+    }
+  })());
+
   var ItemActionBar = (function() {
     return {
       appendTo: function(div) {
@@ -178,36 +283,6 @@
           return false;
         });
         return bar;
-      }
-    }
-  })();
-
-  var Handle = (function() {
-    var cursor = {
-      grab: function() {
-        return this.css('cursor', 'grab').css('cursor', '-moz-grab').css('cursor', '-webkit-grab');
-      },
-      grabing: function() {
-        return this.css('cursor', 'grabbing').css('cursor', '-moz-grabbing').css('cursor', '-webkit-grabbing');
-      }
-    }
-    function createHandle() {
-      var handle = $('<div />').addClass('item-handle').extend(cursor).grab();
-      return handle.mousedown(function(e) {
-        handle.grabing();
-      }).mouseup(function() {
-        handle.grab();
-      });
-    }
-    return {
-      appendTo: function(div) {
-        var handle = createHandle();
-        // delegate event?
-        div.append(handle).hover(function(e) {
-          handle.show();
-        }, function(e) {
-          handle.hide();
-        });
       }
     }
   })();
@@ -248,77 +323,6 @@
     ESC:      27,
     s:        83
   };
-
-  function createPlainTextEditor(div) {
-    var item = div.story_item('data');
-    var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
-      var text = textarea.val()
-      if (text == '') {
-        div.story_item('remove');
-      } else if (text != item.text) {
-        div.story_item('save', {text: text});
-      } else {
-        cancelEdit();
-      }
-    }).on('keydown', function(e) {
-      if (e.which == KeyCode.ESC) {
-        cancelEdit();
-      } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
-        e.preventDefault();
-        e.stopPropagation();
-        textarea.focusout();
-      }
-    }).on('keyup', function(e) {
-      syncHeight(textarea);
-      // in keyup so that we can findout the new RETURN is added into last line
-      // could not find out a way to do this in keydown
-      if (e.which == KeyCode.RETURN) {
-        // Is it same on Windows?
-        var text = textarea.val();
-        if (text.trim().length > 0 && text.substr(-2) == "\n\n") {
-          e.preventDefault();
-          textarea.val(text.substr(0, text.length - 1));
-          textarea.focusout();
-          $('<div/>').story_item({data: {type: item.type}, new: true}).insertAfter(div).trigger(Events.EDIT);
-        }
-      }
-    }).on('dblclick', function() {
-      return false;
-    }).focus();
-
-    div.html(textarea);
-
-    var bar = ItemActionBar.appendTo(div).append(saveDot());
-    textarea.on('keydown.item_action_bar', function() {
-      textarea.off('.item_action_bar');
-      bar.show();
-    });
-
-    syncHeight(textarea);
-    setCursor(item.text.length);
-
-    return textarea;
-
-    function saveDot() {
-      return $('<a href="#">*</a>').attr('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel').css('color', 'red');
-    }
-
-    function setCursor(pos) {
-      textarea[0].selectionStart = pos;
-      textarea[0].selectionEnd = pos;
-    }
-
-    function syncHeight(textarea) {
-      var expectedTextHeight = textarea.prop('scrollHeight');
-      if (expectedTextHeight > textarea.innerHeight()) {
-        textarea.height(expectedTextHeight);
-      }
-    };
-
-    function cancelEdit() {
-      div.story_item('render');
-    };
-  }
 
   var utils = (function() {
     function randomBytes(n) {
