@@ -13,7 +13,7 @@ describe("Journal", function() {
     $('.wikimate-story textarea').text("hello world\n");
     Keyboard.hitEnter($('.wikimate-story textarea'));
 
-    var actions = $('#sandbox .wikimate-journal .action');
+    var actions = $('#sandbox').wikimate('journal');
     expect(actions.length).toEqual(1);
   });
 
@@ -53,4 +53,29 @@ describe("Journal", function() {
     expect($('#1').hasClass('highlight')).toEqual(false);
   });
 
+  it("undo last action", function() {
+    $('#sandbox').wikimate({});
+
+    $('#sandbox .wikimate-story').dblclick();
+    $('.wikimate-story textarea').text("hello\n");
+    Keyboard.hitEnter($('.wikimate-story textarea'));
+
+    $('.wikimate-story .item').click();
+    $('.wikimate-story textarea').text("hello2\n");
+    Keyboard.hitEnter($('.wikimate-story textarea'));
+
+    $('.wikimate-story .item').click();
+    $('.wikimate-story textarea').text("").focusout();
+
+    $('#sandbox').wikimate('undo');
+
+    var actions = $('#sandbox').wikimate('journal');
+    expect(actions.length).toEqual(2);
+    expect(actions[0].type).toEqual('add');
+    expect(actions[1].type).toEqual('edit');
+
+    var items = $('#sandbox').wikimate('story');
+    expect(items.length).toEqual(1);
+    expect(items[0].text).toEqual("hello2\n");
+  });
 });

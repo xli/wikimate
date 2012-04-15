@@ -28,17 +28,33 @@
 
   $.plugin('wikimate', (function() {
     return {
-      init: function(options) {
-        var wiki = $.extend({
-          story: [],
-          journal: [],
-          change: null
-        }, options);
-        window.wikimate.init(this, wiki);
-        if (wiki.change) {
-          this.on(Events.CHANGE, '.item', wiki.change);
+      init: function(wiki) {
+        var journal = $('<div />').addClass('wikimate-journal').journal('init', wiki.journal || []);
+        // todo fix the need of '.item'
+        var story = $('<div />').addClass('wikimate-story').story('init', wiki.story || []).on(Events.CHANGE, '.item', function(e, action) {
+          journal.journal('push', action);
+        });
+
+        return this.addClass('wikimate')
+          .append(story)
+          .append(journal)
+          .on(Events.CHANGE, '.item', wiki.change || function() {});
+      },
+      story: function() {
+        return this.find('.wikimate-story').story('data');
+      },
+      journal: function() {
+        return this.find('.wikimate-journal').journal('data');
+      },
+      undo: function() {
+        var action = this.find('.wikimate-journal').journal('pop');
+        if (!action) {
+          return;
         }
-        return this;
+        if(action.type == 'remove') {
+          this.find('.wikimate-story').story('add', action.item);
+        }
+        return action;
       }
     }
   })());
@@ -59,17 +75,25 @@
 
     return {
       init: function(actions) {
-        return this.addClass('wikimate-journal').journal('pushAll', actions);
-      },
-      push: function(action) {
-        return this.append(createAction(action));
-      },
-      pushAll: function(actions) {
         var $this = this;
         $.each(actions, function(i, action) {
           $this.journal('push', action);
         });
         return this;
+      },
+      push: function(action) {
+        return this.append(createAction(action));
+      },
+      pop: function() {
+        var lastAction = this.find('.action:last');
+        var data = lastAction.data('data');
+        lastAction.remove();
+        return data;
+      },
+      data: function() {
+        return this.find('.action').map(function(_, element) {
+          return $(element).data('data');
+        });
       }
     }
   })());
@@ -79,9 +103,19 @@
       init: function(items) {
         var $this = this;
         $.each(items, function(i, item) {
-          $('<div/>').story_item({data: item}).appendTo($this);
+          $this.story('add', item);
         });
-        return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
+        return this.story('bindChangeEvents').story('dblclickToNewItem');
+      },
+
+      add: function(item) {
+        return this.append($('<div/>').story_item({data: item}));
+      },
+
+      data: function() {
+        return this.find('.item').map(function(_, ele) {
+          return $(ele).story_item('data');
+        });
       },
 
       bindChangeEvents: function() {
@@ -160,7 +194,7 @@
     return {
       init: function(options) {
         var item = this.story_item('data', options.data || {}).story_item('data');
-        return this.addClass("item " + item.type)
+        return this.addClass('item ' + item.type)
           .attr("id", item.id)
           .data('new', options.new)
           .story_item('render');
@@ -308,15 +342,7 @@
   window.wikimate = {
     version: '0.0.1',
     plugins: {},
-    events: Events,
-    init: function(element, wiki) {
-      var story = $('<div />').story(wiki.story);
-      var journal = $('<div />').journal(wiki.journal);
-      story.on(Events.CHANGE, '.item', function(e, action) {
-        journal.journal('push', action);
-      });
-      return element.addClass('wikimate').append(story).append(journal);
-    }
+    events: Events
   };
 
   var utils = (function() {
