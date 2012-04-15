@@ -196,13 +196,8 @@
   })());
 
   $.plugin('plain_text_editor', (function() {
-    function saveDot() {
+    function createSaveDot() {
       return $('<a href="#">*</a>').attr('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel').css('color', 'red');
-    }
-
-    function setCursor(textarea, pos) {
-      textarea[0].selectionStart = pos;
-      textarea[0].selectionEnd = pos;
     }
 
     function syncHeight(textarea) {
@@ -210,6 +205,19 @@
       if (expectedTextHeight > textarea.innerHeight()) {
         textarea.height(expectedTextHeight);
       }
+    };
+
+    function initActionBar($this, textarea) {
+      var bar = $('<div />').addClass('item-action-bar').append(createSaveDot());
+      $this.append(bar).hover(function(e) {
+        bar.show();
+      }, function(e) {
+        bar.hide();
+      });
+      textarea.on('keydown.item_action_bar', function() {
+        textarea.off('.item_action_bar');
+        bar.show();
+      });
     };
 
     return {
@@ -250,17 +258,20 @@
         }).on('dblclick', function() {
           return false;
         }).focus();
+
         this.html(textarea);
 
-        var bar = ItemActionBar.appendTo(this).append(saveDot());
-        textarea.on('keydown.item_action_bar', function() {
-          textarea.off('.item_action_bar');
-          bar.show();
-        });
+        initActionBar(this, textarea);
 
         syncHeight(textarea);
-        setCursor(textarea, item.text.length);
 
+        return this.plain_text_editor('moveCursorTo', item.text.length);
+      },
+
+      moveCursorTo: function(pos) {
+        var textarea = this.find('textarea')[0]
+        textarea.selectionStart = pos;
+        textarea.selectionEnd = pos;
         return this;
       },
 
@@ -269,23 +280,6 @@
       }
     }
   })());
-
-  var ItemActionBar = (function() {
-    return {
-      appendTo: function(div) {
-        var bar = $('<div />').addClass('item-action-bar');
-        // delegate event?
-        div.append(bar).hover(function(e) {
-          bar.show();
-        }, function(e) {
-          bar.hide();
-        }).click(function(e) {
-          return false;
-        });
-        return bar;
-      }
-    }
-  })();
 
   var plugins = {
   };
