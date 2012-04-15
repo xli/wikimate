@@ -19,27 +19,35 @@
     };
   }
 
-  $.plugin('journal', {
-    init: function(actions) {
-      return this.addClass('wikimate-journal').journal('pushAll', actions);
-    },
-    push: function(action) {
-      return this.append($('<a href="#"/>').data('data', action).addClass('action ' + action.type).text(action.type.charAt(0)).hover(function(e) {
+  $.plugin('journal', (function() {
+
+    function createAction(action) {
+      var identifier = action.type.charAt(0);
+      return $('<a href="#"/>').data('data', action).addClass('action ' + action.type).text(identifier).hover(function(e) {
         $('#' + action.id).addClass('highlight');
       }, function(e) {
         $('#' + action.id).removeClass('highlight');
-      }));
-    },
-    pushAll: function(actions) {
-      var $this = this;
-      $.each(actions, function(i, action) {
-        $this.journal('push', action);
       });
-      return this;
-    }
-  });
+    };
 
-  (function() {
+    return {
+      init: function(actions) {
+        return this.addClass('wikimate-journal').journal('pushAll', actions);
+      },
+      push: function(action) {
+        return this.append(createAction(action));
+      },
+      pushAll: function(actions) {
+        var $this = this;
+        $.each(actions, function(i, action) {
+          $this.journal('push', action);
+        });
+        return this;
+      }
+    }
+  })());
+
+  $.plugin('story_item', (function(){
     function action(type, item, after) {
       return {
         id: item.id,
@@ -48,8 +56,7 @@
         after: after
       };
     };
-
-    $.plugin('story_item', {
+    return {
       init: function(options) {
         var item = this.story_item('data', options.data || {}).story_item('data');
         return this.addClass("item " + item.type).attr("id", item.id).data('new', options.new).story_item('render');
@@ -87,69 +94,66 @@
         if (this.data('new')) {
           this.remove();
         } else {
-          this.story_item('changed', action('remove', this.story_item('data'))).remove();
+          this.trigger(Events.CHANGE, action('remove', this.story_item('data'))).remove();
         }
       },
 
       save: function(changes) {
         var item = $.extend(this.story_item('data'), changes);
         if (this.data('new')) {
-          this.removeData('new').story_item('data', $.extend(item, changes)).story_item('render').story_item('changed', action('add', item, this.prev().attr('id')));
+          this.removeData('new').story_item('data', $.extend(item, changes)).story_item('render').trigger(Events.CHANGE, action('add', item, this.prev().attr('id')));
         } else {
           this.story_item('render');
-          this.story_item('changed', action('edit', $.extend(item, changes)));
+          this.trigger(Events.CHANGE, action('edit', $.extend(item, changes)));
         }
         return this;
+      }
+    }
+  })());
+
+  $.plugin('story', (function() {
+    return {
+      init: function(items) {
+        var $this = this;
+        $.each(items, function(i, item) {
+          $('<div/>').story_item({data: item}).appendTo($this);
+        });
+        return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
       },
 
-      changed: function(action) {
-        wikimate.journal.journal('push', action);
-        return this.trigger(Events.CHANGE, action);
+      bindChangeEvents: function() {
+        var $this = this;
+        return this.on(Events.NEW, function(e) {
+          $('<div/>').story_item({new: true}).appendTo($this).trigger(Events.EDIT);
+        }).on(Events.EDIT, function(e) {
+          // e.target should be item-content or item
+          // todo, something wrong here
+          var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
+          createPlainTextEditor(div);
+        }).sortable({
+          handle: '.item-handle',
+          update: function(event, ui){
+            ui.item.trigger(Events.CHANGE, {
+              id: ui.item.id,
+              type: 'move',
+              order: _.pluck($this.find('.item'), 'id')
+            });
+          }
+        });
+      },
+
+      dblclickToNewItem: function() {
+        var $this = this;
+        return this.dblclick(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.target == $this[0]) {
+            $this.trigger(Events.NEW);
+          }
+        });
       }
-    });
-  })();
-
-  $.plugin('story', {
-    init: function(items) {
-      var $this = this;
-      $.each(items, function(i, item) {
-        $('<div/>').story_item({data: item}).appendTo($this);
-      });
-      return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
-    },
-
-    bindChangeEvents: function() {
-      var $this = this;
-      return this.on(Events.NEW, function(e) {
-        $('<div/>').story_item({new: true}).appendTo($this).trigger(Events.EDIT);
-      }).on(Events.EDIT, function(e) {
-        // e.target should be item-content or item
-        // todo, something wrong here
-        var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
-        createPlainTextEditor(div);
-      }).sortable({
-        handle: '.item-handle',
-        update: function(event, ui){
-          ui.item.story_item('changed', {
-            id: ui.item.id,
-            type: 'move',
-            order: _.pluck($this.find('.item'), 'id')
-          });
-        }
-      });
-    },
-
-    dblclickToNewItem: function() {
-      var $this = this;
-      return this.dblclick(function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.target == $this[0]) {
-          $this.trigger(Events.NEW);
-        }
-      });
-    }
-  });
+    };
+  })());
 
   var ItemActionBar = (function() {
     return {
@@ -206,9 +210,12 @@
     plugins: plugins,
     events: Events,
     init: function(element, wiki) {
-      this.story = $('<div />').story(wiki.story);
-      this.journal = $('<div />').journal(wiki.journal);
-      return element.addClass('wikimate').append(this.story).append(this.journal);
+      var story = $('<div />').story(wiki.story);
+      var journal = $('<div />').journal(wiki.journal);
+      story.on(Events.CHANGE, '.item', function(e, action) {
+        journal.journal('push', action);
+      });
+      return element.addClass('wikimate').append(story).append(journal);
     }
   };
 
