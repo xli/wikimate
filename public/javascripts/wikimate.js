@@ -23,11 +23,14 @@
 
     function createAction(action) {
       var identifier = action.type.charAt(0);
-      return $('<a href="#"/>').data('data', action).addClass('action ' + action.type).text(identifier).hover(function(e) {
-        $('#' + action.id).addClass('highlight');
-      }, function(e) {
-        $('#' + action.id).removeClass('highlight');
-      });
+      return $('<a href="#"/>').data('data', action)
+        .addClass('action ' + action.type)
+        .text(identifier)
+        .hover(function(e) {
+          $('#' + action.id).addClass('highlight');
+        }, function(e) {
+          $('#' + action.id).removeClass('highlight');
+        });
     };
 
     return {
@@ -59,7 +62,10 @@
     return {
       init: function(options) {
         var item = this.story_item('data', options.data || {}).story_item('data');
-        return this.addClass("item " + item.type).attr("id", item.id).data('new', options.new).story_item('render');
+        return this.addClass("item " + item.type)
+          .attr("id", item.id)
+          .data('new', options.new)
+          .story_item('render');
       },
 
       data: function(attrs) {
@@ -94,17 +100,21 @@
         if (this.data('new')) {
           this.remove();
         } else {
-          this.trigger(Events.CHANGE, action('remove', this.story_item('data'))).remove();
+          this.trigger(Events.CHANGE, action('remove', this.story_item('data')))
+            .remove();
         }
       },
 
       save: function(changes) {
         var item = $.extend(this.story_item('data'), changes);
         if (this.data('new')) {
-          this.removeData('new').story_item('data', $.extend(item, changes)).story_item('render').trigger(Events.CHANGE, action('add', item, this.prev().attr('id')));
+          this.removeData('new')
+            .story_item('data', item)
+            .story_item('render')
+            .trigger(Events.CHANGE, action('add', item, this.prev().attr('id')));
         } else {
-          this.story_item('render');
-          this.trigger(Events.CHANGE, action('edit', $.extend(item, changes)));
+          this.story_item('render')
+            .trigger(Events.CHANGE, action('edit', item));
         }
         return this;
       }
