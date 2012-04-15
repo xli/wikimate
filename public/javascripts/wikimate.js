@@ -30,15 +30,14 @@
     return {
       init: function(wiki) {
         var journal = $('<div />').addClass('wikimate-journal').journal('init', wiki.journal || []);
-        // todo fix the need of '.item'
-        var story = $('<div />').addClass('wikimate-story').story('init', wiki.story || []).on(Events.CHANGE, '.item', function(e, action) {
-          journal.journal('push', action);
-        });
+        var story = $('<div />').addClass('wikimate-story').story('init', wiki.story || [])
+          .on(Events.CHANGE, function(e, action) { // handler is processed before handlers on wikimate element
+            journal.journal('push', action);
+          });
 
         return this.addClass('wikimate')
           .append(story)
-          .append(journal)
-          .on(Events.CHANGE, '.item', wiki.change || function() {});
+          .append(journal);
       },
       story: function() {
         return this.find('.wikimate-story').story('data');
