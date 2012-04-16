@@ -43,11 +43,7 @@
           return {id: action.id, type: 'edit', item: relatedActions.last()[0].item};
         },
         move: function(action) {
-          var order = $.extend({}, action.order);
-          var tmp = order[action.toPos];
-          order[action.toPos] = order[action.fromPos];
-          order[action.fromPos] = tmp;
-          return {id: action.id, type: 'move', order: order, fromPos: action.toPos, toPos: action.fromPos};
+          return {id: action.id, type: 'move', order: action.prevOrder};
         }
       }
       return function(action) {
@@ -144,17 +140,22 @@
           } else {
             this.prepend(item);
           }
+          item.effect('highlight');
         } else if (action.type == 'remove') {
-          $('#' + action.id).remove();
+          $('#' + action.id).removeClass('item').effect("explode", {}, 'normal', function() {
+            $(this).remove();
+          });
         } else if (action.type == 'edit') {
-          $('#' + action.id).story_item('data', action.item).story_item('render');
+          $('#' + action.id).story_item('data', action.item).story_item('render').effect("highlight");
         } else if (action.type == 'move') {
-          var fromId = action.order[action.fromPos];
-          var toId = action.order[action.toPos];
-          var tmp = $('<div/>').insertAfter($('#' + fromId));
-          $('#' + fromId).insertAfter($('#' + toId));
-          $('#' + toId).insertAfter(tmp);
-          tmp.remove();
+          var pos = action.order.indexOf(action.id);
+          var target = $('#' + action.id);
+          if (pos == 0) {
+            this.prepend(target);
+          } else {
+            target.insertAfter($('#' + action.order[pos - 1]));
+          }
+          target.effect("highlight");
         }
         return this;
       },
@@ -179,10 +180,12 @@
           div.wikimate_text_editor('init');
         }).sortable({
           handle: '.item-handle',
-          update: function(event, ui){
+          start: function(event, ui) {
+            $this.data('snapshot', _.compact(_.pluck($this.find('.item'), 'id')));
+          },
+          update: function(event, ui) {
             ui.item.story_item('moved', {
-              fromPos: ui.originalPosition,
-              toPos: ui.position,
+              prevOrder: $this.data('snapshot'),
               order: _.pluck($this.find('.item'), 'id')
             });
           }
@@ -303,10 +306,9 @@
 
       moved: function(moveInfo) {
         this.trigger(Events.CHANGE, {
-          id: this.id,
+          id: this.attr('id'),
           type: 'move',
-          fromPos: moveInfo.fromPos,
-          toPos: moveInfo.toPos,
+          prevOrder: moveInfo.prevOrder,
           order: moveInfo.order
         });
       }

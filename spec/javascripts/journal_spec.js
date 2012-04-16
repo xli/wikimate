@@ -133,6 +133,7 @@ describe("Journal", function() {
     $('#sandbox textarea').text("hello3").focusout();
 
     $('#sandbox').wikimate('undo');
+
     var actions = $('#sandbox').wikimate('journal');
     expect(actions.length).toEqual(2);
     expect(actions[0].type).toEqual('add');
@@ -175,8 +176,7 @@ describe("Journal", function() {
     $(items[1]).insertAfter(items[2]);
 
     $(items[1]).story_item('moved', {
-      fromPos: 1,
-      toPos: 2,
+      prevOrder: [items[0].id, items[1].id, items[2].id],
       order: [items[0].id, items[2].id, items[1].id]
     });
 
@@ -195,8 +195,5 @@ describe("Journal", function() {
       return $(item).text();
     }).toArray();
     expect(orderedText).toEqual(['hello', 'hello2', 'hello3']);
-    // var items = $('#sandbox').wikimate('story');
-    // expect(items.length).toEqual(1);
-    // expect(items[0].text).toEqual("hello");
   });
 });
