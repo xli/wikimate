@@ -41,6 +41,13 @@
             return a.id == action.id;
           });
           return {id: action.id, type: 'edit', item: relatedActions.last()[0].item};
+        },
+        move: function(action) {
+          var order = $.extend({}, action.order);
+          var tmp = order[action.toPos];
+          order[action.toPos] = order[action.fromPos];
+          order[action.fromPos] = tmp;
+          return {id: action.id, type: 'move', order: order, fromPos: action.toPos, toPos: action.fromPos};
         }
       }
       return function(action) {
@@ -141,6 +148,13 @@
           $('#' + action.id).remove();
         } else if (action.type == 'edit') {
           $('#' + action.id).story_item('data', action.item).story_item('render');
+        } else if (action.type == 'move') {
+          var fromId = action.order[action.fromPos];
+          var toId = action.order[action.toPos];
+          var tmp = $('<div/>').insertAfter($('#' + fromId));
+          $('#' + fromId).insertAfter($('#' + toId));
+          $('#' + toId).insertAfter(tmp);
+          tmp.remove();
         }
         return this;
       },
@@ -166,9 +180,9 @@
         }).sortable({
           handle: '.item-handle',
           update: function(event, ui){
-            ui.item.trigger(Events.CHANGE, {
-              id: ui.item.id,
-              type: 'move',
+            ui.item.story_item('moved', {
+              fromPos: ui.originalPosition,
+              toPos: ui.position,
               order: _.pluck($this.find('.item'), 'id')
             });
           }
@@ -285,6 +299,16 @@
             .trigger(Events.CHANGE, action('edit', item));
         }
         return this;
+      },
+
+      moved: function(moveInfo) {
+        this.trigger(Events.CHANGE, {
+          id: this.id,
+          type: 'move',
+          fromPos: moveInfo.fromPos,
+          toPos: moveInfo.toPos,
+          order: moveInfo.order
+        });
       }
     }
   })());

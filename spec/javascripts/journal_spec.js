@@ -160,4 +160,43 @@ describe("Journal", function() {
     expect(items.length).toEqual(1);
     expect(items[0].text).toEqual("hello");
   });
+
+  it("undo move action should move item back to original position", function() {
+    $('#sandbox').wikimate({});
+
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello").focusout();
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello2").focusout();
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello3").focusout();
+
+    var items = $('#sandbox .item');
+    $(items[1]).insertAfter(items[2]);
+
+    $(items[1]).story_item('moved', {
+      fromPos: 1,
+      toPos: 2,
+      order: [items[0].id, items[2].id, items[1].id]
+    });
+
+    // check move successfully
+    expect($('#sandbox').wikimate('journal').length).toEqual(4);
+
+    $('#sandbox').wikimate('undo');
+
+    var actions = $('#sandbox').wikimate('journal');
+    expect(actions.length).toEqual(3);
+    expect(actions[0].type).toEqual('add');
+    expect(actions[0].type).toEqual('add');
+    expect(actions[0].type).toEqual('add');
+
+    var orderedText = $('#sandbox .item').map(function(_, item) {
+      return $(item).text();
+    }).toArray();
+    expect(orderedText).toEqual(['hello', 'hello2', 'hello3']);
+    // var items = $('#sandbox').wikimate('story');
+    // expect(items.length).toEqual(1);
+    // expect(items[0].text).toEqual("hello");
+  });
 });
