@@ -121,4 +121,43 @@ describe("Journal", function() {
     expect(items[1].text).toEqual("hello2");
     expect(items[2].text).toEqual("hello3");
   });
+
+  it("undo add action should remove item", function() {
+    $('#sandbox').wikimate({});
+
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello").focusout();
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello2").focusout();
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello3").focusout();
+
+    $('#sandbox').wikimate('undo');
+    var actions = $('#sandbox').wikimate('journal');
+    expect(actions.length).toEqual(2);
+    expect(actions[0].type).toEqual('add');
+    expect(actions[1].type).toEqual('add');
+    var items = $('#sandbox').wikimate('story');
+    expect(items.length).toEqual(2);
+    expect(items[0].text).toEqual("hello");
+    expect(items[1].text).toEqual("hello2");
+  });
+
+  it("undo edit action should update item", function() {
+    $('#sandbox').wikimate({});
+
+    $('#sandbox').wikimate('new');
+    $('#sandbox textarea').text("hello").focusout();
+    $('#sandbox .item').click();
+    $('#sandbox textarea').text("hello2").focusout();
+
+    $('#sandbox').wikimate('undo');
+    var actions = $('#sandbox').wikimate('journal');
+    expect(actions.length).toEqual(1);
+    expect(actions[0].type).toEqual('add');
+
+    var items = $('#sandbox').wikimate('story');
+    expect(items.length).toEqual(1);
+    expect(items[0].text).toEqual("hello");
+  });
 });

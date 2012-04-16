@@ -26,6 +26,28 @@
   }
 
   $.plugin('wikimate', (function() {
+    var revert_action_type_map = {'remove': 'add', 'add': 'remove', 'edit': 'edit'};
+
+    var revert = (function() {
+      var map = {
+        remove: function(action) {
+          return {id: action.id, type: 'add', item: action.item, after: action.after};
+        },
+        add: function(action) {
+          return {id: action.id, type: 'remove', item: action.item, after: action.after};
+        },
+        edit: function(action) {
+          var relatedActions = this.wikimate('journal').filter(function(_, a) {
+            return a.id == action.id;
+          });
+          return {id: action.id, type: 'edit', item: relatedActions.last()[0].item};
+        }
+      }
+      return function(action) {
+        return map[action.type].apply(this, [action]);
+      };
+    })();
+
     return {
       init: function(wiki) {
         var journal = $('<div />').addClass('wikimate-journal').journal('init', wiki.journal || []);
@@ -52,7 +74,7 @@
         if (!action) {
           return;
         }
-        this.find('.wikimate-story').story('execute', action);
+        this.find('.wikimate-story').story('execute', revert.apply(this, [action]));
         return action;
       }
     }
@@ -108,12 +130,19 @@
       },
 
       execute: function(action) {
-        var item = $('<div/>').story_item({data: action.item});
-        if (action.after) {
-          item.insertAfter('#' + action.after);
-        } else {
-          this.prepend(item);
+        if (action.type == 'add') {
+          var item = $('<div/>').story_item({data: action.item});
+          if (action.after) {
+            item.insertAfter('#' + action.after);
+          } else {
+            this.prepend(item);
+          }
+        } else if (action.type == 'remove') {
+          $('#' + action.id).remove();
+        } else if (action.type == 'edit') {
+          $('#' + action.id).story_item('data', action.item).story_item('render');
         }
+        return this;
       },
 
       data: function() {
@@ -194,10 +223,11 @@
       return {
         id: item.id,
         type: type,
-        item: item,
+        item: $.extend({}, item),
         after: after
       };
     };
+
     return {
       init: function(options) {
         var item = this.story_item('data', options.data || {}).story_item('data');
@@ -248,7 +278,6 @@
         var item = $.extend(this.story_item('data'), changes);
         if (this.data('new')) {
           this.removeData('new')
-            .story_item('data', item)
             .story_item('render')
             .trigger(Events.CHANGE, action('add', item, this.prev().attr('id')));
         } else {
