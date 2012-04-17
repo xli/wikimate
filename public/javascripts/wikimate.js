@@ -37,10 +37,10 @@
           return {id: action.id, type: 'remove', item: action.item, after: action.after};
         },
         edit: function(action) {
-          var relatedActions = this.wikimate('journal').filter(function(_, a) {
-            return a.id == action.id && a.type != "move";
-          });
-          return {id: action.id, type: 'edit', item: relatedActions.last()[0].item};
+          var prev = _.find(this.wikimate('journal').reverse(), function(ja) {
+            return ja.id == action.id && ja.type != "move";
+          })
+          return {id: action.id, type: 'edit', item: $.extend({}, prev.item)};
         },
         move: function(action) {
           return {id: action.id, type: 'move', order: action.prevOrder};
@@ -115,7 +115,7 @@
         return data;
       },
       data: function() {
-        return this.find('.action').map(function(_, element) {
+        return $.map(this.find('.action'), function(element) {
           return $(element).data('data');
         });
       }
@@ -161,7 +161,7 @@
       },
 
       data: function() {
-        return this.find('.item').map(function(_, ele) {
+        return $.map(this.find('.item'), function(ele) {
           return $(ele).story_item('data');
         });
       },
