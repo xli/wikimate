@@ -39,6 +39,7 @@
           var prev = _.find(this.wikimate('journal').reverse(), function(ja) {
             return ja.id == action.id && ja.type != "move";
           })
+          // todo: what if we could not find prev because of data issue?
           return {id: action.id, type: 'edit', item: $.extend({}, prev.item)};
         },
         move: function(action) {
