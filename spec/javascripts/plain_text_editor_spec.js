@@ -21,9 +21,10 @@ describe("Plain Text Editor", function() {
       story: [
         { "id": "1", "type": "paragraph", "text": "paragraph 1" },
         { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-      ]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      ],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
     $('#2').click();
     $('#2 textarea').text('hello world').focusout();
@@ -38,9 +39,10 @@ describe("Plain Text Editor", function() {
       story: [
         { "id": "1", "type": "paragraph", "text": "paragraph 1" },
         { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-      ]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      ],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
     $('#1').click();
     $('#1 textarea').text('paragraph 1').focusout();
@@ -70,9 +72,11 @@ describe("Plain Text Editor", function() {
   it("should not contain last new line when paragraph is saved by user enter second new line at the end", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [
-      { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }
-    ]}).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+        { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }
+      ],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
     $('#1').click()
     $('#1 textarea').text("hello world\n");
@@ -83,9 +87,9 @@ describe("Plain Text Editor", function() {
 
   it("should not save editing paragraph that only has 2 new lines inside", function() {
     var changes = [];
-    $('#sandbox').wikimate({ story: [] }).on(wikimate.events.CHANGE, function(event, action) {
+    $('#sandbox').wikimate({ story: [], change: function(event, action) {
       changes.push(action);
-    });
+    }});
     $('#sandbox .wikimate-story').dblclick();
     Keyboard.hitEnter($('#sandbox div textarea'));
     Keyboard.hitEnter($('#sandbox div textarea'));
@@ -96,9 +100,9 @@ describe("Plain Text Editor", function() {
 
   it("should fire add item change event when save a new item", function() {
     var changes = [];
-    $('#sandbox').wikimate({ story: [] }).on(wikimate.events.CHANGE, function(event, action) {
+    $('#sandbox').wikimate({ story: [], change: function(event, action) {
       changes.push(action);
-    });
+    }});
 
     $('#sandbox .wikimate-story').dblclick();
     $('#sandbox div textarea').text("hello world").focusout();
@@ -114,10 +118,12 @@ describe("Plain Text Editor", function() {
   it("should fire add item change event with 'after' attr set to prev item id", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [
-      { "id": "1", "type": "paragraph", "text": "paragraph 1\n" },
-      { "id": "2", "type": "paragraph", "text": "paragraph 2\n" }
-    ]}).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+        { "id": "1", "type": "paragraph", "text": "paragraph 1\n" },
+        { "id": "2", "type": "paragraph", "text": "paragraph 2\n" }
+      ],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
 
     $('#1').click();
@@ -135,9 +141,10 @@ describe("Plain Text Editor", function() {
   it("should remove paragraph item when there is no content after edited", function() {
     var changes = [];
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
 
     $('#1').click();
@@ -156,9 +163,10 @@ describe("Plain Text Editor", function() {
   it("should cancel edit when user hit ESC key", function() {
     var changes = [];
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1" }],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
     $('#1').click();
     Keyboard.hitEsc($('#1 textarea'));
@@ -168,9 +176,9 @@ describe("Plain Text Editor", function() {
 
   it("create new item, edit and delete it", function() {
     var changes = [];
-    $('#sandbox').wikimate({ story: [] }).on(wikimate.events.CHANGE, function(event, action) {
+    $('#sandbox').wikimate({ story: [], change: function(event, action) {
       changes.push(action);
-    });
+    }});
 
     // add
     $('#sandbox .wikimate-story').dblclick();
@@ -192,9 +200,9 @@ describe("Plain Text Editor", function() {
 
   it("should not fire any event when added new item and then delete it", function() {
     var changes = [];
-    $('#sandbox').wikimate({ story: [] }).on(wikimate.events.CHANGE, function(event, action) {
+    $('#sandbox').wikimate({ story: [], change: function(event, action) {
       changes.push(action);
-    });
+    }});
 
     $('#sandbox .wikimate-story').dblclick();
     $('#sandbox div textarea').text("");
@@ -205,9 +213,10 @@ describe("Plain Text Editor", function() {
   it("should not fire edit event for \n started text", function(){
     var changes = [];
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "\nparagraph 1" }]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      story: [{ "id": "1", "type": "paragraph", "text": "\nparagraph 1" }],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
     $('#1').click();
     $('#sandbox div textarea').focusout();
@@ -217,9 +226,10 @@ describe("Plain Text Editor", function() {
   it('should open editor with all text showed in viewport', function() {
     var changes = [];
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc\nd\ne\nf\ng\nh" }]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc\nd\ne\nf\ng\nh" }],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
     $('#1').click();
     expect($('#1 textarea').scrollTop()).toEqual(0);
@@ -229,9 +239,10 @@ describe("Plain Text Editor", function() {
   it('should open editor with all text showed in viewport when paragraph text only has one long line', function() {
     var changes = [];
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc " }]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      story: [{ "id": "1", "type": "paragraph", "text": "abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc " }],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
 
     $('#1').click();
@@ -242,9 +253,10 @@ describe("Plain Text Editor", function() {
   it('should increase editor height when input more content', function() {
     var changes = [];
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc" }]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc" }],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
 
     $('#1').click();
@@ -259,9 +271,10 @@ describe("Plain Text Editor", function() {
   it("should save item when user press cmd+s after changed content", function() {
     var changes = [];
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc" }]
-    }).on(wikimate.events.CHANGE, function(event, action) {
-      changes.push(action);
+      story: [{ "id": "1", "type": "paragraph", "text": "a\nb\nc" }],
+      change: function(event, action) {
+        changes.push(action);
+      }
     });
 
     $('#1').click();

@@ -26,9 +26,8 @@
   }
 
   $.plugin('wikimate', (function() {
-    var revert_action_type_map = {'remove': 'add', 'add': 'remove', 'edit': 'edit'};
-
     var revert = (function() {
+      var revert_action_type_map = {'remove': 'add', 'add': 'remove', 'edit': 'edit'};
       var map = {
         remove: function(action) {
           return {id: action.id, type: 'add', item: action.item, after: action.after};
@@ -58,7 +57,9 @@
           .on(Events.CHANGE, function(e, action) { // handler is processed before handlers on wikimate element
             journal.journal('push', action);
           });
-
+        if (wiki.change) {
+          this.on(Events.CHANGE, wiki.change);
+        }
         return this.addClass('wikimate')
           .append(story)
           .append(journal);
