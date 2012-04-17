@@ -138,10 +138,10 @@
         }
 
         var story = data
-        var journal = $('.wikimate-journal').find('.action').map(function(_, action) {
+        var journal = $.map($('.wikimate-journal').find('.action'), function(action) {
           return $(action).data('data');
         });
-        $('#wiki-data').val(JSON.stringify({story: story, journal: journal.toArray()}));
+        $('#wiki-data').val(JSON.stringify({story: story, journal: journal}));
       };
       $(document).ready(function() {
         $('#wiki-data').val(JSON.stringify(wiki));

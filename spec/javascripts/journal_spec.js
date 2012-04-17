@@ -145,21 +145,23 @@ describe("Journal", function() {
   });
 
   it("undo edit action should update item", function() {
-    $('#sandbox').wikimate({});
-
-    $('#sandbox').wikimate('new');
-    $('#sandbox textarea').text("hello").focusout();
-    $('#sandbox .item').click();
-    $('#sandbox textarea').text("hello2").focusout();
+    $('#sandbox').wikimate({
+      story: [{ "id": "3", "type": "paragraph", "text": "3" }, { "id": "1", "type": "paragraph", "text": "2" }],
+      journal: [
+        {"id": "1", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "1" }},
+        {"id": "3", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "3" }, after: '1'},
+        {"id": "1", "type": "move", "prevOrder": ["1", "3"], "order": ["3", "1"]},
+        {"id": "1", "type": "edit", "item": { "id": "1", "type": "paragraph", "text": "2" }}
+      ]
+    });
 
     $('#sandbox').wikimate('undo');
     var actions = $('#sandbox').wikimate('journal');
-    expect(actions.length).toEqual(1);
-    expect(actions[0].type).toEqual('add');
+    expect(actions.length).toEqual(3);
 
     var items = $('#sandbox').wikimate('story');
-    expect(items.length).toEqual(1);
-    expect(items[0].text).toEqual("hello");
+    expect(items.length).toEqual(2);
+    expect(items[1].text).toEqual("1");
   });
 
   it("undo move action should move item back to original position", function() {
@@ -191,9 +193,9 @@ describe("Journal", function() {
     expect(actions[0].type).toEqual('add');
     expect(actions[0].type).toEqual('add');
 
-    var orderedText = $('#sandbox .item').map(function(_, item) {
+    var orderedText = $.map($('#sandbox .item'), function(item) {
       return $(item).text();
-    }).toArray();
+    });
     expect(orderedText).toEqual(['hello', 'hello2', 'hello3']);
   });
 });

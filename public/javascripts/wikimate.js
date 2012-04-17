@@ -38,7 +38,7 @@
         },
         edit: function(action) {
           var relatedActions = this.wikimate('journal').filter(function(_, a) {
-            return a.id == action.id;
+            return a.id == action.id && a.type != "move";
           });
           return {id: action.id, type: 'edit', item: relatedActions.last()[0].item};
         },
