@@ -11,8 +11,9 @@
 #   - dist/**/*.js
 #
 src_files:
-    - public/javascripts/*.js
-    - public/javascripts/plugins/*.js
+    - lib/*.js
+    - src/js/*.js
+    - src/js/plugins/*.js
 
 # stylesheets
 #
@@ -26,7 +27,7 @@ src_files:
 #   - stylesheets/*.css
 #
 stylesheets:
-  - public/stylesheets/*.css
+  - src/css/*.css
 
 # helpers
 #
