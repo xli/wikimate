@@ -3,7 +3,7 @@
 
 .wikimate-story {
   min-height: 100px;
-  padding-bottom: 3em;
+  padding-bottom: 2em;
 }
 
 .wikimate-story .item {
@@ -40,23 +40,23 @@
 
 .wikimate-story .item .item-content:hover { 
   background-color: #FFFFEE;
-  box-shadow: 0 0 5px rgba(255,102,0,0.5);
 }
 
 .wikimate-story .item .plain-text-editor {
   background-color: #FFFFEE;
   font-size: 1em;
-  line-height: 1em; /*must have, used for calculate textarea expected text height*/
+  line-height: 1em;
   overflow: hidden;
-  min-height: 50px;
+  min-height: 4em;
 }
 
 .wikimate-journal {
   background-color: #EEE;
   border-radius: 5px;
-  border: 1px solid #CCC; /* todo: what if no action inside */
-  width: 100%;
+  border: 1px solid #CCC;
   overflow: hidden;
+  height: 34px;
+  width: 100%;
 }
 
 .wikimate-journal .action {
@@ -65,11 +65,11 @@
   cursor: pointer;
   float: left;
   margin: 3px;
-  padding: 0.2em;
+  padding: 2px;
   text-align: center;
   text-decoration: none;
-  min-width: 1em;
-  width: 1em;
+  width: 24px;
+  height: 24px;
   vertical-align: bottom;
 }
 
@@ -79,5 +79,6 @@
 
 .wikimate .highlight {
   background-color: #FFC;
+  color: #000;
 }
 
