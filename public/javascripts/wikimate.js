@@ -277,11 +277,7 @@
         plugin.emit(content, item);
         plugin.bind(content, item);
         Handle.appendTo(content)
-        return this.html(content).click(function(e) {
-          return content.click();
-        }).dblclick(function(e) {
-          return content.dblclick();
-        });
+        return this.html(content);
       },
 
       remove: function() {
