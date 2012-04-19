@@ -1,4 +1,5 @@
 (function($) {
+  // todo change to be wikimate.story.plugins?
   wikimate.plugins.paragraph = {
     // item: { "id": "1", "type": "paragraph", "text": "paragraph 1" }
     emit: function(div, item) {
@@ -8,10 +9,11 @@
       return div.html(html);
     },
     bind: function(div, item) {
+      var $this = this;
       div.on('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        div.trigger(wikimate.events.EDIT);
+        if ($this.story_item('editable')) {
+          $this.story_item('edit');
+        }
       });
     }
   };

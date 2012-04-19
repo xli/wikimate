@@ -116,6 +116,20 @@
       };
     }
 
+    function renderByPlugin($this) {
+      var item = $this.story_item('data');
+      var plugin = wikimate.plugins[item.type];
+      // add another div inside for removing conflict highlighting with text area
+      // after changed to edit mode
+      var content = $('<div />').addClass('item-content');
+      plugin.emit.apply($this, [content, item]);
+      plugin.bind.apply($this, [content, item]);
+      Handle.appendTo(content);
+      return $this.html(content);
+    }
+
+    var status = undefined;
+
     return {
       init: function(options) {
         var item = this.story_item('data', options.data || {}).story_item('data');
@@ -125,6 +139,24 @@
           .data('newItem', options.newItem)
           .on(wikimate.events.EDIT, function(e) { $this.wikimate_text_editor('init'); })
           .story_item('render');
+      },
+
+      status: function(newStatus) {
+        if (newStatus) {
+          status = newStatus;
+          _.delay(function() { status = undefined; }, 100);
+          return this;
+        } else {
+          return status;
+        }
+      },
+
+      editable: function() {
+        return status === undefined;
+      },
+
+      edit: function() {
+        return this.trigger(wikimate.events.EDIT);
       },
 
       data: function(attrs) {
@@ -139,23 +171,12 @@
         }
       },
 
-      edit: function() {
-        return this.trigger(wikimate.events.EDIT);
-      },
-
       render: function() {
-        var item = this.story_item('data');
-        var plugin = wikimate.plugins[item.type];
-        // add another div inside for removing conflict highlighting with text area
-        // after changed to edit mode
-        var content = $('<div />').addClass('item-content');
-        plugin.emit(content, item);
-        plugin.bind(content, item);
-        Handle.appendTo(content);
-        return this.html(content);
+        return renderByPlugin(this.story_item('status', 'rendering item'));
       },
 
       remove: function() {
+        this.story_item('status', 'removing item');
         if (this.data('newItem')) {
           this.remove();
         } else {
@@ -165,19 +186,18 @@
       },
 
       save: function(changes) {
+        this.story_item('status', 'saving item');
         var item = $.extend(this.story_item('data'), changes);
         if (this.data('newItem')) {
-          this.removeData('newItem')
-            .story_item('render')
-            .trigger(wikimate.events.CHANGE, action('add', item, this.prev().attr('id')));
+          renderByPlugin(this.removeData('newItem')).trigger(wikimate.events.CHANGE, action('add', item, this.prev().attr('id')));
         } else {
-          this.story_item('render')
-            .trigger(wikimate.events.CHANGE, action('edit', item));
+          renderByPlugin(this).trigger(wikimate.events.CHANGE, action('edit', item));
         }
         return this;
       },
 
       moved: function(moveInfo) {
+        this.story_item('status', 'moved item');
         this.trigger(wikimate.events.CHANGE, {
           id: this.attr('id'),
           type: 'move',
