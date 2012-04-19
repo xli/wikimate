@@ -50,12 +50,7 @@
 
     bindChangeEvents: function() {
       var $this = this;
-      return this.on(wikimate.events.EDIT, function(e) {
-        // e.target should be item-content or item
-        // todo, something wrong here
-        var div = $(e.target).story_item('data') ? $(e.target) : $(e.target).parent();
-        div.wikimate_text_editor('init');
-      }).sortable({
+      return this.sortable({
         handle: '.item-handle',
         start: function(event, ui) {
           $this.data('snapshot', _.compact(_.pluck($this.find('.item'), 'id')));
@@ -124,9 +119,11 @@
     return {
       init: function(options) {
         var item = this.story_item('data', options.data || {}).story_item('data');
+        var $this = this;
         return this.addClass('item ' + item.type)
           .attr("id", item.id)
           .data('newItem', options.newItem)
+          .on(wikimate.events.EDIT, function(e) { $this.wikimate_text_editor('init'); })
           .story_item('render');
       },
 
