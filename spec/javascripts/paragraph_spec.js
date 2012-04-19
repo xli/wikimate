@@ -11,7 +11,7 @@ describe("Paragraph Element", function() {
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]});
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     expect($('#sandbox textarea').text()).toEqual("paragraph 1");
   });
 

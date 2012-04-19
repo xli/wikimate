@@ -10,7 +10,7 @@ describe("Plain Text Editor", function() {
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]});
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     $('#1 textarea').text('hello world').focusout();
     expect($('#sandbox #1 p').text()).toEqual('hello world');
   });
@@ -26,7 +26,7 @@ describe("Plain Text Editor", function() {
         changes.push(action);
       }
     });
-    $('#2 .item-content').click();
+    $('#2').story_item('edit');
     $('#2 textarea').text('hello world').focusout();
 
     expect(changes.length).toEqual(1);
@@ -44,7 +44,7 @@ describe("Plain Text Editor", function() {
         changes.push(action);
       }
     });
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     $('#1 textarea').text('paragraph 1').focusout();
     expect(changes.length).toEqual(0);
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
@@ -55,7 +55,7 @@ describe("Plain Text Editor", function() {
       { "id": "1", "type": "paragraph", "text": "paragraph 1\n" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]});
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     Keyboard.hitEnter($('#1 textarea'));
 
     expect($('#1 textarea').length).toEqual(0);
@@ -78,7 +78,7 @@ describe("Plain Text Editor", function() {
         changes.push(action);
       }
     });
-    $('#1 .item-content').click()
+    $('#1').story_item('edit');
     $('#1 textarea').text("hello world\n");
     Keyboard.hitEnter($('#1 textarea'));
 
@@ -126,7 +126,7 @@ describe("Plain Text Editor", function() {
       }
     });
 
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     Keyboard.hitEnter($('#1 textarea'));
     $('#sandbox div textarea').text("hello world").focusout();
     expect(changes.length).toEqual(1);
@@ -147,7 +147,7 @@ describe("Plain Text Editor", function() {
       }
     });
 
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     $('#1 textarea').text('').focusout();
 
     expect(changes.length).toEqual(1);
@@ -168,7 +168,7 @@ describe("Plain Text Editor", function() {
         changes.push(action);
       }
     });
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     Keyboard.hitEsc($('#1 textarea'));
     expect(changes.length).toEqual(0);
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
@@ -185,11 +185,11 @@ describe("Plain Text Editor", function() {
     $('#sandbox div textarea').text("hello").focusout();
 
     // edit
-    $('#' + changes[0].id + ' .item-content').click();
+    $('#' + changes[0].id).story_item('edit');
     $('#sandbox div textarea').text("world").focusout();
 
     // delete
-    $('#' + changes[0].id + ' .item-content').click();
+    $('#' + changes[0].id).story_item('edit');
     $('#sandbox div textarea').text("").focusout();
 
     expect(changes.length).toEqual(3);
@@ -218,7 +218,7 @@ describe("Plain Text Editor", function() {
         changes.push(action);
       }
     });
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     $('#sandbox div textarea').focusout();
     expect(changes.length).toEqual(0);
   });
@@ -231,7 +231,7 @@ describe("Plain Text Editor", function() {
         changes.push(action);
       }
     });
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     expect($('#1 textarea').scrollTop()).toEqual(0);
     expect($('#1 textarea').prop('scrollHeight')).toEqual($('#1 textarea').innerHeight());
   });
@@ -245,7 +245,7 @@ describe("Plain Text Editor", function() {
       }
     });
 
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     expect($('#1 textarea').scrollTop()).toEqual(0);
     expect($('#1 textarea').prop('scrollHeight')).toEqual($('#1 textarea').innerHeight());
   });
@@ -259,7 +259,7 @@ describe("Plain Text Editor", function() {
       }
     });
 
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     var height = $('#1 textarea').innerHeight();
     $('#1 textarea').text("a\nb\nc\nd\ne\nf\ng\nh");
 
@@ -277,7 +277,7 @@ describe("Plain Text Editor", function() {
       }
     });
 
-    $('#1 .item-content').click();
+    $('#1').story_item('edit');
     $('#1 textarea').text('hello')
     Keyboard.hitCmdS($('#1 textarea'));
     expect(changes.length).toEqual(1);

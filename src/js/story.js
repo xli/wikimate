@@ -44,7 +44,7 @@
     },
 
     newItem: function() {
-      $('<div/>').story_item({newItem: true}).appendTo(this).trigger(wikimate.events.EDIT);
+      $('<div/>').story_item({newItem: true}).appendTo(this).story_item('edit');
       return this;
     },
 
@@ -137,6 +137,10 @@
         } else {
           return this.data('data');
         }
+      },
+
+      edit: function() {
+        return this.trigger(wikimate.events.EDIT);
       },
 
       render: function() {

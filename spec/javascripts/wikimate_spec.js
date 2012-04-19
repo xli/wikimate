@@ -4,7 +4,7 @@ describe("WikiMate", function() {
   });
   afterEach(function() {
     $('#sandbox').remove();
-  })
+  });
 
   it("renders text paragraphs story", function() {
     $('#sandbox').wikimate({ story: [

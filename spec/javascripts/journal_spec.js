@@ -24,11 +24,11 @@ describe("Journal", function() {
     $('.wikimate-story textarea').text("hello\n");
     Keyboard.hitEnter($('.wikimate-story textarea'));
 
-    $('.wikimate-story .item-content').click();
+    $('.item').story_item('edit');
     $('.wikimate-story textarea').text("hello2\n");
     Keyboard.hitEnter($('.wikimate-story textarea'));
 
-    $('.wikimate-story .item-content').click();
+    $('.item').story_item('edit');
     $('.wikimate-story textarea').text("").focusout();
 
     var actions = $('#sandbox .wikimate-journal .action').map(function(_, element) {
@@ -59,11 +59,11 @@ describe("Journal", function() {
     $('.wikimate-story textarea').text("hello\n");
     Keyboard.hitEnter($('.wikimate-story textarea'));
 
-    $('.wikimate-story .item-content').click();
+    $('.item').story_item('edit');
     $('.wikimate-story textarea').text("hello2\n");
     Keyboard.hitEnter($('.wikimate-story textarea'));
 
-    $('.wikimate-story .item-content').click();
+    $('.item').story_item('edit');
     $('.wikimate-story textarea').text("").focusout();
 
     $('#sandbox').wikimate('undo');
@@ -90,9 +90,10 @@ describe("Journal", function() {
 
     var items = $('#sandbox').wikimate('story');
 
-    $('#' + items[1].id + ' .item-content').click();
+    $('#' + items[1].id).story_item('edit');
+
     $('#sandbox textarea').text("").focusout();
-    $('#' + items[0].id + ' .item-content').click();
+    $('#' + items[0].id).story_item('edit');
     $('#sandbox textarea').text("").focusout();
 
     $('#sandbox').wikimate('undo');

@@ -56,7 +56,7 @@ jQuery.plugin('wikimate_text_editor', (function($) {
             e.preventDefault();
             textarea.val(text.substr(0, text.length - 1));
             textarea.focusout();
-            $('<div/>').story_item({data: {type: item.type}, newItem: true}).insertAfter($this).trigger(wikimate.events.EDIT);
+            $('<div/>').story_item({data: {type: item.type}, newItem: true}).insertAfter($this).story_item('edit');
           }
         }
       }).on('dblclick', function() {
