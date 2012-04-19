@@ -35,20 +35,14 @@ jQuery.plugin('wikimate_text_editor', (function($) {
       var item = this.story_item('data');
       var $this = this;
       var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
-        var text = textarea.val();
-        if (text === '') {
-          $this.story_item('remove');
-        } else if (text != item.text) {
-          $this.story_item('save', {text: text});
-        } else {
-          $this.wikimate_text_editor('cancel');
-        }
+        $this.wikimate_text_editor('save', item, textarea.val());
       }).on('keydown', function(e) {
         if (e.which == KeyCode.ESC) {
           $this.wikimate_text_editor('cancel');
         } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
           e.preventDefault();
           e.stopPropagation();
+          // todo should we use $this.wikimate_text_editor('save', textarea.val());?
           textarea.focusout();
         }
       }).on('keyup', function(e) {
@@ -83,6 +77,16 @@ jQuery.plugin('wikimate_text_editor', (function($) {
       textarea.selectionStart = pos;
       textarea.selectionEnd = pos;
       return this;
+    },
+
+    save: function(item, text) {
+      if (text === '') {
+        return this.story_item('remove');
+      } else if (text != item.text) {
+        return this.story_item('save', {text: text});
+      } else {
+        return this.wikimate_text_editor('cancel');
+      }
     },
 
     cancel: function() {
