@@ -17,5 +17,5 @@ var Keyboard = {
   hitCmdS: function(element) {
     element.trigger({type: 'keydown', which: 83, keyCode: 83, metaKey: true});
   }
-}
+};
 

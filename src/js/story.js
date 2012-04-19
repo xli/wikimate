@@ -128,7 +128,7 @@
       return $this.html(content);
     }
 
-    var status = undefined;
+    var status;
 
     return {
       init: function(options) {

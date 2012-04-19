@@ -16,6 +16,7 @@ SHELL := /bin/bash
 
 jshint:
 	jshint src
+	jshint spec
 
 build: jshint
 	@@rm -rf ${DIST_DIR}

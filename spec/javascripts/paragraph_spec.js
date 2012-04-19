@@ -4,7 +4,7 @@ describe("Paragraph Element", function() {
   });
   afterEach(function() {
     $('#sandbox').remove();
-  })
+  });
 
   it("opens plain textarea editor for text paragraph by double click", function() {
     $('#sandbox').wikimate({ story: [
@@ -17,7 +17,7 @@ describe("Paragraph Element", function() {
 
   it("renders multi lines text as multi p elements", function() {
     $('#sandbox').wikimate({ story: [
-      { "id": "1", "type": "paragraph", "text": "p 1 \n p 2 \n p 3" },
+      { "id": "1", "type": "paragraph", "text": "p 1 \n p 2 \n p 3" }
     ]});
     var paragraphs = $.map($('#sandbox #1 p'), function(item) {
       return $(item).text();

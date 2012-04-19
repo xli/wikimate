@@ -4,7 +4,7 @@ describe("Journal", function() {
   });
   afterEach(function() {
     $('#sandbox').remove();
-  })
+  });
 
   it("show add item action in journal panel", function() {
     $('#sandbox').wikimate({}).wikimate('journal', []);
@@ -103,19 +103,21 @@ describe("Journal", function() {
     expect(actions[1].type).toEqual('add');
     expect(actions[2].type).toEqual('add');
     expect(actions[3].type).toEqual('remove');
-    var items = $('#sandbox').wikimate('story');
+
+    items = $('#sandbox').wikimate('story');
     expect(items.length).toEqual(2);
     expect(items[0].text).toEqual("hello");
     expect(items[1].text).toEqual("hello3");
 
     $('#sandbox').wikimate('undo');
 
-    var actions = $('#sandbox').wikimate('journal');
+    actions = $('#sandbox').wikimate('journal');
     expect(actions.length).toEqual(3);
     expect(actions[0].type).toEqual('add');
     expect(actions[1].type).toEqual('add');
     expect(actions[2].type).toEqual('add');
-    var items = $('#sandbox').wikimate('story');
+
+    items = $('#sandbox').wikimate('story');
     expect(items.length).toEqual(3);
     expect(items[0].text).toEqual("hello");
     expect(items[1].text).toEqual("hello2");

@@ -66,7 +66,7 @@ describe("Plain Text Editor", function() {
     var paragraphs = $.map($('#sandbox p'), function(item) {
       return $(item).text();
     });
-    expect(paragraphs).toEqual(["paragraph 1", "hello world", "paragraph 2"])
+    expect(paragraphs).toEqual(["paragraph 1", "hello world", "paragraph 2"]);
   });
 
   it("should not contain last new line when paragraph is saved by user enter second new line at the end", function() {
@@ -108,11 +108,11 @@ describe("Plain Text Editor", function() {
     $('#sandbox div textarea').text("hello world").focusout();
     expect(changes.length).toEqual(1);
 
-    expect(changes[0]['id']).toBeDefined();
-    expect(changes[0]['type']).toEqual('add');
-    expect(changes[0]['item']['type']).toEqual('paragraph');
-    expect(changes[0]['item']['text']).toEqual('hello world');
-    expect(changes[0]['after']).toBeUndefined();
+    expect(changes[0].id).toBeDefined();
+    expect(changes[0].type).toEqual('add');
+    expect(changes[0].item.type).toEqual('paragraph');
+    expect(changes[0].item.text).toEqual('hello world');
+    expect(changes[0].after).toBeUndefined();
   });
 
   it("should fire add item change event with 'after' attr set to prev item id", function() {
@@ -131,11 +131,11 @@ describe("Plain Text Editor", function() {
     $('#sandbox div textarea').text("hello world").focusout();
     expect(changes.length).toEqual(1);
     
-    expect(changes[0]['id']).toBeDefined();
-    expect(changes[0]['type']).toEqual('add');
-    expect(changes[0]['item']['type']).toEqual('paragraph');
-    expect(changes[0]['item']['text']).toEqual('hello world');
-    expect(changes[0]['after']).toEqual('1');
+    expect(changes[0].id).toBeDefined();
+    expect(changes[0].type).toEqual('add');
+    expect(changes[0].item.type).toEqual('paragraph');
+    expect(changes[0].item.text).toEqual('hello world');
+    expect(changes[0].after).toEqual('1');
   });
 
   it("should remove paragraph item when there is no content after edited", function() {
@@ -152,11 +152,11 @@ describe("Plain Text Editor", function() {
 
     expect(changes.length).toEqual(1);
 
-    expect(changes[0]['id']).toEqual('1');
-    expect(changes[0]['type']).toEqual('remove');
-    expect(changes[0]['item']['id']).toEqual('1');
-    expect(changes[0]['item']['type']).toEqual('paragraph');
-    expect(changes[0]['item']['text']).toEqual('paragraph 1');
+    expect(changes[0].id).toEqual('1');
+    expect(changes[0].type).toEqual('remove');
+    expect(changes[0].item.id).toEqual('1');
+    expect(changes[0].item.type).toEqual('paragraph');
+    expect(changes[0].item.text).toEqual('paragraph 1');
     expect($('#sandbox #1')[0]).toBeUndefined();
   });
 
@@ -278,7 +278,7 @@ describe("Plain Text Editor", function() {
     });
 
     $('#1').story_item('edit');
-    $('#1 textarea').text('hello')
+    $('#1 textarea').text('hello');
     Keyboard.hitCmdS($('#1 textarea'));
     expect(changes.length).toEqual(1);
     expect(changes[0].type).toEqual('edit');
