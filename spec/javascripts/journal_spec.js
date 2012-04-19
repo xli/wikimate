@@ -7,7 +7,7 @@ describe("Journal", function() {
   })
 
   it("show add item action in journal panel", function() {
-    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate({}).wikimate('journal', []);
 
     $('#sandbox .wikimate-story').dblclick();
     $('.wikimate-story textarea').text("hello world\n");
@@ -18,7 +18,7 @@ describe("Journal", function() {
   });
 
   it("records actions", function() {
-    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate({}).wikimate('journal', []);
 
     $('#sandbox .wikimate-story').dblclick();
     $('.wikimate-story textarea').text("hello\n");
@@ -42,9 +42,8 @@ describe("Journal", function() {
 
   it("highlight item and action when mouseover", function() {
     $('#sandbox').wikimate({
-      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1\n" }],
-      journal: [{id: '1', type: 'add', item: { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }}]
-    });
+      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1\n" }]
+    }).wikimate('journal', [{id: '1', type: 'add', item: { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }}]);
 
     expect($('#1').hasClass('highlight')).toEqual(false);
     $('.wikimate-journal .action').mouseover();
@@ -54,7 +53,7 @@ describe("Journal", function() {
   });
 
   it("undo last action", function() {
-    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate({}).wikimate('journal', []);
 
     $('#sandbox .wikimate-story').dblclick();
     $('.wikimate-story textarea').text("hello\n");
@@ -80,13 +79,13 @@ describe("Journal", function() {
   });
 
   it("undo remove action should add item back to removed position", function() {
-    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate({}).wikimate('journal', []);
 
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello").focusout();
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello2").focusout();
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello3").focusout();
 
     var items = $('#sandbox').wikimate('story');
@@ -123,13 +122,13 @@ describe("Journal", function() {
   });
 
   it("undo add action should remove item", function() {
-    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate({}).wikimate('journal', []);
 
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello").focusout();
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello2").focusout();
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello3").focusout();
 
     $('#sandbox').wikimate('undo');
@@ -146,14 +145,13 @@ describe("Journal", function() {
 
   it("undo edit action should update item", function() {
     $('#sandbox').wikimate({
-      story: [{ "id": "3", "type": "paragraph", "text": "3" }, { "id": "1", "type": "paragraph", "text": "2" }],
-      journal: [
-        {"id": "1", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "1" }},
-        {"id": "3", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "3" }, after: '1'},
-        {"id": "1", "type": "move", "prevOrder": ["1", "3"], "order": ["3", "1"]},
-        {"id": "1", "type": "edit", "item": { "id": "1", "type": "paragraph", "text": "2" }}
-      ]
-    });
+      story: [{ "id": "3", "type": "paragraph", "text": "3" }, { "id": "1", "type": "paragraph", "text": "2" }]
+    }).wikimate('journal', [
+      {"id": "1", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "1" }},
+      {"id": "3", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "3" }, after: '1'},
+      {"id": "1", "type": "move", "prevOrder": ["1", "3"], "order": ["3", "1"]},
+      {"id": "1", "type": "edit", "item": { "id": "1", "type": "paragraph", "text": "2" }}
+    ]);
 
     $('#sandbox').wikimate('undo');
     var actions = $('#sandbox').wikimate('journal');
@@ -165,13 +163,13 @@ describe("Journal", function() {
   });
 
   it("undo move action should move item back to original position", function() {
-    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate({}).wikimate('journal', []);
 
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello").focusout();
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello2").focusout();
-    $('#sandbox').wikimate('new');
+    $('#sandbox').wikimate('newItem');
     $('#sandbox textarea').text("hello3").focusout();
 
     var items = $('#sandbox .item');

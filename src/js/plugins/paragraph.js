@@ -14,5 +14,5 @@
         div.trigger(wikimate.events.EDIT);
       });
     }
-  }
+  };
 })(jQuery);
