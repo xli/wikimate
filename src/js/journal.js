@@ -4,7 +4,7 @@
 
     function createAction(action) {
       var identifier = action.type.charAt(0);
-      return $('<a href="#"/>').data('data', action)
+      return $('<a href="javascript:void(0)"/>').data('data', action)
         .addClass('action ' + action.type)
         .text(identifier)
         .hover(function(e) {

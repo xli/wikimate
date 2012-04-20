@@ -7,7 +7,7 @@ jQuery.plugin('wikimate_text_editor', (function($) {
   };
 
   function createSaveDot() {
-    return $('<a href="#">*</a>').attr('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel').css('color', 'red');
+    return $('<a href="javascript:void(0)">*</a>').attr('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel').css('color', 'red');
   }
 
   function syncHeight(textarea) {
