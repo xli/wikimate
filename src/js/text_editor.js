@@ -19,14 +19,14 @@ jQuery.plugin('wikimate_text_editor', (function($) {
   }
 
   function initActionBar($this, textarea) {
-    var bar = $('<div />').addClass('item-action-bar').append(createSaveDot());
+    var bar = $('<div />').addClass('editor-action-bar').append(createSaveDot());
     $this.append(bar).hover(function(e) {
       bar.show();
     }, function(e) {
       bar.hide();
     });
-    textarea.on('keydown.item_action_bar', function() {
-      textarea.off('.item_action_bar');
+    textarea.on('keydown.editor_action_bar', function() {
+      textarea.off('.editor_action_bar');
       bar.show();
     });
   }

@@ -10,36 +10,39 @@
   position: relative;
 }
 
-.wikimate-story .item .item-handle {
-  background-image: url("./../images/drag_hand.png");
-  position: absolute;
-  right: 2px;
-  top: 2px;
-  height: 16px;
-  width: 16px;
-  display: none;
-}
-
-.wikimate-story .item .item-action-bar {
-  position: absolute;
-  right: 0px;
-  bottom: 2px;
-  height: 16px;
-  width: 16px;
-  display: none;
-}
-
-.wikimate-story .item .item-action-bar a {
-  color: #555;
-  text-decoration: none;
-}
-
 .wikimate-story .item .item-content {
   position: relative;
 }
 
 .wikimate-story .item .item-content:hover { 
-  background-color: #FFFFEE;
+  border-right: 5px solid #ccc;
+}
+
+.wikimate-story .item .item-action-bar {
+  position: absolute;
+  right: 2px;
+  bottom: 0px;
+  height: 16px;
+  display: none;
+  background-color: #fff;
+  padding-left: 5px;
+  overflow: hidden;
+}
+
+.wikimate-story .item .item-action-bar .item-handle {
+  background-color: #fff;
+  background-image: url("./../images/drag_hand.png");
+  display: inline;
+  float: right;
+  height: 16px;
+  width: 16px;
+}
+
+.wikimate-story .item .item-action-bar a {
+  float: left;
+  font-size: 12px;
+  margin-right: 4px;
+  margin-top: 2px;
 }
 
 .wikimate-story .item .plain-text-editor {
@@ -48,6 +51,18 @@
   line-height: 1em;
   overflow: hidden;
   min-height: 4em;
+}
+
+.wikimate-story .item .editor-action-bar {
+  position: absolute;
+  right: 0px;
+  bottom: 4px;
+  height: 16px;
+  width: 16px;
+  display: none;
+}
+.wikimate-story .item .editor-action-bar a {
+  text-decoration: none;
 }
 
 .wikimate-journal {

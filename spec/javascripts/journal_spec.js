@@ -191,7 +191,7 @@ describe("Journal", function() {
     expect(actions[0].type).toEqual('add');
     expect(actions[0].type).toEqual('add');
 
-    var orderedText = $.map($('#sandbox .item'), function(item) {
+    var orderedText = $.map($('#sandbox .item p'), function(item) {
       return $(item).text();
     });
     expect(orderedText).toEqual(['hello', 'hello2', 'hello3']);

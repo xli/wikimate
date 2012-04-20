@@ -10,7 +10,7 @@
     },
     bind: function(div, item) {
       var $this = this;
-      div.on('click', function(e) {
+      div.on('dblclick', function(e) {
         if ($this.story_item('editable')) {
           $this.story_item('edit');
         }
