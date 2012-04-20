@@ -137,7 +137,6 @@
         return this.addClass('item ' + item.type)
           .attr("id", item.id)
           .data('newItem', options.newItem)
-          .on(wikimate.events.EDIT, function(e) { $this.wikimate_text_editor('init'); })
           .story_item('render');
       },
 
@@ -156,7 +155,7 @@
       },
 
       edit: function() {
-        return this.trigger(wikimate.events.EDIT);
+        return this.wikimate_text_editor('init');
       },
 
       data: function(attrs) {
@@ -209,8 +208,7 @@
   })());
 
   $.extend(wikimate.events, {
-    CHANGE: 'wikimate:change',
-    EDIT: 'wikimate:edit'
+    CHANGE: 'wikimate:change'
   });
 
   $.extend(wikimate.fn, {
