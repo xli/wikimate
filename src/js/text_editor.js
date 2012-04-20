@@ -13,7 +13,8 @@ jQuery.plugin('wikimate_text_editor', (function($) {
   function syncHeight(textarea) {
     var expectedTextHeight = textarea.prop('scrollHeight');
     if (expectedTextHeight > textarea.innerHeight()) {
-      textarea.height(expectedTextHeight);
+      var lineHeight = textarea.css('line-height');
+      textarea.height(expectedTextHeight + parseInt(lineHeight, 10));
     }
   }
 
