@@ -33,37 +33,40 @@
           return randomBytes(8);
         },
         replay: function(events) {
-          var story = [];
-          function itemById(id) {
-            return _.find(story, function(item) {
-              return item.id === id;
-            });
-          }
-          function itemIndexById(id) {
-            return story.indexOf(itemById(id));
-          }
+          var story = _([]).extend({
+            item: function(id) {
+              return _.find(story, function(item) {
+                return item.id === id;
+              });
+            },
+            itemIndex: function(id) {
+              return story.indexOf(this.item(id));
+            }
+          });
           _.each(events, function(e) {
             switch(e.type) {
               case "add":
                 var item = $.extend({}, e.item);
                 if(e.after) {
-                  var index = itemIndexById(e.after);
+                  var index = story.itemIndex(e.after);
                   story.splice(index + 1, 0, item);
                 } else {
                   story.push(item);
                 }
                 break;
               case "edit":
-                itemById(e.id).text = e.item.text;
+                story.item(e.id).text = e.item.text;
                 break;
               case "remove":
-                story.splice(itemIndexById(e.id), 1);
+                story.splice(story.itemIndex(e.id), 1);
                 break;
               case 'move':
                 story = _.sortBy(story, function(item) {
                   return e.order.indexOf(item.id);
                 });
                 break;
+              default:
+                throw "Unknown event type: " + e.type;
             }
           });
           return story;

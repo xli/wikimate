@@ -7,7 +7,7 @@ describe("Events Replay", function() {
       item: {id: '1', text: 'hello world'}
     }];
 
-    expect(wikimate.utils.replay(events)).toEqual([
+    expect(_.toArray(wikimate.utils.replay(events))).toEqual([
       {id: '1', text: 'hello world'}
     ]);
 
@@ -17,7 +17,7 @@ describe("Events Replay", function() {
       item: {id: '1', text: 'world'}
     });
 
-    expect(wikimate.utils.replay(events)).toEqual([
+    expect(_.toArray(wikimate.utils.replay(events))).toEqual([
       {id: '1', text: 'world'}
     ]);
 
@@ -26,7 +26,7 @@ describe("Events Replay", function() {
       type: 'remove'
     });
 
-    expect(wikimate.utils.replay(events)).toEqual([]);
+    expect(_.toArray(wikimate.utils.replay(events))).toEqual([]);
   });
 
   it("move item events", function() {
@@ -47,7 +47,7 @@ describe("Events Replay", function() {
       }
     ];
 
-    expect(wikimate.utils.replay(events)).toEqual([
+    expect(_.toArray(wikimate.utils.replay(events))).toEqual([
       {id: '2', text: 'again'}, {id: '1', text: 'hello'}
     ]);
   });
@@ -71,7 +71,7 @@ describe("Events Replay", function() {
       }
     ];
 
-    expect(wikimate.utils.replay(events)).toEqual([
+    expect(_.toArray(wikimate.utils.replay(events))).toEqual([
       {id: '1', text: 'hello'}, {id: '3', text: '!'}, {id: '2', text: 'again'}
     ]);
   });
@@ -102,5 +102,27 @@ describe("Events Replay", function() {
         item: {id: '1', text: 'world'}
       }
     ]);
+  });
+
+  it("find item by id", function() {
+    var events = [
+      {
+        id: '1',
+        type: 'add',
+        item: {id: '1', text: 'hello world'}
+      },
+      {
+        id: '1',
+        type: 'edit',
+        item: {id: '1', text: 'world'}
+      }
+    ];
+    var story = wikimate.utils.replay(events);
+    expect(story.item('1').text).toEqual("world");
+    expect(story.itemIndex('1')).toEqual(0);
+
+    expect([].item).toBeUndefined();
+    expect([]['item']).toBeUndefined();
+    expect([].itemIndex).toBeUndefined();
   });
 });
