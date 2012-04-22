@@ -187,7 +187,7 @@
         if (this.data('newItem')) {
           this.remove();
         } else {
-          this.trigger(wikimate.events.CHANGE, action('remove', this.story_item('data'), this.prev().attr('id')));
+          this.trigger(wikimate.events.CHANGE, {id: this.story_item('data').id, type: 'remove'});
           this.remove();
         }
       },

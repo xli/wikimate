@@ -154,9 +154,7 @@ describe("Plain Text Editor", function() {
 
     expect(changes[0].id).toEqual('1');
     expect(changes[0].type).toEqual('remove');
-    expect(changes[0].item.id).toEqual('1');
-    expect(changes[0].item.type).toEqual('paragraph');
-    expect(changes[0].item.text).toEqual('paragraph 1');
+    expect(changes[0].item).toBeUndefined();
     expect($('#sandbox #1')[0]).toBeUndefined();
   });
 
