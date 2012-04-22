@@ -51,6 +51,22 @@ describe("Journal", function() {
     expect($('#1').hasClass('highlight')).toEqual(false);
   });
 
+  it("show diff tooltip on action element when mouseover", function() {
+    $('#sandbox').wikimate({
+      story: [{ "id": "1", "type": "paragraph", "text": "paragraph 1\n" }]
+    }).wikimate('journal', [{id: '1', type: 'add', item: { "id": "1", "type": "paragraph", "text": "paragraph 1\n" }}]);
+
+    expect($('.diff').length).toEqual(0);
+    $('.wikimate-journal .action').mouseover();
+    expect($('.diff').length).toEqual(1);
+    var action = $('.wikimate-journal .action');
+    var tip = $('.wikimate .diff');
+    expect(tip.offset().left).toEqual(action.offset().left + action.width() * 3 / 4);
+    expect(tip.offset().top).toEqual(action.offset().top - tip.height());
+    $('.wikimate-journal .action').mouseleave();
+    expect($('.diff').length).toEqual(0);
+  });
+
   it("undo last action", function() {
     $('#sandbox').wikimate({}).wikimate('journal', []);
 
