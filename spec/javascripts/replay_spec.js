@@ -44,11 +44,16 @@ describe("Events Replay", function() {
         id: '2',
         type: 'move',
         order: ['2', '1']
+      },
+      {
+        id: '2',
+        type: 'edit',
+        item: {id: '2', text: 'world'}
       }
     ];
 
     expect(_.toArray(wikimate.utils.replay(events))).toEqual([
-      {id: '2', text: 'again'}, {id: '1', text: 'hello'}
+      {id: '2', text: 'world'}, {id: '1', text: 'hello'}
     ]);
   });
 
@@ -118,8 +123,8 @@ describe("Events Replay", function() {
       }
     ];
     var story = wikimate.utils.replay(events);
-    expect(story.item('1').text).toEqual("world");
-    expect(story.itemIndex('1')).toEqual(0);
+    expect(story.itemById('1').text).toEqual("world");
+    expect(story.itemIndexById('1')).toEqual(0);
 
     expect([].item).toBeUndefined();
     expect([]['item']).toBeUndefined();

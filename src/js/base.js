@@ -33,37 +33,32 @@
           return randomBytes(8);
         },
         replay: function(events) {
-          var story = _([]).extend({
-            item: function(id) {
-              return _.find(story, function(item) {
-                return item.id === id;
-              });
-            },
-            itemIndex: function(id) {
-              return story.indexOf(this.item(id));
-            }
-          });
+          var exts = {
+            itemById: function(id) { return _.find(this, function(item) { return item.id === id; }); },
+            itemIndexById: function(id) { return this.indexOf(this.itemById(id)); }
+          };
+          var story = _.extend([], exts);
           _.each(events, function(e) {
             switch(e.type) {
               case "add":
                 var item = $.extend({}, e.item);
                 if(e.after) {
-                  var index = story.itemIndex(e.after);
+                  var index = story.itemIndexById(e.after);
                   story.splice(index + 1, 0, item);
                 } else {
                   story.push(item);
                 }
                 break;
               case "edit":
-                story.item(e.id).text = e.item.text;
+                story.itemById(e.id).text = e.item.text;
                 break;
               case "remove":
-                story.splice(story.itemIndex(e.id), 1);
+                story.splice(story.itemIndexById(e.id), 1);
                 break;
               case 'move':
-                story = _.sortBy(story, function(item) {
+                story = _.extend(_.sortBy(story, function(item) {
                   return e.order.indexOf(item.id);
-                });
+                }), exts);
                 break;
               default:
                 throw "Unknown event type: " + e.type;
