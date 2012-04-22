@@ -127,7 +127,7 @@ describe("Events Replay", function() {
     expect(story.itemIndexById('1')).toEqual(0);
 
     expect([].item).toBeUndefined();
-    expect([]['item']).toBeUndefined();
+    expect([].item).toBeUndefined();
     expect([].itemIndex).toBeUndefined();
   });
 });
