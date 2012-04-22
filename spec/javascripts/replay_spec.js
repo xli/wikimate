@@ -75,4 +75,32 @@ describe("Events Replay", function() {
       {id: '1', text: 'hello'}, {id: '3', text: '!'}, {id: '2', text: 'again'}
     ]);
   });
+
+  it("should have side effects to events objects", function() {
+    var events = [
+      {
+        id: '1',
+        type: 'add',
+        item: {id: '1', text: 'hello world'}
+      },
+      {
+        id: '1',
+        type: 'edit',
+        item: {id: '1', text: 'world'}
+      }
+    ];
+    wikimate.utils.replay(events);
+    expect(events).toEqual([
+      {
+        id: '1',
+        type: 'add',
+        item: {id: '1', text: 'hello world'}
+      },
+      {
+        id: '1',
+        type: 'edit',
+        item: {id: '1', text: 'world'}
+      }
+    ]);
+  });
 });

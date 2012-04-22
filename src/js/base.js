@@ -45,11 +45,12 @@
           _.each(events, function(e) {
             switch(e.type) {
               case "add":
+                var item = $.extend({}, e.item);
                 if(e.after) {
                   var index = itemIndexById(e.after);
-                  story.splice(index + 1, 0, e.item);
+                  story.splice(index + 1, 0, item);
                 } else {
-                  story.push(e.item);
+                  story.push(item);
                 }
                 break;
               case "edit":
