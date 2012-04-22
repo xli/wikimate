@@ -108,6 +108,7 @@
   border-radius: 5px;
   box-shadow: 5px 5px 5px #888;
   z-index: 1000;
+  width: 300px;
   opacity: 1;
 }
 
