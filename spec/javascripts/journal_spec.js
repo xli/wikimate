@@ -149,7 +149,7 @@ describe("Journal", function() {
     }).wikimate('journal', [
       {"id": "1", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "1" }},
       {"id": "3", "type": "add", "item": { "id": "1", "type": "paragraph", "text": "3" }, after: '1'},
-      {"id": "1", "type": "move", "prevOrder": ["1", "3"], "order": ["3", "1"]},
+      {"id": "1", "type": "move", "order": ["3", "1"]},
       {"id": "1", "type": "edit", "item": { "id": "1", "type": "paragraph", "text": "2" }}
     ]);
 
@@ -176,7 +176,6 @@ describe("Journal", function() {
     $(items[1]).insertAfter(items[2]);
 
     $(items[1]).story_item('moved', {
-      prevOrder: [items[0].id, items[1].id, items[2].id],
       order: [items[0].id, items[2].id, items[1].id]
     });
 

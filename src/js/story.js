@@ -52,12 +52,8 @@
       var $this = this;
       return this.sortable({
         handle: '.item-handle',
-        start: function(event, ui) {
-          $this.data('snapshot', _.compact(_.pluck($this.find('.item'), 'id')));
-        },
         update: function(event, ui) {
           ui.item.story_item('moved', {
-            prevOrder: $this.data('snapshot'),
             order: _.pluck($this.find('.item'), 'id')
           });
         }
@@ -212,7 +208,6 @@
         this.trigger(wikimate.events.CHANGE, {
           id: this.attr('id'),
           type: 'move',
-          prevOrder: moveInfo.prevOrder,
           order: moveInfo.order
         });
       }

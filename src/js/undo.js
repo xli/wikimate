@@ -9,14 +9,16 @@
         return {id: action.id, type: 'remove', item: action.item, after: action.after};
       },
       edit: function(action) {
-        var prev = _.find(this.wikimate('journal').reverse(), function(ja) {
-          return ja.id == action.id && ja.type != "move";
+        var story = wikimate.utils.replay(this.wikimate('journal'));
+        var prev = _.find(story, function(item) {
+          return item.id == action.id;
         });
         // todo: what if we could not find prev because of data issue?
-        return {id: action.id, type: 'edit', item: $.extend({}, prev.item)};
+        return {id: action.id, type: 'edit', item: $.extend({}, prev)};
       },
       move: function(action) {
-        return {id: action.id, type: 'move', order: action.prevOrder};
+        var story = wikimate.utils.replay(this.wikimate('journal'));
+        return {id: action.id, type: 'move', order: _.pluck(story, 'id')};
       }
     };
     return function(action) {
