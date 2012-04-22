@@ -70,7 +70,7 @@
   border-radius: 5px;
   border: 1px solid #CCC;
   overflow: hidden;
-  height: 34px;
+  position: relative;
   width: 100%;
 }
 
@@ -93,7 +93,31 @@
 }
 
 .wikimate .highlight {
-  background-color: #FFC;
+  background-color: #FFD;
   color: #000;
+  font-weight: normal;
 }
 
+.wikimate .diff {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  background-color: #FFE;
+  border: 1px solid orange;
+  padding: 3px 5px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #888;
+  z-index: 1000;
+  opacity: 1;
+}
+
+.wikimate .diff del {
+  background-color: #fadad7;
+  color: #b30000;
+  text-decoration: none;
+}
+.wikimate .diff ins {
+  background-color: #eaf2c2;
+  color: #406619;
+  text-decoration: none;
+}

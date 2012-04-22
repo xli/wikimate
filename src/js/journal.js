@@ -8,9 +8,37 @@
         .addClass('action ' + action.type)
         .text(identifier)
         .hover(function(e) {
-          $('#' + action.id).addClass('highlight');
+          var tip;
+          var current = $('#' + action.id).story_item('data');
+          if (current) {
+            var itemEle = $('#' + action.id).addClass('highlight');
+            if (action.type == 'move') {
+              tip = "Item was moved to here";
+            } else {
+              var text = current.text;
+              var oldText = action.item ? action.item.text : '';
+              diff = JsDiff.diffWords(text, oldText);
+              if (diff != []) {
+                tip = JsDiff.convertChangesToXML(diff);
+              } else {
+                tip = "No difference found.";
+              }
+            }
+            $('<div/>').addClass('diff').html(tip).appendTo(itemEle);
+          } else {
+            if (action.type == 'move') {
+              tip = "Item was moved and later got removed.";
+            } else {
+              tip = $('<del/>').html(action.item.text);
+            }
+            var offset = $(this).offset();
+            var left = offset.left + $(this).width() * 3 / 4;
+            var top = offset.top - $(this).height() * 3 / 4;
+            $('<div/>').css('left', left).css('top', top).addClass('diff').html(tip).appendTo($('.wikimate'));
+          }
         }, function(e) {
-          $('#' + action.id).removeClass('highlight');
+          $('.wikimate .diff').remove();
+          $('.wikimate .highlight').removeClass('highlight');
         });
     }
 
