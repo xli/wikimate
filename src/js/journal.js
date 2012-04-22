@@ -39,17 +39,23 @@
           $('.wikimate .highlight').removeClass('highlight');
         });
     }
-
+    var afterActionCreated;
     return {
-      init: function(actions) {
+      init: function(actions, after_action_created) {
         var $this = this;
+        afterActionCreated = after_action_created;
         $.each(actions || [], function(i, action) {
           $this.journal('push', action);
         });
         return this;
       },
       push: function(action) {
-        return this.append(createAction(action));
+        var actionElement = createAction(action);
+        this.append(actionElement);
+        if (afterActionCreated) {
+          afterActionCreated(actionElement);
+        }
+        return this;
       },
       pop: function() {
         var lastAction = this.find('.action:last');
@@ -65,9 +71,9 @@
     };
   })());
 
-  wikimate.fn.journal = function(journal) {
+  wikimate.fn.journal = function(journal, afterActionCreated) {
     if (journal) {
-      var element = $('<div />').addClass('wikimate-journal').journal('init', journal);
+      var element = $('<div />').addClass('wikimate-journal').journal('init', journal, afterActionCreated);
       // handler is processed before handlers on wikimate element
       this.find('.wikimate-story').on(wikimate.events.CHANGE, function(e, action) {
         element.journal('push', action);

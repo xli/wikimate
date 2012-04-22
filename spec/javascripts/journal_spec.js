@@ -10,11 +10,26 @@ describe("Journal", function() {
     $('#sandbox').wikimate({}).wikimate('journal', []);
 
     $('#sandbox .wikimate-story').dblclick();
-    $('.wikimate-story textarea').text("hello world\n");
-    Keyboard.hitEnter($('.wikimate-story textarea'));
+    $('.wikimate-story textarea').text("hello world").focusout();
 
     var actions = $('#sandbox').wikimate('journal');
     expect(actions.length).toEqual(1);
+  });
+
+  it("after action created callback", function() {
+    var ee = [];
+    var item = { "id": "1", "type": "paragraph", "text": "paragraph 1" };
+    var action = {"id": "1", "type": "add", "item": item};
+    $('#sandbox').wikimate({story: [item]}).wikimate('journal', [action], function(actionElement) {
+      ee.push(actionElement[0]);
+    });
+
+    $('#sandbox .wikimate-story').dblclick();
+    $('.wikimate-story textarea').text("hello world").focusout();
+
+    expect(ee.length).toEqual(2);
+    expect(ee[0]).toEqual($('.wikimate-journal .action')[0]);
+    expect(ee[1]).toEqual($('.wikimate-journal .action')[1]);
   });
 
   it("records actions", function() {
