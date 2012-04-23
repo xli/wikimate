@@ -52,6 +52,8 @@
       var $this = this;
       return this.sortable({
         handle: '.item-handle',
+        forcePlaceholderSize: true,
+        placeholder: 'sort-placeholder',
         update: function(event, ui) {
           ui.item.story_item('moved', {
             order: _.pluck($this.find('.item'), 'id')

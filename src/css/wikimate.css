@@ -122,3 +122,16 @@
   color: #406619;
   text-decoration: none;
 }
+
+.wikimate-story .sort-placeholder {
+  background-color: #FFE;
+  border: 1px solid orange;
+}
+
+.ui-sortable-helper {
+  background-color: #FFE;
+  border: 1px solid orange;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #888;
+  padding: 3px 5px;
+}
