@@ -14,7 +14,7 @@
           var item = story.itemById(action.id);
           var beforeChange = item ? item.text : undefined;
           var afterChange = action.item ? action.item.text : undefined;
-          return JsDiff.convertChangesToXML(JsDiff.diffWords(beforeChange, afterChange));
+          return JsDiff.convertChangesToXML(JsDiff.diffWords(beforeChange, afterChange)).replace(/\n/g, "<br/>");
         default:
           throw "Unknown action type " + action.type;
       }
