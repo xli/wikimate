@@ -43,8 +43,8 @@
       });
     },
 
-    newItem: function() {
-      $('<div/>').story_item({newItem: true}).appendTo(this).story_item('edit');
+    newItem: function(data) {
+      $('<div/>').story_item({newItem: true, data: data}).appendTo(this).story_item('edit');
       return this;
     },
 
@@ -221,8 +221,8 @@
   });
 
   $.extend(wikimate.fn, {
-    newItem: function() {
-      return this.find('.wikimate-story').story('newItem');
+    newItem: function(data) {
+      return this.find('.wikimate-story').story('newItem', data);
     },
     story: function(options) {
       if (options) {

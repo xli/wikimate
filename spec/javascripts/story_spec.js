@@ -40,4 +40,12 @@ describe("Story", function() {
       expect($('#2').story_item('editable')).toEqual(false);
     });
   });
+  it("new item by given data", function() {
+    $('#sandbox').wikimate({ story: []});
+    $('#sandbox').wikimate('newItem', {text: 'hello'});
+    expect($('.item').length).toEqual(1);
+    expect($('.item textarea').text()).toEqual('hello');
+    $('.item').story_item('save');
+    expect($('.item').story_item('data').text).toEqual('hello');
+  });
 });
