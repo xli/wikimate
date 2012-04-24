@@ -145,7 +145,7 @@
         var item = this.story_item('data', options.data || {}).story_item('data');
         var $this = this;
         return this.addClass('item ' + item.type)
-          .attr("id", item.id)
+          .prop("id", item.id)
           .data('newItem', options.newItem)
           .story_item('render');
       },
@@ -198,7 +198,7 @@
         this.story_item('status', 'saving item');
         var item = $.extend(this.story_item('data'), changes);
         if (this.data('newItem')) {
-          renderByPlugin(this.removeData('newItem')).trigger(wikimate.events.CHANGE, action('add', item, this.prev().attr('id')));
+          renderByPlugin(this.removeData('newItem')).trigger(wikimate.events.CHANGE, action('add', item, this.prev().prop('id')));
         } else {
           renderByPlugin(this).trigger(wikimate.events.CHANGE, action('edit', item));
         }
@@ -208,7 +208,7 @@
       moved: function(moveInfo) {
         this.story_item('status', 'moved item');
         this.trigger(wikimate.events.CHANGE, {
-          id: this.attr('id'),
+          id: this.prop('id'),
           type: 'move',
           order: moveInfo.order
         });
