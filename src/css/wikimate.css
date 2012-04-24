@@ -135,3 +135,6 @@
   box-shadow: 5px 5px 5px #888;
   padding: 3px 5px;
 }
+.ui-sortable-helper .item-content {
+  border: none !important;
+}
