@@ -1,8 +1,9 @@
+* a wysiwyg plugin
 * more smooth way to auto increase textarea height
 * data-id instead of html id, avoid dup id?!, item div is the only one html id
 * body
-!! render story items
-!! append a text paragraph after double clicked anywhere inside body but not on any item
+# ** render story items
+# ** append a text paragraph after double clicked anywhere inside body but not on any item
 # ** move item by drag&drop
 # ** add item should have attr after to describe where it added into
 ** remove item by drag&drop into a trash????
@@ -20,16 +21,14 @@
 # ** CMD + S/CTRL + S to save
 # ** show save/cancel somewhere in editor
 ** tab to jump to next item
-** should not open another editor when click outside of current editing editor
-** what should we do if user added a new item that only has a new line char
-** undo an action
+# ** should not open another editor when click outside of current editing editor
+# ** undo an action
 # ** save link/button
 * journal
-** remember all event history on wikimate obj? (or only for test?)
-** list journal events at bottom
-** highlight journal event change
+# ** remember all event history on wikimate obj? (or only for test?)
+# ** list journal events at bottom
+# ** highlight journal event change
 ** float panel to follow up scrolling
-* a toolbar for element plugin to put in icon for drag&drop adding item
 * plugins
 ** handle can not find plugin error
 ** paragraph
