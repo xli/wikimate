@@ -32,45 +32,47 @@
       }
     }
 
-    function createEditLink($this) {
-      return $('<a href="javascript:void(0)" title="Click me or double click the content to edit">Edit</a>').on('click', function(e) {
-        return $this.parent().story_item('edit');
-      });
-    }
-    function createDeleteLink($this) {
-      return $('<a href="javascript:void(0)" title="Click me to remove the content">Del</a>').on('click', function(e) {
-        return $this.parent().story_item('remove');
-      });
-    }
-
-    var cursor = {
-      grab: function() {
-        return this.css('cursor', 'grab').css('cursor', '-moz-grab').css('cursor', '-webkit-grab');
-      },
-      grabing: function() {
-        return this.css('cursor', 'grabbing').css('cursor', '-moz-grabbing').css('cursor', '-webkit-grabbing');
+    var initActionBar = (function() {
+      function createEditLink($this) {
+        return $('<a href="javascript:void(0)" title="Click me or double click the content to edit">Edit</a>').on('click', function(e) {
+          return $this.parent().story_item('edit');
+        });
       }
-    };
-    function createHandle() {
-      var handle = $('<div />').addClass('item-handle').extend(cursor).grab();
-      return handle.mousedown(function(e) {
-        handle.grabing();
-      }).mouseup(function() {
-        handle.grab();
-      });
-    }
+      function createDeleteLink($this) {
+        return $('<a href="javascript:void(0)" title="Click me to remove the content">Del</a>').on('click', function(e) {
+          return $this.parent().story_item('remove');
+        });
+      }
 
-    function initActionBar($this) {
-      var bar = $('<div />').addClass('item-action-bar')
-        .append(createDeleteLink($this))
-        .append(createEditLink($this))
-        .append(createHandle());
-      return $this.append(bar).hover(function(e) {
-        bar.show();
-      }, function(e) {
-        bar.hide();
-      });
-    }
+      var cursor = {
+        grab: function() {
+          return this.css('cursor', 'grab').css('cursor', '-moz-grab').css('cursor', '-webkit-grab');
+        },
+        grabing: function() {
+          return this.css('cursor', 'grabbing').css('cursor', '-moz-grabbing').css('cursor', '-webkit-grabbing');
+        }
+      };
+      function createHandle() {
+        var handle = $('<div />').addClass('item-handle').extend(cursor).grab();
+        return handle.mousedown(function(e) {
+          handle.grabing();
+        }).mouseup(function() {
+          handle.grab();
+        });
+      }
+
+      return function($this) {
+        var bar = $('<div />').addClass('item-action-bar')
+          .append(createDeleteLink($this))
+          .append(createEditLink($this))
+          .append(createHandle());
+        return $this.append(bar).hover(function(e) {
+          bar.show();
+        }, function(e) {
+          bar.hide();
+        });
+      }
+    })();
 
     var status;
 
