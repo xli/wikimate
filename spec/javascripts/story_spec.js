@@ -48,4 +48,16 @@ describe("Story", function() {
     $('.item').story_item('save');
     expect($('.item').story_item('data').text).toEqual('hello');
   });
+
+  it("open rich document editor", function() {
+    runs(function() {
+      $('#sandbox').wikimate({ story: []});
+      $('#sandbox').wikimate('newItem', {text: 'hello', type: 'rdoc'});
+    });
+    waits(100);
+    runs(function() {
+      expect($('.item').length).toEqual(1);
+      expect($('.item .mceEditor').length).toEqual(1);
+    });
+  });
 });
