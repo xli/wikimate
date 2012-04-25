@@ -20,7 +20,7 @@
         var type = $(this).data('plugin');
         itemEle.removeClass('factory').addClass(type);
         itemEle.story_item({newItem: true, data: {type: type}}).story_item('edit');
-      })
+      });
     }
   };
 })(jQuery);

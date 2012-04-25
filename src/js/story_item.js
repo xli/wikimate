@@ -15,6 +15,7 @@
       var plugin = wikimate.plugins[item.type];
       // add another div inside for removing conflict highlighting with text area
       // after changed to edit mode
+      // it's also easier to keep item div element clean
       var content = $('<div />').addClass('item-content');
       plugin.emit.apply($this, [content, item]);
       plugin.bind.apply($this, [content, item]);
@@ -71,7 +72,7 @@
         }, function(e) {
           bar.hide();
         });
-      }
+      };
     })();
 
     var status;
