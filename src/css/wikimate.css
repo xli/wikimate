@@ -154,3 +154,7 @@
 .wikimate-story .factory li {
 }
 
+.todo li {
+  list-style-type: none;
+  margin-left: 8px;
+}

@@ -15,7 +15,7 @@ describe("Factory", function() {
     var result = _.map($('.item .new-plugin-item-link'), function(link) {
       return link.text;
     });
-    expect(result.sort()).toEqual(['Rich Document'].sort());
+    expect(result.sort()).toEqual(['Rich Document', 'Todo list'].sort());
   });
 
   // todo, create another simple plugin to test this
