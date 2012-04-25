@@ -15,17 +15,27 @@ describe("Factory", function() {
     var result = _.map($('.item .new-plugin-item-link'), function(link) {
       return link.text;
     });
-    expect(result.sort()).toEqual(['Wiki Paragraph', 'Rich Document'].sort());
+    expect(result.sort()).toEqual(['Rich Document'].sort());
   });
 
-  it("new plugin item when click the title listed", function() {
+  // todo, create another simple plugin to test this
+  // it("new plugin item when click the title listed", function() {
+  //   $('#sandbox').wikimate({});
+  //   $('#sandbox').wikimate('newItem', {type: 'factory'});
+  //   $('.new-paragraph').click();
+  // 
+  //   expect($('#sandbox .item').prop('class')).toEqual('item paragraph');
+  //   expect($('#sandbox .item textarea').length).toEqual(1);
+  //   expect($('#sandbox .item').story_item('data').type).toEqual('paragraph');
+  //   expect($('#sandbox .item').story_item('data').text).toEqual('');
+  // });
+
+  it("edit factory element will change element to a paragraph item", function() {
     $('#sandbox').wikimate({});
-    $('#sandbox').wikimate('newItem', {type: 'factory'});
-    $('.new-paragraph').click();
+    $('#sandbox').wikimate('newItem', {type: 'factory'}).story_item('edit');
 
     expect($('#sandbox .item').prop('class')).toEqual('item paragraph');
-    expect($('#sandbox .item textarea').length).toEqual(1);
-    expect($('#sandbox .item').story_item('data').type).toEqual('paragraph');
-    expect($('#sandbox .item').story_item('data').text).toEqual('');
+    expect($('#sandbox .item').data('data').type).toEqual('paragraph');
+    expect($('#sandbox .item textarea').text()).toEqual("");
   });
 });
