@@ -31,15 +31,4 @@ describe("WikiMate", function() {
     ]});
     expect($('#1').data('data')).toBeDefined();
   });
-
-  it("add a factory element for creating plugin item", function() {
-    $('#sandbox').wikimate({});
-    $('#sandbox').wikimate('newItem', {type: 'factory'});
-    expect($('.item').hasClass('factory')).toEqual(true);
-
-    var result = _.map($('.item a'), function(link) {
-      return link.text;
-    });
-    expect(result.sort()).toEqual(['Add a paragraph', 'Ad a rich document']);
-  });
 });

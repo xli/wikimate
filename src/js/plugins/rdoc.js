@@ -1,5 +1,6 @@
 (function($) {
   wikimate.plugins.rdoc = {
+    title: 'Rich Document',
     emit: function(div, item) {
       return div.html(item.text);
     },
