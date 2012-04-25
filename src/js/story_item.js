@@ -26,11 +26,7 @@
     function editByPlugin($this) {
       var item = $this.story_item('data');
       var plugin = wikimate.plugins[item.type];
-      if (plugin.edit) {
-        return plugin.edit.apply($this, [item]);
-      } else {
-        return $this.wikimate_text_editor('init');
-      }
+      return plugin.edit.apply($this, [item]);
     }
 
     var initActionBar = (function() {

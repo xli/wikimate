@@ -43,9 +43,9 @@
       });
     },
 
+    // return item element instead of story
     newItem: function(data) {
-      $('<div/>').story_item({newItem: true, data: data}).appendTo(this).story_item('edit');
-      return this;
+      return $('<div/>').story_item({newItem: true, data: data}).appendTo(this);
     },
 
     bindChangeEvents: function() {
@@ -68,7 +68,7 @@
         e.preventDefault();
         e.stopPropagation();
         if (e.target == $this[0]) {
-          $this.story('newItem');
+          $this.story('newItem').story_item('edit');
         }
       });
     }

@@ -109,11 +109,11 @@ describe("Journal", function() {
   it("undo remove action should add item back to removed position", function() {
     $('#sandbox').wikimate({}).wikimate('journal', []);
 
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello").focusout();
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello2").focusout();
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello3").focusout();
 
     var items = $('#sandbox').wikimate('story');
@@ -155,11 +155,11 @@ describe("Journal", function() {
   it("undo add action should remove item", function() {
     $('#sandbox').wikimate({}).wikimate('journal', []);
 
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello").focusout();
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello2").focusout();
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello3").focusout();
 
     $('#sandbox').wikimate('undo');
@@ -196,11 +196,11 @@ describe("Journal", function() {
   it("undo move action should move item back to original position", function() {
     $('#sandbox').wikimate({}).wikimate('journal', []);
 
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello").focusout();
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello2").focusout();
-    $('#sandbox').wikimate('newItem');
+    $('#sandbox').wikimate('newItem').story_item('edit');
     $('#sandbox textarea').text("hello3").focusout();
 
     var items = $('#sandbox .item');

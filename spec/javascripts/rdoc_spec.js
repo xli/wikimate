@@ -1,4 +1,4 @@
-describe("Factory", function() {
+describe("RDoc", function() {
   beforeEach(function() {
     $("body").append($('<div id="sandbox"></div>'));
   });
@@ -12,7 +12,7 @@ describe("Factory", function() {
   it("open rich document editor", function() {
     runs(function() {
       $('#sandbox').wikimate({ story: []});
-      $('#sandbox').wikimate('newItem', {text: 'hello', type: 'rdoc'});
+      $('#sandbox').wikimate('newItem', {text: 'hello', type: 'rdoc'}).story_item('edit');
     });
     waits(150);
     runs(function() {

@@ -16,6 +16,9 @@
           $this.story_item('edit');
         }
       });
+    },
+    edit: function(item) {
+      return this.wikimate_text_editor('init');
     }
   };
 })(jQuery);
