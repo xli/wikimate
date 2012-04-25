@@ -138,3 +138,7 @@
 .ui-sortable-helper .item-content {
   border: none !important;
 }
+
+.wikimate-story .factory {
+  border: 1px dashed #ccc;
+}
