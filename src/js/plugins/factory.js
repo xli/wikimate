@@ -15,11 +15,11 @@
     },
     edit: function() {},
     bind: function(div, item) {
-      var $this = this;
+      var itemEle = this;
       div.find('.new-plugin-item-link').click(function(e) {
         var type = $(this).data('plugin');
-        $this.removeClass('factory').addClass(type);
-        $this.story_item({newItem: true, data: {type: type}}).story_item('edit');
+        itemEle.removeClass('factory').addClass(type);
+        itemEle.story_item({newItem: true, data: {type: type}}).story_item('edit');
       })
     }
   };
