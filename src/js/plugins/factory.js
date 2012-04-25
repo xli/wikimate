@@ -11,7 +11,7 @@
         $('<li/>').html(link).appendTo(list);
       }
       this.data('newItem', true);
-      return div.html('Add').append(list);
+      return div.html('Add:').append(list);
     },
     edit: function() {},
     bind: function(div, item) {
