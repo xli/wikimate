@@ -18,17 +18,16 @@ describe("Factory", function() {
     expect(result.sort()).toEqual(['Rich Document', 'Todo list'].sort());
   });
 
-  // todo, create another simple plugin to test this
-  // it("new plugin item when click the title listed", function() {
-  //   $('#sandbox').wikimate({});
-  //   $('#sandbox').wikimate('newItem', {type: 'factory'});
-  //   $('.new-paragraph').click();
-  // 
-  //   expect($('#sandbox .item').prop('class')).toEqual('item paragraph');
-  //   expect($('#sandbox .item textarea').length).toEqual(1);
-  //   expect($('#sandbox .item').story_item('data').type).toEqual('paragraph');
-  //   expect($('#sandbox .item').story_item('data').text).toEqual('');
-  // });
+  it("new plugin item when click the title listed", function() {
+    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate('newItem', {type: 'factory'});
+    $('.new-todo').click();
+  
+    expect($('#sandbox .item').prop('class')).toEqual('item todo');
+    expect($('#sandbox .item textarea').length).toEqual(1);
+    expect($('#sandbox .item').story_item('data').type).toEqual('todo');
+    expect($('#sandbox .item').story_item('data').text).toEqual('');
+  });
 
   it("edit factory element will change element to a paragraph item", function() {
     $('#sandbox').wikimate({});
