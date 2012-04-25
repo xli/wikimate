@@ -36,7 +36,7 @@ jQuery.plugin('wikimate_text_editor', (function($) {
       var item = this.story_item('data');
       var $this = this;
       var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
-        $this.wikimate_text_editor('save', item, textarea.val());
+        $this.story_item('save', textarea.val());
       }).on('keydown', function(e) {
         if (e.which == KeyCode.ESC) {
           $this.wikimate_text_editor('cancel');
@@ -78,16 +78,6 @@ jQuery.plugin('wikimate_text_editor', (function($) {
       textarea.selectionStart = pos;
       textarea.selectionEnd = pos;
       return this;
-    },
-
-    save: function(item, text) {
-      if (text === '') {
-        return this.story_item('remove');
-      } else if (text != item.text) {
-        return this.story_item('save', {text: text});
-      } else {
-        return this.wikimate_text_editor('cancel');
-      }
     },
 
     cancel: function() {

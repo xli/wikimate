@@ -97,6 +97,15 @@
       return $this.html(content);
     }
 
+    function editByPlugin($this) {
+      var item = $this.story_item('data');
+      var plugin = wikimate.plugins[item.type];
+      if (plugin.edit) {
+        return plugin.edit.apply($this, [item]);
+      } else {
+        return $this.wikimate_text_editor('init');
+      }
+    }
 
     function createEditLink($this) {
       return $('<a href="javascript:void(0)" title="Click me or double click the content to edit">Edit</a>').on('click', function(e) {
@@ -165,7 +174,7 @@
       },
 
       edit: function() {
-        return this.wikimate_text_editor('init');
+        return editByPlugin(this);
       },
 
       data: function(attrs) {
@@ -184,6 +193,18 @@
         return renderByPlugin(this.story_item('status', 'rendering item'));
       },
 
+      save: function(text) {
+        var item = this.story_item('data');
+        if (text === '') {
+          this.story_item('remove');
+        } else if (text != item.text) {
+          this.story_item('update', text);
+        } else {
+          this.story_item('render');
+        }
+        return this;
+      },
+
       remove: function() {
         this.story_item('status', 'removing item');
         if (this.data('newItem')) {
@@ -194,13 +215,15 @@
         }
       },
 
-      save: function(changes) {
-        this.story_item('status', 'saving item');
-        var item = $.extend(this.story_item('data'), changes);
+      update: function(text) {
+        this.story_item('status', 'updating item');
+        var item = $.extend(this.story_item('data'), {text: text});
         if (this.data('newItem')) {
-          renderByPlugin(this.removeData('newItem')).trigger(wikimate.events.CHANGE, action('add', item, this.prev().prop('id')));
+          renderByPlugin(this.removeData('newItem'));
+          this.trigger(wikimate.events.CHANGE, action('add', item, this.prev().prop('id')));
         } else {
-          renderByPlugin(this).trigger(wikimate.events.CHANGE, action('edit', item));
+          renderByPlugin(this);
+          this.trigger(wikimate.events.CHANGE, action('edit', item));
         }
         return this;
       },
