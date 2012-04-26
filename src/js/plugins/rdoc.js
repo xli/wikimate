@@ -2,8 +2,8 @@
 
   function save($this, ed) {
     var text = ed.getContent();
-    ed.destroy();
     ed.remove();
+    ed.destroy();
     $this.story_item('save', text);
   }
 
