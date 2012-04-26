@@ -1,4 +1,12 @@
 (function($) {
+
+  function save($this, ed) {
+    var text = ed.getContent();
+    ed.destroy();
+    ed.remove();
+    $this.story_item('save', text);
+  }
+
   wikimate.plugins.rdoc = {
     title: 'Rich Document',
     emit: function(div, item) {
@@ -18,7 +26,7 @@
       var $this = this;
       var id = wikimate.utils.generateId();
       var textarea = $('<textarea/>').prop('id', id).text(item.text).appendTo(this.empty());
-      tinyMCE.init({
+      tinymce.init({
         mode : "exact",
         elements: id,
         theme : "advanced",
@@ -29,12 +37,16 @@
         // theme_advanced_statusbar_location : "bottom",
         auto_focus: id,
         save_onsavecallback: function(ed) {
-          var text = ed.getContent();
-          ed.remove();
-          ed.destroy();
-          $this.story_item('save', text);
+          save($this, ed);
           return false;
-        }
+        },
+        setup: function(ed) {
+          ed.onInit.add(function(ed, evt) {
+            tinymce.dom.Event.add(ed.getDoc(), 'focusout', function(e) {
+              _.defer(save, $this, ed);
+            });
+          });
+        },
       });
       return this;
     }
