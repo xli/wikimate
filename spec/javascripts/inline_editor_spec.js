@@ -1,0 +1,103 @@
+describe("InlineEditor", function() {
+  beforeEach(function() {
+    $("body").append($('<div id="sandbox"></div>'));
+  });
+  afterEach(function() {
+    $('#sandbox').remove();
+  });
+
+  it("double click to inline edit", function() {
+    $('#sandbox').text('hello').wikimate_inline_editable();
+
+    $('#sandbox').dblclick();
+    expect($('#sandbox input').length).toEqual(1);
+    expect($('#sandbox input').val()).toEqual('hello');
+  });
+
+  it("focusout to save", function() {
+    var saved = [];
+    var canceled = [];
+    $('#sandbox').text('hello').wikimate_inline_editable({
+      saved: function(text) {
+        saved.push(text);
+      },
+      canceled: function(text) {
+        canceled.push(text);
+      }
+    });
+
+    $('#sandbox').dblclick();
+    $('#sandbox input').val('world').focusout();
+
+    expect($('#sandbox').html()).toEqual('world');
+    expect(saved.length).toEqual(1);
+    expect(canceled.length).toEqual(0);
+    expect(saved[0]).toEqual('world');
+  });
+
+  it("ESC to cancel", function() {
+    var saved = [];
+    var canceled = [];
+    $('#sandbox').text('hello').wikimate_inline_editable({
+      saved: function(text) {
+        saved.push(text);
+      },
+      canceled: function(text) {
+        canceled.push(text);
+      }
+    });
+
+    $('#sandbox').dblclick();
+    $('#sandbox input').val('world');
+    Keyboard.hitEsc($('#sandbox input'));
+
+    expect($('#sandbox').html()).toEqual('hello');
+    expect(saved.length).toEqual(0);
+    expect(canceled.length).toEqual(1);
+    expect(canceled[0]).toEqual('hello');
+  });
+
+  it("Hit Enter to save", function() {
+    var saved = [];
+    var canceled = [];
+    $('#sandbox').text('hello').wikimate_inline_editable({
+      saved: function(text) {
+        saved.push(text);
+      },
+      canceled: function(text) {
+        canceled.push(text);
+      }
+    });
+
+    $('#sandbox').dblclick();
+    $('#sandbox input').val('world');
+    Keyboard.hitEnter($('#sandbox input'));
+
+    expect($('#sandbox').html()).toEqual('world');
+    expect(saved.length).toEqual(1);
+    expect(canceled.length).toEqual(0);
+    expect(saved[0]).toEqual('world');
+  });
+
+  it("Cmd+s to save", function() {
+    var saved = [];
+    var canceled = [];
+    $('#sandbox').text('hello').wikimate_inline_editable({
+      saved: function(text) {
+        saved.push(text);
+      },
+      canceled: function(text) {
+        canceled.push(text);
+      }
+    });
+
+    $('#sandbox').dblclick();
+    $('#sandbox input').val('world');
+    Keyboard.hitCmdS($('#sandbox input'));
+
+    expect($('#sandbox').html()).toEqual('world');
+    expect(saved.length).toEqual(1);
+    expect(canceled.length).toEqual(0);
+    expect(saved[0]).toEqual('world');
+  });
+});

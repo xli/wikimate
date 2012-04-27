@@ -1,9 +1,6 @@
 jQuery.plugin('wikimate_text_editor', (function($) {
   var KeyCode = {
-    TAB:       9,
     RETURN:   13,
-    ESC:      27,
-    s:        83
   };
 
   function createSaveDot() {
@@ -35,17 +32,14 @@ jQuery.plugin('wikimate_text_editor', (function($) {
     init: function() {
       var item = this.story_item('data');
       var $this = this;
-      var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').focusout(function() {
-        $this.story_item('save', textarea.val());
-      }).on('keydown', function(e) {
-        if (e.which == KeyCode.ESC) {
-          $this.wikimate_text_editor('cancel');
-        } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
-          e.preventDefault();
-          e.stopPropagation();
-          // todo should we use $this.wikimate_text_editor('save', textarea.val());?
-          textarea.focusout();
-        }
+      var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').editor_shortcuts({
+        save: function() {
+          $this.story_item('save', textarea.val());
+        },
+        cancel: function() {
+          $this.story_item('render');
+        },
+        ignoreReturn: true
       }).on('keyup', function(e) {
         syncHeight(textarea);
         // in keyup so that we can findout the new RETURN is added into last line
@@ -78,10 +72,6 @@ jQuery.plugin('wikimate_text_editor', (function($) {
       textarea.selectionStart = pos;
       textarea.selectionEnd = pos;
       return this;
-    },
-
-    cancel: function() {
-      return this.story_item('render');
     }
   };
 })(jQuery));
