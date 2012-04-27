@@ -1,9 +1,9 @@
 (function($) {
-  function editAs(type) {
-    return this.removeClass('factory')
+  function transform(story_item_element, type) {
+    return story_item_element.removeClass('factory')
       .addClass(type)
       .story_item('data', {type: type})
-      .story_item('edit');
+      .story_item('render');
   }
 
   wikimate.plugins.factory = {
@@ -21,12 +21,12 @@
       return div.html('Double-Click to Edit or Add:').append(list);
     },
     edit: function() {
-      return editAs.apply(this, ['paragraph']);
+      return transform(this, 'paragraph').story_item('edit');
     },
     bind: function(div, item) {
       var itemEle = this;
       div.find('.new-plugin-item-link').click(function(e) {
-        editAs.apply(itemEle, [$(this).data('plugin')]);
+        transform(itemEle, $(this).data('plugin')).story_item('edit');
       });
       div.on('dblclick', function(e) {
         if (itemEle.story_item('editable')) {

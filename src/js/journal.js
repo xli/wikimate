@@ -20,18 +20,18 @@
       }
     }
 
-    function createAction(action) {
+    function createAction(journal, action) {
       var identifier = action.type.charAt(0);
       return $('<a href="javascript:void(0)"/>').data('data', action)
         .addClass('action ' + action.type)
         .text(identifier)
         .hover(function(e) {
           $('#' + action.id).addClass('highlight');
-          var tooltip = actionTooltip($(this).parent(), action);
+          var tooltip = actionTooltip(journal, action);
           var offset = $(this).offset();
           var element = $('<div/>').addClass('diff')
             .html(tooltip)
-            .appendTo($('.wikimate'))
+            .appendTo(journal.parent())
             .css('left', offset.left + $(this).width() * 3 / 4);
           element.css('top', offset.top - element.height());
         }, function(e) {
@@ -50,7 +50,7 @@
         return this;
       },
       push: function(action) {
-        var actionElement = createAction(action);
+        var actionElement = createAction(this, action);
         this.append(actionElement);
         if (afterActionCreated) {
           afterActionCreated(actionElement);
