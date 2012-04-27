@@ -307,58 +307,31 @@
               "after": "024d9003c22cf2c2"
           }]
       };
-      function storyChanged(event, action) {
-        var data = $.parseJSON($('#wiki-data').val()).story;
-        if (action.type == 'add') {
-          if (action.after) {
-            var r = [];
-            $.each(data, function(i, item) {
-              r.push(item);
-              if (item.id == action.after) {
-                r.push(action.item);
-              }
-            });
-            data = r;
-          } else {
-            data.push(action.item);
-          }
-        } else if (action.type == 'edit') {
-          $.each(data, function(i, item) {
-            if (item.id == action.id) {
-              item.text = action.item.text;
-            }
-          });
-        } else if (action.type == 'remove') {
-          var r = [];
-          $.each(data, function(i, item) {
-            if (item.id != action.id) {
-              r.push(item);
-            }
-          });
-          data = r;
-        } else if (action.type == 'move') {
-          data.sort(function(a, b) {
-            return action.order.indexOf(a.id) - action.order.indexOf(b.id);
-          });
-        } else {
-          alert("Unknown action type: " + action.type);
-        }
-
-        var story = data
-        var journal = $.map($('.wikimate-journal').find('.action'), function(action) {
-          return $(action).data('data');
-        });
-        $('#wiki-data').val(JSON.stringify({story: story, journal: journal}));
-      };
-      $(document).ready(function() {
+      function saveData() {
+        var wiki = {story: $('#wiki').wikimate('story'), journal: $('#wiki').wikimate('journal')};
         $('#wiki-data').val(JSON.stringify(wiki));
-        $('#wiki').wikimate($.extend(wiki, {change: storyChanged})).wikimate('journal', wiki.journal);
+      }
+      function loadData() {
+        var wiki = $.parseJSON($('#wiki-data').val());
+        $('#wiki')
+          .empty()
+          .wikimate($.extend(wiki, {change: function(e, a) { saveData(); }}))
+          .wikimate('journal', wiki.journal);
+      }
+      $(document).ready(function() {
+        $('#reload').click(function() {
+          loadData();
+        });
         $('#undo').click(function(e) {
           $('#wiki').wikimate('undo');
+          saveData();
         });
         $('#new_item_factory').click(function(e) {
           $('#wiki').wikimate('newItem', {type: 'factory'});
         });
+
+        $('#wiki-data').val(JSON.stringify(wiki));
+        loadData();
       });
     </script>
     <style>
@@ -383,13 +356,12 @@
         float: right;
       }
       .store textarea {
-        height: 99%;
-        min-height: 200px;
+        height: 600px;
       }
     </style>
   </head>
   <body>
-    <header><input type='button' value='undo' id='undo'/></header>
+    <header><input type='button' value='undo' id='undo'/><input type='button' value='reload' id='reload'/></header>
     <div class='main'>
       <div id='wiki' class='wikimate'>
       </div>
