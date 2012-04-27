@@ -34,7 +34,7 @@ describe("OneColumnLayout", function() {
 
     expect($('#sandbox .item .wikimate-layout-heading').text()).toEqual('hello');
     var item = $('#sandbox .item').story_item('data');
-    expect(item.heading).toEqual('hello');
+    expect(item.text).toEqual('hello');
   });
 
   it("cancel editing heading", function() {
@@ -46,6 +46,32 @@ describe("OneColumnLayout", function() {
 
     expect($('#sandbox .item .wikimate-layout-heading').text()).toEqual('Heading');
     var item = $('#sandbox .item').story_item('data');
-    expect(item.heading).toEqual('Heading');
+    expect(item.text).toEqual('Heading');
   });
+
+  it("double click to add story item into panel", function() {
+    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate('newItem', {type: 'one_column_layout'});
+    $('#sandbox .item .wikimate-layout-panel').story('newItem').story_item('edit');
+
+    expect($('.wikimate-layout-panel .item').length).toEqual(1);
+    expect($('.wikimate-layout-panel .paragraph').length).toEqual(1);
+    expect($('.wikimate-layout-panel .item textarea').length).toEqual(1);
+
+    $('.wikimate-layout-panel .item textarea').text('hello').focusout();
+    expect($('.wikimate-layout-panel .item p').text()).toEqual('hello');
+  });
+
+  it("should update story after added story item into panel", function() {
+    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate('newItem', {type: 'one_column_layout'});
+
+    $('#sandbox .item .wikimate-layout-panel').story('newItem').story_item('edit');
+    $('.wikimate-layout-panel .item textarea').text('hello').focusout();
+
+    var data = $('#sandbox .one_column_layout').story_item('data');
+    expect(data.story.length).toEqual(1);
+    expect(data.story[0].text).toEqual('hello');
+  });
+
 });
