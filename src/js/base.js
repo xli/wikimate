@@ -41,7 +41,7 @@
           _.each(events, function(e) {
             switch(e.type) {
               case "add":
-                var item = $.extend({}, e.item);
+                var item = _.clone(e.item);
                 if(e.after) {
                   var index = story.itemIndexById(e.after);
                   story.splice(index + 1, 0, item);

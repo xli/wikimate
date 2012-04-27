@@ -13,7 +13,7 @@
       case 'edit':
         story = wikimate.utils.replay(this.wikimate('journal'));
         var prev = story.itemById(action.id);
-        return {id: action.id, type: 'edit', item: $.extend({}, prev)};
+        return {id: action.id, type: 'edit', item: _.clone(prev)};
       case 'move':
         story = wikimate.utils.replay(this.wikimate('journal'));
         return {id: action.id, type: 'move', order: _.pluck(story, 'id')};

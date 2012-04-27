@@ -139,7 +139,7 @@
           this.trigger(wikimate.events.CHANGE, {
             id: item.id,
             type: 'add',
-            item: $.extend({}, item),
+            item: _.clone(item),
             after: this.prev().prop('id'),
             inside: this.parents('.item:first').prop('id')
           });
@@ -148,7 +148,7 @@
           this.trigger(wikimate.events.CHANGE, {
             id: item.id,
             type: 'edit',
-            item: $.extend({}, item)
+            item: _.clone(item)
           });
         }
         return this;
