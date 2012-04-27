@@ -1,6 +1,8 @@
 .wikimate {
 }
 
+/* Story */
+
 .wikimate-story {
   min-height: 100px;
   padding-bottom: 2em;
@@ -45,14 +47,6 @@
   margin-top: 2px;
 }
 
-.wikimate-story .item .plain-text-editor {
-  background-color: #FFFFEE;
-  font-size: 1em;
-  line-height: 1em;
-  overflow: hidden;
-  min-height: 4em;
-}
-
 .wikimate-story .item .editor-action-bar {
   position: absolute;
   right: 0px;
@@ -64,6 +58,20 @@
 .wikimate-story .item .editor-action-bar a {
   text-decoration: none;
 }
+.wikimate-story .sort-placeholder {
+  background-color: #FFE;
+  border: 1px solid orange;
+}
+
+.ui-sortable-helper {
+  background-color: #FFE;
+  border: 1px solid orange;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #888;
+  padding: 3px 5px;
+}
+
+/* Journal */
 
 .wikimate-journal {
   background-color: #EEE;
@@ -123,18 +131,29 @@
   text-decoration: none;
 }
 
-.wikimate-story .sort-placeholder {
-  background-color: #FFE;
-  border: 1px solid orange;
+/* Editors */
+
+.wikimate-inline-editor {
+  width: 99%;
+  border: 1px solid #CCC;
+  display: inline;
+  font-size: 12px;
+  outline: none;
+  padding: 4px;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+  -moz-box-shadow: inset 0 0 3px rgba(0,0,0,0.2);
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
 }
 
-.ui-sortable-helper {
-  background-color: #FFE;
-  border: 1px solid orange;
-  border-radius: 5px;
-  box-shadow: 5px 5px 5px #888;
-  padding: 3px 5px;
+.plain-text-editor {
+  background-color: #FFFFEE;
+  font-size: 1em;
+  line-height: 1em;
+  overflow: hidden;
+  min-height: 4em;
 }
+
+/* Plugins */
 
 .wikimate-story .factory {
   border: 1px dashed #ccc;
@@ -155,3 +174,31 @@
   list-style-type: none;
   margin-left: 8px;
 }
+
+
+.one_column_layout {
+  margin: 10px 0 10px 0;
+  min-width: 150px;
+  border: 1px solid #CCC;
+  background-color: white;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0 0 5px rgba(0,0,0,0.25);
+  -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.25);
+}
+
+.wikimate-layout-heading {
+  border: 0;
+  border-bottom: 1px dotted #CCC;
+  padding: 10px 0;
+  margin: 0 10px 10px 10px;
+  font-weight: 300;
+}
+
+.wikimate-layout-panel {
+  padding: 10px;
+  min-height: 200px;
+}
+
