@@ -1,15 +1,5 @@
 (function($) {
   $.plugin('story_item', (function(){
-
-    function action(type, item, after) {
-      return {
-        id: item.id,
-        type: type,
-        item: $.extend({}, item),
-        after: after
-      };
-    }
-
     function renderByPlugin($this) {
       var item = $this.story_item('data');
       var plugin = wikimate.plugins[item.type];
@@ -146,10 +136,20 @@
         var item = $.extend(this.story_item('data'), changes);
         if (this.data('newItem')) {
           renderByPlugin(this.removeData('newItem'));
-          this.trigger(wikimate.events.CHANGE, action('add', item, this.prev().prop('id')));
+          this.trigger(wikimate.events.CHANGE, {
+            id: item.id,
+            type: 'add',
+            item: $.extend({}, item),
+            after: this.prev().prop('id'),
+            inside: this.parents('.item:first').prop('id')
+          });
         } else {
           renderByPlugin(this);
-          this.trigger(wikimate.events.CHANGE, action('edit', item));
+          this.trigger(wikimate.events.CHANGE, {
+            id: item.id,
+            type: 'edit',
+            item: $.extend({}, item)
+          });
         }
         return this;
       },
