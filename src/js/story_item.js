@@ -29,6 +29,12 @@
       return plugin.edit.apply($this, [item]);
     }
 
+    function initItem(data) {
+      var item = $.extend({id: wikimate.utils.generateId(), type: 'paragraph', text: ''}, data || {});
+      var plugin = wikimate.plugins[item.type];
+      return plugin.defaultData === undefined ? item : $.extend(item, plugin.defaultData());
+    }
+
     var initActionBar = (function() {
       function createEditLink($this) {
         return $('<a href="javascript:void(0)" title="Click me or double click the content to edit">Edit</a>').on('click', function(e) {
@@ -75,8 +81,7 @@
 
     return {
       init: function(options) {
-        var default_data = {id: wikimate.utils.generateId(), type: 'paragraph', text: ''}
-        var item = $.extend(default_data, options.data || {});
+        var item = initItem(options.data);
         this.data('data', item);
         return this.addClass('item ' + item.type)
           .prop("id", item.id)

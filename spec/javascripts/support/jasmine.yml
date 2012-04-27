@@ -14,7 +14,7 @@ src_files:
     - lib/*.js
     - lib/tiny_mce_3_4_9/tiny_mce_src.js
     - src/js/*.js
-    - src/js/plugins/*.js
+    - src/js/plugins/**/*.js
 
 # stylesheets
 #

@@ -6,12 +6,12 @@ describe("InlineEditor", function() {
     $('#sandbox').remove();
   });
 
-  it("double click to inline edit", function() {
+  it("double click to inline edit with focus", function() {
     $('#sandbox').text('hello').wikimate_inline_editable();
 
     $('#sandbox').dblclick();
     expect($('#sandbox input').length).toEqual(1);
-    expect($('#sandbox input').val()).toEqual('hello');
+    expect($('#sandbox input:focus').val()).toEqual('hello');
   });
 
   it("focusout to save", function() {

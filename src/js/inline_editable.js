@@ -21,6 +21,8 @@
             }
           });
         $(this).html(editor);
+        editor.focus();
+        return this;
       });
     }
   });
