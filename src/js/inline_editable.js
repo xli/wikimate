@@ -2,6 +2,9 @@
   $.plugin('wikimate_inline_editable', {
     init: function(options) {
       this.dblclick(function(e) {
+        if ($(this).find('.wikimate-inline-editor').length > 0) {
+          return false;
+        }
         var editor = $('<input type="text"/>')
           .addClass('wikimate-inline-editor')
           .val($(this).text())
@@ -19,6 +22,8 @@
                 options.canceled.apply(this, [before_edit_value]);
               }
             }
+          }).dblclick(function(e) {
+            return false;
           });
         $(this).html(editor);
         editor.focus();

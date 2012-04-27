@@ -100,4 +100,17 @@ describe("InlineEditor", function() {
     expect(canceled.length).toEqual(0);
     expect(saved[0]).toEqual('world');
   });
+
+  it("should not enter edit again when editing", function() {
+    var saved = [];
+    var canceled = [];
+    $('#sandbox').text('hello').wikimate_inline_editable({});
+
+    $('#sandbox').dblclick();
+    $('#sandbox input').val('world');
+    $('#sandbox input').dblclick();
+    $('#sandbox').dblclick();
+
+    expect($('#sandbox input').val()).toEqual('world');
+  });
 });
