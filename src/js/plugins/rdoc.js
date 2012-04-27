@@ -46,7 +46,7 @@
               _.defer(save, $this, ed);
             });
           });
-        },
+        }
       });
       return this;
     }

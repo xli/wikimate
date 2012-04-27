@@ -1,6 +1,6 @@
 jQuery.plugin('wikimate_text_editor', (function($) {
   var KeyCode = {
-    RETURN:   13,
+    RETURN:   13
   };
 
   function createSaveDot() {

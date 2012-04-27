@@ -3,7 +3,7 @@
 
   function todos(item) {
     return _.map(_.select(item.text.split("\n"), function(todo) {
-      return todo.trim().length != 0;
+      return todo.trim().length !== 0;
     }), function(todo) {
       if (todo[0] == completed) {
         return {status: todo[0], content: todo.substring(1)};
