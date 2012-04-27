@@ -349,12 +349,12 @@
       };
       $(document).ready(function() {
         $('#wiki-data').val(JSON.stringify(wiki));
-        $('.wikimate').wikimate($.extend(wiki, {change: storyChanged})).wikimate('journal', wiki.journal);
+        $('#wiki').wikimate($.extend(wiki, {change: storyChanged})).wikimate('journal', wiki.journal);
         $('#undo').click(function(e) {
-          $('.wikimate').wikimate('undo');
+          $('#wiki').wikimate('undo');
         });
         $('#new_item_factory').click(function(e) {
-          $('.wikimate').wikimate('newItem', {type: 'factory'});
+          $('#wiki').wikimate('newItem', {type: 'factory'});
         });
       });
     </script>
@@ -362,7 +362,7 @@
       p {
         margin: 1px;
       }
-      .wikimate {
+      #wiki {
         width: 48%;
         height: 99%;
         min-height: 400px;
