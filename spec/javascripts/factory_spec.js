@@ -18,7 +18,7 @@ describe("Factory", function() {
     expect(result.sort()).toEqual(['Rich Document', 'Todo list'].sort());
   });
 
-  it("new plugin item when click the title listed", function() {
+  it("new plugin item and enter edit mode when click the title listed", function() {
     $('#sandbox').wikimate({});
     $('#sandbox').wikimate('newItem', {type: 'factory'});
     $('.new-todo').click();
@@ -27,6 +27,19 @@ describe("Factory", function() {
     expect($('#sandbox .item textarea').length).toEqual(1);
     expect($('#sandbox .item').story_item('data').type).toEqual('todo');
     expect($('#sandbox .item').story_item('data').text).toEqual('');
+  });
+
+  it("new plugin item and enter edit mode with one action change", function() {
+    var changes = [];
+    $('#sandbox').wikimate({change: function(e, action) {
+      changes.push(action);
+    }});
+    $('#sandbox').wikimate('newItem', {type: 'factory'});
+    $('.new-todo').click();
+    expect(changes.length).toEqual(0);
+    $('#sandbox .item textarea').text("hello").focusout();
+    expect(changes.length).toEqual(1);
+    expect(changes[0].type).toEqual('add');
   });
 
   it("edit factory element will change element to a paragraph item", function() {

@@ -49,4 +49,14 @@ describe("Story", function() {
     expect($('.item').story_item('data').text).toEqual('hello');
   });
 
+  describe("Story Item", function() {
+    it("updates existing data by changed attributes", function() {
+      $('#sandbox').wikimate({ story: []});
+      $('#sandbox').wikimate('newItem', {text: 'hello', type: 'todo'});
+      $('.item').story_item('update', {text: 'world'});
+      var data = $('.item').story_item('data');
+      expect(data.type).toEqual('todo');
+      expect(data.text).toEqual('world');
+    });
+  });
 });

@@ -75,8 +75,9 @@
 
     return {
       init: function(options) {
-        var item = this.story_item('data', options.data || {}).story_item('data');
-        var $this = this;
+        var default_data = {id: wikimate.utils.generateId(), type: 'paragraph', text: ''}
+        var item = $.extend(default_data, options.data || {});
+        this.data('data', item);
         return this.addClass('item ' + item.type)
           .prop("id", item.id)
           .data('newItem', options.newItem)
@@ -101,13 +102,9 @@
         return editByPlugin(this);
       },
 
-      data: function(attrs) {
-        if (attrs) {
-          var item = {id: wikimate.utils.generateId(), type: 'paragraph', text: ''};
-          if (attrs) {
-            $.extend(item, attrs);
-          }
-          return this.data('data', item);
+      data: function(newData) {
+        if (newData) {
+          return this.data('data', newData);
         } else {
           return this.data('data');
         }
@@ -122,7 +119,7 @@
         if (text === '') {
           this.story_item('remove');
         } else if (text != item.text) {
-          this.story_item('update', text);
+          this.story_item('update', {text: text});
         } else {
           this.story_item('render');
         }
@@ -139,9 +136,9 @@
         }
       },
 
-      update: function(text) {
+      update: function(changes) {
         this.story_item('status', 'updating item');
-        var item = $.extend(this.story_item('data'), {text: text});
+        var item = $.extend(this.story_item('data'), changes);
         if (this.data('newItem')) {
           renderByPlugin(this.removeData('newItem'));
           this.trigger(wikimate.events.CHANGE, action('add', item, this.prev().prop('id')));

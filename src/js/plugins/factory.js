@@ -1,9 +1,6 @@
 (function($) {
   function transform(story_item_element, type) {
-    return story_item_element.removeClass('factory')
-      .addClass(type)
-      .story_item('data', {type: type})
-      .story_item('render');
+    return story_item_element.empty().removeClass('factory').story_item({data: {type: type}, newItem: true});
   }
 
   wikimate.plugins.factory = {
