@@ -1,4 +1,5 @@
 .wikimate {
+  position: relative;
 }
 
 /* Story */
@@ -129,6 +130,21 @@
   background-color: #eaf2c2;
   color: #406619;
   text-decoration: none;
+}
+
+/* toolbar */
+
+.wikimate-toolbar {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+}
+.wikimate-toolbar button {
+  display: block;
+  width: 24px;
+}
+.wikimate-toolbar-panel {
+  display: none;
 }
 
 /* Editors */

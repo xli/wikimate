@@ -88,7 +88,9 @@
         if (options.change) {
           this.on(wikimate.events.CHANGE, options.change);
         }
-        return this.append($('<div />').addClass('wikimate-story').story('init', options.story));
+        var storyElement = $('<div />').addClass('wikimate-story').story('init', options.story);
+        var toolbarElement = $('<div/>').addClass('wikimate-toolbar').wikimate_toolbar('init');
+        return this.append(storyElement).append(toolbarElement);
       } else {
         return this.find('> .wikimate-story').story('data');
       }

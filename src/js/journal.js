@@ -28,7 +28,10 @@
         .hover(function(e) {
           $('#' + action.id).addClass('highlight');
           var tooltip = actionTooltip(journal, action);
+          var rootOffset = journal.parent().offset();
           var offset = $(this).offset();
+          offset.left -= rootOffset.left;
+          offset.top -= rootOffset.top;
           var element = $('<div/>').addClass('diff')
             .html(tooltip)
             .appendTo(journal.parent())
