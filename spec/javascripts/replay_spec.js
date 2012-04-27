@@ -81,7 +81,7 @@ describe("Events Replay", function() {
     ]);
   });
 
-  it("should have side effects to events objects", function() {
+  it("should have no side effects to events objects", function() {
     var events = [
       {
         id: '1',
@@ -130,4 +130,31 @@ describe("Events Replay", function() {
     expect([].item).toBeUndefined();
     expect([].itemIndex).toBeUndefined();
   });
+
+  it("insert item inside another item", function() {
+    var events = [{
+        id: '1',
+        type: 'add',
+        item: {id: '1', text: 'hello'}
+      },
+      {
+        id: '2',
+        type: 'add',
+        item: {id: '2', text: 'again'}
+      },
+      {
+        id: '3',
+        type: 'add',
+        item: {id: '3', text: '!'},
+        inside: '1'
+      }
+    ];
+
+    var result = _.toArray(wikimate.utils.replay(events));
+    result[0].story = _.toArray(result[0].story);
+    expect(result).toEqual([
+      {id: '1', text: 'hello', story: [{id: '3', text: '!'}]}, {id: '2', text: 'again'}
+    ]);
+  });
+
 });

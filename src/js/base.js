@@ -42,11 +42,21 @@
             switch(e.type) {
               case "add":
                 var item = _.clone(e.item);
-                if(e.after) {
-                  var index = story.itemIndexById(e.after);
-                  story.splice(index + 1, 0, item);
+                var container;
+                if (e.inside) {
+                  var containerItem = story.itemById(e.inside);
+                  if (!containerItem.story) {
+                    containerItem.story = _.extend([], exts);
+                  }
+                  container = containerItem.story;
                 } else {
-                  story.push(item);
+                  container = story;
+                }
+                if (e.after) {
+                  var index = container.itemIndexById(e.after);
+                  container.splice(index + 1, 0, item);
+                } else {
+                  container.push(item);
                 }
                 break;
               case "edit":
