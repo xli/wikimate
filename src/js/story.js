@@ -38,7 +38,7 @@
     },
 
     data: function() {
-      return $.map(this.find('.item'), function(ele) {
+      return $.map(this.find('> .item'), function(ele) {
         return $(ele).story_item('data');
       });
     },
@@ -54,9 +54,10 @@
         handle: '.item-handle',
         forcePlaceholderSize: true,
         placeholder: 'sort-placeholder',
+        opacity: 0.8,
         update: function(event, ui) {
           ui.item.story_item('moved', {
-            order: _.pluck($this.find('.item'), 'id')
+            order: _.pluck($this.find('> .item'), 'id')
           });
         }
       });
@@ -80,7 +81,7 @@
 
   $.extend(wikimate.fn, {
     newItem: function(data) {
-      return this.find('.wikimate-story').story('newItem', data);
+      return this.find('> .wikimate-story').story('newItem', data);
     },
     story: function(options) {
       if (options) {
@@ -89,7 +90,7 @@
         }
         return this.append($('<div />').addClass('wikimate-story').story('init', options.story));
       } else {
-        return this.find('.wikimate-story').story('data');
+        return this.find('> .wikimate-story').story('data');
       }
     }
   });

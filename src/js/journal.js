@@ -58,13 +58,13 @@
         return this;
       },
       pop: function() {
-        var lastAction = this.find('.action:last');
+        var lastAction = this.find('> .action:last');
         var data = lastAction.data('data');
         lastAction.remove();
         return data;
       },
       data: function() {
-        return $.map(this.find('.action'), function(element) {
+        return $.map(this.find('> .action'), function(element) {
           return $(element).data('data');
         });
       }
@@ -75,12 +75,12 @@
     if (journal) {
       var element = $('<div />').addClass('wikimate-journal').journal('init', journal, afterActionCreated);
       // handler is processed before handlers on wikimate element
-      this.find('.wikimate-story').on(wikimate.events.CHANGE, function(e, action) {
+      this.find('> .wikimate-story').on(wikimate.events.CHANGE, function(e, action) {
         element.journal('push', action);
       });
       return this.append(element);
     } else {
-      return this.find('.wikimate-journal').journal('data');
+      return this.find('> .wikimate-journal').journal('data');
     }
   };
 })(jQuery);

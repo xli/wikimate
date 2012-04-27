@@ -74,7 +74,7 @@ jQuery.plugin('wikimate_text_editor', (function($) {
     },
 
     moveCursorTo: function(pos) {
-      var textarea = this.find('textarea')[0];
+      var textarea = this.find('> .plain-text-editor')[0];
       textarea.selectionStart = pos;
       textarea.selectionEnd = pos;
       return this;

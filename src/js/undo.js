@@ -23,11 +23,11 @@
   }
 
   wikimate.fn.undo = function() {
-    var action = this.find('.wikimate-journal').journal('pop');
+    var action = this.find('> .wikimate-journal').journal('pop');
     if (!action) {
       return;
     }
-    this.find('.wikimate-story').story('execute', revert.apply(this, [action]));
+    this.find('> .wikimate-story').story('execute', revert.apply(this, [action]));
     return action;
   };
 })(jQuery);
