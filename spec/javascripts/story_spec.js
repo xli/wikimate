@@ -49,6 +49,22 @@ describe("Story", function() {
     expect($('.item').story_item('data').text).toEqual('hello');
   });
 
+  it("add item after given item id", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "paragraph", "text": "paragraph 1" },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+
+    var item = $('#sandbox').wikimate('newItem', {text: 'hello'}, '1').story_item('edit');
+    item.find('textarea').focusout();
+
+    var items = $.map($('#sandbox .item'), function(item) {
+      console.log(item)
+      return $(item).text();
+    });
+    expect(items).toEqual(['paragraph 1', 'hello', 'paragraph 2']);
+  });
+
   describe("Story Item", function() {
     it("updates existing data by changed attributes", function() {
       $('#sandbox').wikimate({ story: []});

@@ -44,8 +44,13 @@
     },
 
     // return item element instead of story
-    newItem: function(data) {
-      return $('<div/>').story_item({newItem: true, data: data}).appendTo(this);
+    newItem: function(data, after) {
+      var item = $('<div/>').story_item({newItem: true, data: data});
+      if (after) {
+        return item.insertAfter($('#' + after));
+      } else {
+        return item.appendTo(this);
+      }
     },
 
     bindChangeEvents: function() {
@@ -80,8 +85,8 @@
   });
 
   $.extend(wikimate.fn, {
-    newItem: function(data) {
-      return this.find('> .wikimate-story').story('newItem', data);
+    newItem: function(data, after) {
+      return this.find('> .wikimate-story').story('newItem', data, after);
     },
     story: function(options) {
       if (options) {
