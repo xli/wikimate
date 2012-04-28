@@ -6,7 +6,7 @@
       $.each(items || [], function(i, item) {
         $this.append($('<div/>').story_item({data: item}));
       });
-      return this.addClass('story-element').story('bindChangeEvents').story('dblclickToNewItem');
+      return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
     },
 
     execute: function(action) {
@@ -46,7 +46,7 @@
     // return item element instead of story
     newItem: function(data, position) {
       if (position && position.inside) {
-        return $('#' + position.inside + ' .story-element').story('newItem', data, {after: position.after});
+        return $('#' + position.inside + ' .wikimate-story:first').story('newItem', data, {after: position.after});
       }
       var item = $('<div/>').story_item({newItem: true, data: data});
       if (position && position.after) {
@@ -98,7 +98,7 @@
         if (options.change) {
           this.on(wikimate.events.CHANGE, options.change);
         }
-        var storyElement = $('<div />').addClass('wikimate-story').story('init', options.story);
+        var storyElement = $('<div />').story('init', options.story);
         return this.append(storyElement);
       } else {
         return this.find('> .wikimate-story').story('data');
