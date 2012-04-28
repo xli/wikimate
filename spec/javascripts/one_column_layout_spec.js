@@ -74,6 +74,18 @@ describe("OneColumnLayout", function() {
     expect(data.story[0].text).toEqual('hello');
   });
 
+  it("should update story after removed story item from panel", function() {
+    $('#sandbox').wikimate({});
+    $('#sandbox').wikimate('newItem', {type: 'one_column_layout'});
+
+    $('#sandbox .item .wikimate-layout-panel').story('newItem').story_item('edit');
+    $('.wikimate-layout-panel .item textarea').text('hello').focusout();
+    $('.wikimate-layout-panel .item').story_item('remove');
+
+    var data = $('#sandbox .one_column_layout').story_item('data');
+    expect(data.story.length).toEqual(0);
+  });
+
   it("action of editing one_column_layout story should contain inside property", function() {
     var changes = [];
     $('#sandbox').wikimate({change: function(event, action) { changes.push(action); }});

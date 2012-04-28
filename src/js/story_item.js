@@ -126,6 +126,7 @@
         if (this.data('newItem')) {
           this.remove();
         } else {
+          this.removeClass('item'); // remove item class to mark item has been deleted
           this.trigger(wikimate.events.CHANGE, {id: this.story_item('data').id, type: 'remove'});
           this.remove();
         }
