@@ -55,14 +55,14 @@
       }
 
       return function($this) {
-        var bar = $('<div />').addClass('item-action-bar')
-          .append(createDeleteLink($this))
-          .append(createEditLink($this))
-          .append(createHandle());
-        return $this.append(bar).hover(function(e) {
-          bar.show();
+        return $this.hover(function(e) {
+          var bar = $('<div />').addClass('item-action-bar')
+            .append(createDeleteLink($this))
+            .append(createEditLink($this))
+            .append(createHandle());
+          $this.append(bar);
         }, function(e) {
-          bar.hide();
+          $this.find('.item-action-bar').remove();
         });
       };
     })();
