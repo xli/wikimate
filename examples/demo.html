@@ -328,10 +328,6 @@
           $('#wiki').wikimate('undo');
           saveData();
         });
-        $('#new_item_factory').click(function(e) {
-          $('#wiki').wikimate('newItem', {type: 'factory'});
-        });
-
         $('#wiki-data').val(JSON.stringify(wiki));
         loadData();
       });
@@ -373,8 +369,5 @@
       </div>
     </div>
     <div style="clear: both"></div>
-    <div>
-      <input type='button' value='+' id='new_item_factory'/>
-    </div>
   </body>
 </html>
