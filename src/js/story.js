@@ -61,9 +61,11 @@
         placeholder: 'sort-placeholder',
         opacity: 0.8,
         update: function(event, ui) {
-          ui.item.story_item('moved', {
-            order: _.pluck($this.find('> .item'), 'id')
-          });
+          if ($(event.srcElement).hasClass('item')) {
+            ui.item.story_item('moved', {
+              order: _.pluck($this.find('> .item'), 'id')
+            });
+          }
         }
       });
     },
@@ -94,7 +96,7 @@
           this.on(wikimate.events.CHANGE, options.change);
         }
         var storyElement = $('<div />').addClass('wikimate-story').story('init', options.story);
-        var toolbarElement = $('<div/>').addClass('wikimate-toolbar').wikimate_toolbar('init');
+        var toolbarElement = $('<div/>').addClass('wikimate-toolbar').wikimate_toolbar('init', storyElement);
         return this.append(storyElement).append(toolbarElement);
       } else {
         return this.find('> .wikimate-story').story('data');
