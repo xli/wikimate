@@ -59,7 +59,6 @@ describe("Story", function() {
     item.find('textarea').focusout();
 
     var items = $.map($('#sandbox .item'), function(item) {
-      console.log(item)
       return $(item).text();
     });
     expect(items).toEqual(['paragraph 1', 'hello', 'paragraph 2']);
