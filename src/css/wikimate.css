@@ -17,10 +17,6 @@
   position: relative;
 }
 
-.wikimate-story .item .item-content:hover { 
-  background-color: #fffff0;
-}
-
 .wikimate-story .item .item-action-bar {
   position: absolute;
   right: 2px;
