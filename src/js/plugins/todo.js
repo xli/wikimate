@@ -19,6 +19,9 @@
   }
   wikimate.plugins.todo = {
     title: 'Todo list',
+    defaultData: function() {
+      return {text: 'one line one todo item'};
+    },
     emit: function(div, item) {
       _.each(todos(item), function(todo) {
         newTodo(todo).appendTo(div);
