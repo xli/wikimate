@@ -25,7 +25,7 @@
           }).dblclick(function(e) {
             return false;
           });
-        if (options.width) {
+        if (options && options.width) {
           editor.width(options.width);
         }
         $(this).empty().html(editor);

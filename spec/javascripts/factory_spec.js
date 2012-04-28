@@ -26,7 +26,7 @@ describe("Factory", function() {
     expect($('#sandbox .item').prop('class')).toEqual('item todo');
     expect($('#sandbox .item textarea').length).toEqual(1);
     expect($('#sandbox .item').story_item('data').type).toEqual('todo');
-    expect($('#sandbox .item').story_item('data').text).toEqual('');
+    expect($('#sandbox .item').story_item('data').text).toEqual('one line one todo item');
   });
 
   it("new plugin item and enter edit mode with one action change", function() {
