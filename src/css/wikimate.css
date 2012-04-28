@@ -131,36 +131,6 @@
   text-decoration: none;
 }
 
-/* toolbar */
-
-.wikimate-toolbar {
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  background-color: #eee;
-  width: 24px;
-}
-.wikimate-toolbar button {
-  display: block;
-  width: 24px;
-}
-
-.wikimate-toolbar .new-plugin-item-button {
-  width: 20px !important;
-  height: 20px;
-  min-width: 20px !important;
-  text-align: center;
-  font-size: 0.8em;
-  cursor: move;
-  margin: 2px 0 0 2px;
-  border-bottom:2px solid #bbb;
-  border-right:2px solid #bbb;
-}
-
-.wikimate-toolbar-panel {
-  display: none;
-}
-
 /* Editors */
 
 .wikimate-inline-editor {
