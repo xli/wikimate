@@ -25,10 +25,13 @@
           }).dblclick(function(e) {
             return false;
           });
-        $(this).html(editor);
+        if (options.width) {
+          editor.width(options.width);
+        }
+        $(this).empty().html(editor);
         editor.focus();
-        return this;
       });
+      return this;
     }
   });
 })(jQuery);

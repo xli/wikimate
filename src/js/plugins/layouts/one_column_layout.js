@@ -27,6 +27,7 @@
           story_item_element.story_item('data').story = content.story('data');
         });
       div.find('> .wikimate-layout-heading').wikimate_inline_editable({
+        width: '98%',
         saved: function(text) {
           story_item_element.story_item('update', {text: text});
         }

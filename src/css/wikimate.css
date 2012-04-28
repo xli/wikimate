@@ -130,7 +130,7 @@
 /* Editors */
 
 .wikimate-inline-editor {
-  width: 99%;
+  min-width: 80%;
   border: 1px solid #CCC;
   display: inline;
   font-size: 12px;
