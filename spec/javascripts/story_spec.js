@@ -80,6 +80,17 @@ describe("Story", function() {
     expect(items[1]).toEqual({ "id": "2", "type": "paragraph", "text": "paragraph 2" });
   });
 
+  it("has a [+] link to add new item", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "one_column_layout", "text": "heading", 'story': [] },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+    expect($('#sandbox .add-new-factory')[0]).toBeDefined();
+    $('#sandbox .add-new-factory').click();
+    expect($('#sandbox .item').length).toEqual(3);
+    expect($('#sandbox .factory')[0]).toBeDefined();
+  });
+
   describe("Story Item", function() {
     it("updates existing data by changed attributes", function() {
       $('#sandbox').wikimate({ story: []});

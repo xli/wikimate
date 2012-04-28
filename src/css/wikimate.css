@@ -166,6 +166,13 @@
 .wikimate-story .factory li {
 }
 
+.add-new-factory {
+  margin-bottom: 5px;
+  color: gray;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .todo li {
   list-style-type: none;
   margin-left: 8px;

@@ -99,7 +99,11 @@
           this.on(wikimate.events.CHANGE, options.change);
         }
         var storyElement = $('<div />').story('init', options.story);
-        return this.append(storyElement);
+        var newFactoryItem = $('<div title="Add new Item">[+]</a>').addClass('add-new-factory').on('click', function(e) {
+          return storyElement.story('newItem', {type: 'factory'});
+        });
+
+        return this.append(storyElement).append(newFactoryItem);
       } else {
         return this.find('> .wikimate-story').story('data');
       }
