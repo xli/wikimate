@@ -15,11 +15,12 @@
     emit: function(div, item) {
       var panel = $('<div/>').addClass('wikimate-layout-panel');
       var heading = $('<h2/>').addClass('wikimate-layout-heading').text(item.text);
-      return div.html(heading).append(panel);
+      var addLink = $('<div title="Add new Item">[+]</a>').addClass('add-new-factory');
+      return div.html(heading).append(panel).append(addLink);
     },
     bind: function(div, item) {
       var story_item_element = this;
-      div.find('> .wikimate-layout-panel')
+      var internalStoryElement = div.find('> .wikimate-layout-panel')
         .story(item.story)
         .on(wikimate.events.CHANGE, function(e, action) {
           var content = $(this);
@@ -29,6 +30,9 @@
         saved: function(text) {
           story_item_element.story_item('update', {text: text});
         }
+      });
+      div.find('> .add-new-factory').on('click', function(e) {
+        return internalStoryElement.story('newItem', {type: 'factory'});
       });
     },
     edit: function(item) {

@@ -85,10 +85,21 @@ describe("Story", function() {
       { "id": "1", "type": "one_column_layout", "text": "heading", 'story': [] },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]});
-    expect($('#sandbox .add-new-factory')[0]).toBeDefined();
-    $('#sandbox .add-new-factory').click();
-    expect($('#sandbox .item').length).toEqual(3);
-    expect($('#sandbox .factory')[0]).toBeDefined();
+    expect($('#sandbox > .add-new-factory')[0]).toBeDefined();
+    $('#sandbox > .add-new-factory').click();
+    expect($('#sandbox > .wikimate-story > .item').length).toEqual(3);
+    expect($('#sandbox > .wikimate-story > .factory')[0]).toBeDefined();
+  });
+
+  it("has a [+] link to add new item in layout item", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "one_column_layout", "text": "heading", 'story': [] },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+    expect($('#sandbox .one_column_layout .add-new-factory')[0]).toBeDefined();
+    $('#sandbox .one_column_layout .add-new-factory').click();
+    expect($('#sandbox .one_column_layout .item').length).toEqual(1);
+    expect($('#sandbox .one_column_layout .factory')[0]).toBeDefined();
   });
 
   describe("Story Item", function() {
