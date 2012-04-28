@@ -34,7 +34,7 @@
           var newItemPlaceHolder = storyElement.find('.new-plugin-item-button');
           var after = newItemPlaceHolder.prev().prop('id');
           newItemPlaceHolder.remove();
-          storyElement.story('newItem', {type: $(this).data('plugin')}, after).story_item('edit');
+          storyElement.story('newItem', {type: $(this).data('plugin')}, {after: after}).story_item('edit');
         }
       });
 

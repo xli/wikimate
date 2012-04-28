@@ -55,13 +55,29 @@ describe("Story", function() {
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]});
 
-    var item = $('#sandbox').wikimate('newItem', {text: 'hello'}, '1').story_item('edit');
+    var item = $('#sandbox').wikimate('newItem', {text: 'hello'}, {after: '1'}).story_item('edit');
     item.find('textarea').focusout();
 
     var items = $.map($('#sandbox .item'), function(item) {
       return $(item).text();
     });
     expect(items).toEqual(['paragraph 1', 'hello', 'paragraph 2']);
+  });
+
+  it("add item inside given item id", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "one_column_layout", "text": "heading", 'story': [] },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+
+    var item = $('#sandbox').wikimate('newItem', {text: ''}, {inside: '1'}).story_item('edit');
+    item.find('textarea').text("hello").focusout();
+
+    var items = $('#sandbox').wikimate('story');
+    expect(items.length).toEqual(2);
+    expect(items[0].story.length).toEqual(1);
+    expect(items[0].story[0].text).toEqual('hello');
+    expect(items[1]).toEqual({ "id": "2", "type": "paragraph", "text": "paragraph 2" });
   });
 
   describe("Story Item", function() {
