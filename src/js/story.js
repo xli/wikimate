@@ -10,17 +10,18 @@
     },
 
     execute: function(action) {
-      var action = wikimate.utils.deepClone(action);
+      var item;
+      action = wikimate.utils.deepClone(action);
       if (action.inside) {
-        var item = $('#' + action.inside);
-        var itemStory = item.find('.wikimate-story:first')
+        item = $('#' + action.inside);
+        var itemStory = item.find('.wikimate-story:first');
         itemStory.story('execute', _.extend(action, {inside: null}));
         item.story_item('data').story = itemStory.story('data');
         return this;
       }
 
       if (action.type == 'add') {
-        var item = $('<div/>').story_item({data: action.item});
+        item = $('<div/>').story_item({data: action.item});
         if (action.after) {
           item.insertAfter($('#' + action.after));
         } else {

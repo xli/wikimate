@@ -22,14 +22,14 @@
           var top = selfOffset.top - parentOffset.top;
           $this.data('origin', selfOffset);
           $this.css('position', 'fixed').css('left', selfOffset.left + 'px');
+          if ($this.offset().top < top) {
+            $this.css('top', top + 'px');
+          } else if ($this.offset().top > 1) {
+            $this.css('top', top + 'px');
+          }
         } else if (scrollTop < parentOffset.top) {
           var origin = $this.data('origin');
           $this.css('position', 'absolute').css('left', '');
-        }
-        if ($this.offset().top < top) {
-          $this.css('top', top + 'px');
-        } else if ($this.offset().top > 1) {
-          $this.css('top', top + 'px');
         }
       });
       return this;

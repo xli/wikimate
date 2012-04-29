@@ -83,7 +83,7 @@
               case 'move':
                 container.sort(function(a, b) {
                   var ai = e.order.indexOf(a.id);
-                  var bi = e.order.indexOf(b.id)
+                  var bi = e.order.indexOf(b.id);
                   return ai == bi ? 0 : (ai > bi ? 1 : -1);
                 });
                 break;
