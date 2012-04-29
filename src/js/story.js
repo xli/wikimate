@@ -4,7 +4,7 @@
     init: function(items) {
       var $this = this;
       $.each(items || [], function(i, item) {
-        $this.append($('<div/>').story_item({data: item}));
+        $('<div/>').story_item({data: item}).appendTo($this);
       });
       return this.addClass('wikimate-story').story('bindChangeEvents').story('dblclickToNewItem');
     },

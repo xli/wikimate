@@ -20,9 +20,10 @@
     }
 
     function initItem(data) {
-      var item = $.extend({id: wikimate.utils.generateId(), type: 'paragraph', text: ''}, data || {});
+      var item = $.extend({id: wikimate.utils.generateId(), type: 'paragraph'}, data || {});
       var plugin = wikimate.plugins[item.type];
-      return plugin.defaultData === undefined ? item : $.extend(item, plugin.defaultData());
+      item = plugin.defaultData === undefined ? item : _.defaults(item, plugin.defaultData());
+      return _.defaults(item, {text: ''});
     }
 
     var initActionBar = (function() {
@@ -164,6 +165,7 @@
           order: moveInfo.order,
           inside: this.parents('.item:first').prop('id')
         });
+        return this;
       }
     };
   })());

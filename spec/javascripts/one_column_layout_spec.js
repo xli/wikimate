@@ -102,4 +102,27 @@ describe("OneColumnLayout", function() {
     expect(changes[1].item.type).toEqual('paragraph');
     expect(changes[1].inside).toEqual(changes[0].item.id);
   });
+
+  it("add one column layout inside another one column layout", function() {
+    $('#sandbox').wikimate({}).wikimate('journal', []);
+    var layout1 = $('#sandbox').wikimate('newItem', {type: 'one_column_layout'}).story_item('save');
+    var layout2 = $('#sandbox .one_column_layout .wikimate-story').story('newItem', {type: 'one_column_layout'}).story_item('save');
+
+    layout2.story_item('edit');
+    layout2.find('input').val('hello').focusout();
+
+    layout1.story_item('edit');
+    layout1.find('> .item-content > .wikimate-layout-heading > input').val('world').focusout();
+    
+    var story = $('#sandbox').wikimate('story');
+    expect(story.length).toEqual(1);
+    expect(story[0].text).toEqual('world');
+    expect(story[0].story.length).toEqual(1);
+    expect(story[0].story[0].text).toEqual('hello');
+
+    var headings = _.map($('#sandbox h2'), function(h2) {
+      return $(h2).text();
+    });
+    expect(headings).toEqual(['world', 'hello']);
+  });
 });
