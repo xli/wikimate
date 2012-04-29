@@ -33,7 +33,7 @@
         });
       }
       function createDeleteLink($this) {
-        return $('<a href="javascript:void(0)" title="Click me to remove the content">Del</a>').on('click', function(e) {
+        return $('<a href="javascript:void(0)" title="Remove section">Del</a>').on('click', function(e) {
           return $this.parent().story_item('remove');
         });
       }

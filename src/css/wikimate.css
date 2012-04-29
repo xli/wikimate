@@ -45,14 +45,16 @@
 
 .wikimate-story .item .editor-action-bar {
   position: absolute;
-  right: 0px;
-  bottom: 4px;
+  right: 20px;
+  bottom: 10px;
   height: 16px;
   width: 16px;
   display: none;
 }
 .wikimate-story .item .editor-action-bar a {
-  text-decoration: none;
+  font-size: 12px;
+  margin-right: 4px;
+  margin-top: 2px;
 }
 .wikimate-story .sort-placeholder {
   background-color: #FFE;
