@@ -6,6 +6,11 @@
     ed.destroy();
     $this.story_item('save', text);
   }
+  function cancel($this, ed) {
+    ed.remove();
+    ed.destroy();
+    $this.story_item('cancel');
+  }
 
   wikimate.plugins.rdoc = {
     title: 'Rich Document',
@@ -30,8 +35,10 @@
         mode : "exact",
         elements: id,
         theme : "advanced",
-        plugins : "autolink,save",
-        theme_advanced_buttons3: 'save',
+        plugins : "advlink,advimage,advlist,autoresize,autolink,save,table,fullscreen,spellchecker,wordcount,contextmenu,media,lists,inlinepopups",
+        theme_advanced_buttons1 : "save,cancel,|,bold,italic,underline,strikethrough,hr,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,image,code,removeformat",
+        theme_advanced_buttons2 : "table,fullscreen,media,formatselect",
+        theme_advanced_buttons3 : "",
         theme_advanced_toolbar_location : "top",
         theme_advanced_toolbar_align : "left",
         // theme_advanced_statusbar_location : "bottom",
@@ -40,12 +47,17 @@
           save($this, ed);
           return false;
         },
+        save_oncancelcallback: function(ed) {
+          cancel($this, ed);
+          return false;
+        },
         setup: function(ed) {
-          ed.onInit.add(function(ed, evt) {
-            tinymce.dom.Event.add(ed.getDoc(), 'focusout', function(e) {
-              _.defer(save, $this, ed);
-            });
-          });
+          // focusout maybe trigger by selecting a list or popups in editor
+          // ed.onInit.add(function(ed, evt) {
+          //   tinymce.dom.Event.add(ed.getDoc(), 'focusout', function(e) {
+          //     _.defer(save, $this, ed);
+          //   });
+          // });
         }
       });
       return this;
