@@ -7,10 +7,18 @@ DIST_DIR = ${PREFIX}/dist
 
 BASE_FILES = ${SRC_DIR}/js/base.js\
 	${SRC_DIR}/js/story.js\
+	${SRC_DIR}/js/story_item.js\
+	${SRC_DIR}/js/editor_shortcuts.js\
+	${SRC_DIR}/js/inline_editable.js\
+	${SRC_DIR}/js/sticky.js\
 	${SRC_DIR}/js/text_editor.js\
 	${SRC_DIR}/js/journal.js\
 	${SRC_DIR}/js/undo.js\
+	${SRC_DIR}/js/plugins/factory.js\
 	${SRC_DIR}/js/plugins/paragraph.js\
+	${SRC_DIR}/js/plugins/rdoc.js\
+	${SRC_DIR}/js/plugins/todo.js\
+	${SRC_DIR}/js/plugins/layouts/one_column_layout.js\
 
 SHELL := /bin/bash
 

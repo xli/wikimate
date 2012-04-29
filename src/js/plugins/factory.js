@@ -7,12 +7,14 @@
     emit: function(div, item) {
       var list = $('<ul/>');
       for (var prop in wikimate.plugins) {
-        if (prop == 'factory' || prop == 'paragraph') {
-          continue;
-        }
         var title = wikimate.plugins[prop].title;
-        var link = $('<a href="javascript:void(0)"/>').addClass('new-plugin-item-link new-' + prop).html(title).data('plugin', prop);
-        $('<li/>').html(link).appendTo(list);
+        if (title) {
+          var link = $('<a href="javascript:void(0)"/>')
+            .addClass('new-plugin-item-link new-' + prop)
+            .text(title)
+            .data('plugin', prop);
+          $('<li/>').html(link).appendTo(list);
+        }
       }
       this.data('newItem', true);
       return div.html('Double-Click to Edit or Add:').append(list);
