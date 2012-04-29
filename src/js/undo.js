@@ -4,19 +4,22 @@
     switch(action.type) {
       case 'remove':
         story = wikimate.utils.replay(this.wikimate('journal'));
-        var item = story.itemById(action.id);
-        var index = story.indexOf(item);
-        var after = index === 0 ? null : story[index - 1].id;
-        return {id: action.id, type: 'add', item: item, after: after};
+        var container = story.itemStoryByItemId(action.inside);
+        var item = _.find(container, function(item) { return item.id === action.id; });
+        var index = container.indexOf(item);
+        var after = index === 0 ? null : container[index - 1].id;
+        return {id: action.id, type: 'add', item: item, after: after, inside: action.inside};
       case 'add':
-        return {id: action.id, type: 'remove', item: action.item};
+        return {id: action.id, type: 'remove', item: action.item, inside: action.inside};
       case 'edit':
         story = wikimate.utils.replay(this.wikimate('journal'));
-        var prev = story.itemById(action.id);
-        return {id: action.id, type: 'edit', item: _.clone(prev)};
+        var container = story.itemStoryByItemId(action.inside);
+        var prev = _.find(container, function(item) { return item.id === action.id; });
+        return {id: action.id, type: 'edit', item: wikimate.utils.deepClone(prev), inside: action.inside};
       case 'move':
+        //todo: what's need to do with move?
         story = wikimate.utils.replay(this.wikimate('journal'));
-        return {id: action.id, type: 'move', order: _.pluck(story, 'id')};
+        return {id: action.id, type: 'move', order: _.pluck(story, 'id'), inside: action.inside};
       default:
         throw "Unknown action type: " + action.type;
     }

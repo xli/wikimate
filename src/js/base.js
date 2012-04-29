@@ -28,53 +28,77 @@
         return (((1 + Math.random()) * 0x100) | 0).toString(16).substring(1);
       }
 
+      function itemStoryByItemId(story, id) {
+        if (!id) {
+          return story;
+        }
+        var target;
+        _.any(story, function(item) {
+          if (item.id === id) {
+            if (!item.story) {
+              item.story = [];
+            }
+            target = item.story;
+            return true;
+          } else if (item.story) {
+            target = itemStoryByItemId(item.story, id);
+            return _.isObject(target);
+          }
+          return false;
+        });
+        return target;
+      }
+      function itemById(story, id) {
+        return _.find(story, function(item) { return item.id === id; });
+      }
+      function itemIndexById(story, id) {
+        return story.indexOf(itemById(story, id));
+      }
+
       return {
         generateId: function() {
           return randomBytes(8);
         },
         replay: function(events) {
-          var exts = {
-            itemById: function(id) { return _.find(this, function(item) { return item.id === id; }); },
-            itemIndexById: function(id) { return this.indexOf(this.itemById(id)); }
-          };
-          var story = _.extend([], exts);
+          var story = [];
           _.each(events, function(e) {
+            var container = itemStoryByItemId(story, e.inside);
             switch(e.type) {
               case "add":
-                var item = _.clone(e.item);
-                var container;
-                if (e.inside) {
-                  var containerItem = story.itemById(e.inside);
-                  if (!containerItem.story) {
-                    containerItem.story = _.extend([], exts);
-                  }
-                  container = containerItem.story;
-                } else {
-                  container = story;
-                }
+                var item = wikimate.utils.deepClone(e.item);
                 if (e.after) {
-                  var index = container.itemIndexById(e.after);
+                  var index = itemIndexById(container, e.after);
                   container.splice(index + 1, 0, item);
                 } else {
                   container.push(item);
                 }
                 break;
               case "edit":
-                story.itemById(e.id).text = e.item.text;
+                itemById(container, e.id).text = e.item.text;
                 break;
               case "remove":
-                story.splice(story.itemIndexById(e.id), 1);
+                var itemIndex = itemIndexById(container, e.id);
+                container.splice(itemIndex, 1);
                 break;
               case 'move':
-                story = _.extend(_.sortBy(story, function(item) {
-                  return e.order.indexOf(item.id);
-                }), exts);
+                container.sort(function(a, b) {
+                  var ai = e.order.indexOf(a.id);
+                  var bi = e.order.indexOf(b.id)
+                  return ai == bi ? 0 : (ai > bi ? 1 : -1);
+                });
                 break;
               default:
                 throw "Unknown event type: " + e.type;
             }
           });
-          return story;
+          return $.extend(story, {
+            itemStoryByItemId: function(id) {
+              return itemStoryByItemId(this, id);
+            }
+          });
+        },
+        deepClone: function(obj) {
+          return $.parseJSON(JSON.stringify(obj));
         }
       };
     })(),

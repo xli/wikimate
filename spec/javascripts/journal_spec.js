@@ -226,4 +226,26 @@ describe("Journal", function() {
     });
     expect(orderedText).toEqual(['hello', 'hello2', 'hello3']);
   });
+
+  it("undo actions that inside one column layout", function() {
+    $('#sandbox').wikimate({}).wikimate('journal', []);
+    $('#sandbox').wikimate('newItem', {type: 'one_column_layout'}).story_item('save');
+
+    $('#sandbox .one_column_layout .wikimate-story').story('newItem').story_item('edit');
+    $('#sandbox .one_column_layout .item textarea').text('hello').focusout();
+    var storyAfterAddedItem = wikimate.utils.deepClone($('#sandbox').wikimate('story'));
+
+    $('#sandbox .one_column_layout .item').story_item('edit');
+    $('#sandbox .one_column_layout .item textarea').text('world').focusout();
+    var storyAfterEditItem = wikimate.utils.deepClone($('#sandbox').wikimate('story'));
+
+    $('#sandbox .one_column_layout .item').story_item('remove');
+    var storyAfterRemovedItem = wikimate.utils.deepClone($('#sandbox').wikimate('story'));
+
+    $('#sandbox').wikimate('undo');
+    expect($('#sandbox').wikimate('story')).toEqual(storyAfterEditItem);
+
+    $('#sandbox').wikimate('undo');
+    expect($('#sandbox').wikimate('story')).toEqual(storyAfterAddedItem);
+  });
 });

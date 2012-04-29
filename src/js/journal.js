@@ -11,7 +11,8 @@
         case "edit":
           var events = journal.journal('data');
           var story = wikimate.utils.replay(events.slice(0, events.indexOf(action)));
-          var item = story.itemById(action.id);
+          var container = story.itemStoryByItemId(action.inside);
+          var item = _.find(container, function(item) { return item.id === action.id; });
           var beforeChange = item ? item.text : undefined;
           var afterChange = action.item ? action.item.text : undefined;
           return JsDiff.convertChangesToXML(JsDiff.diffWords(beforeChange, afterChange)).replace(/\n/g, "<br/>");

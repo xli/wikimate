@@ -109,28 +109,6 @@ describe("Events Replay", function() {
     ]);
   });
 
-  it("find item by id", function() {
-    var events = [
-      {
-        id: '1',
-        type: 'add',
-        item: {id: '1', text: 'hello world'}
-      },
-      {
-        id: '1',
-        type: 'edit',
-        item: {id: '1', text: 'world'}
-      }
-    ];
-    var story = wikimate.utils.replay(events);
-    expect(story.itemById('1').text).toEqual("world");
-    expect(story.itemIndexById('1')).toEqual(0);
-
-    expect([].item).toBeUndefined();
-    expect([].item).toBeUndefined();
-    expect([].itemIndex).toBeUndefined();
-  });
-
   it("insert item inside another item", function() {
     var events = [{
         id: '1',

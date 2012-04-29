@@ -127,7 +127,7 @@
           this.remove();
         } else {
           this.removeClass('item'); // remove item class to mark item has been deleted
-          this.trigger(wikimate.events.CHANGE, {id: this.story_item('data').id, type: 'remove'});
+          this.trigger(wikimate.events.CHANGE, {id: this.story_item('data').id, type: 'remove', inside: this.parents('.item:first').prop('id')});
           this.remove();
         }
       },
@@ -140,7 +140,7 @@
           this.trigger(wikimate.events.CHANGE, {
             id: item.id,
             type: 'add',
-            item: _.clone(item),
+            item: wikimate.utils.deepClone(item),
             after: this.prev().prop('id'),
             inside: this.parents('.item:first').prop('id')
           });
@@ -149,7 +149,8 @@
           this.trigger(wikimate.events.CHANGE, {
             id: item.id,
             type: 'edit',
-            item: _.clone(item)
+            item: wikimate.utils.deepClone(item),
+            inside: this.parents('.item:first').prop('id')
           });
         }
         return this;
@@ -160,7 +161,8 @@
         this.trigger(wikimate.events.CHANGE, {
           id: this.prop('id'),
           type: 'move',
-          order: moveInfo.order
+          order: moveInfo.order,
+          inside: this.parents('.item:first').prop('id')
         });
       }
     };
