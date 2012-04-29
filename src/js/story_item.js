@@ -110,6 +110,10 @@
         return renderByPlugin(this.story_item('status', 'rendering item'));
       },
 
+      cancel: function() {
+        return this.story_item('save', this.story_item('data').text);
+      },
+
       save: function(text) {
         var item = this.story_item('data');
         if (text === '') {

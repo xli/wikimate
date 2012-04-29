@@ -172,6 +172,19 @@ describe("Plain Text Editor", function() {
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
   });
 
+  it("should cancel edit to a new item", function() {
+    var changes = [];
+    $('#sandbox').wikimate({
+      change: function(event, action) {
+        changes.push(action);
+      }
+    });
+    $('#sandbox').wikimate('newItem').story_item('edit');
+    Keyboard.hitEsc($('textarea'));
+    expect(changes.length).toEqual(0);
+    expect($('#sandbox .item').length).toEqual(0);
+  });
+
   it("create new item, edit and delete it", function() {
     var changes = [];
     $('#sandbox').wikimate({ story: [], change: function(event, action) {

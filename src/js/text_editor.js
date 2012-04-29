@@ -37,7 +37,7 @@ jQuery.plugin('wikimate_text_editor', (function($) {
           $this.story_item('save', textarea.val());
         },
         cancel: function() {
-          $this.story_item('render');
+          $this.story_item('cancel');
         },
         ignoreReturn: true
       }).on('keyup', function(e) {
