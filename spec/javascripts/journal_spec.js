@@ -240,12 +240,40 @@ describe("Journal", function() {
     var storyAfterEditItem = wikimate.utils.deepClone($('#sandbox').wikimate('story'));
 
     $('#sandbox .one_column_layout .item').story_item('remove');
-    var storyAfterRemovedItem = wikimate.utils.deepClone($('#sandbox').wikimate('story'));
 
     $('#sandbox').wikimate('undo');
     expect($('#sandbox').wikimate('story')).toEqual(storyAfterEditItem);
 
     $('#sandbox').wikimate('undo');
     expect($('#sandbox').wikimate('story')).toEqual(storyAfterAddedItem);
+  });
+
+  it("undo move action that inside one column layout", function() {
+    $('#sandbox').wikimate({}).wikimate('journal', []);
+    $('#sandbox').wikimate('newItem', {type: 'one_column_layout'}).story_item('save');
+
+    $('#sandbox .one_column_layout .wikimate-story').story('newItem').story_item('edit');
+    $('#sandbox .one_column_layout .item textarea').text('hello1').focusout();
+    $('#sandbox .one_column_layout .wikimate-story').story('newItem').story_item('edit');
+    $('#sandbox .one_column_layout .item textarea').text('hello2').focusout();
+    $('#sandbox .one_column_layout .wikimate-story').story('newItem').story_item('edit');
+    $('#sandbox .one_column_layout .item textarea').text('hello3').focusout();
+    var storyBeforeMove = wikimate.utils.deepClone($('#sandbox').wikimate('story'));
+
+    var items = $('#sandbox .one_column_layout .item');
+    $(items[1]).insertAfter(items[2]);
+
+    $(items[1]).story_item('moved', {
+      order: [items[0].id, items[2].id, items[1].id]
+    });
+
+    $('#sandbox').wikimate('undo');
+    expect($('#sandbox').wikimate('story')).toEqual(storyBeforeMove);
+
+    var orderedText = $.map($('#sandbox .item p'), function(item) {
+      return $(item).text();
+    });
+    expect(orderedText).toEqual(['hello1', 'hello2', 'hello3']);
+
   });
 });

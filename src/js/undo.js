@@ -17,9 +17,9 @@
         var prev = _.find(container, function(item) { return item.id === action.id; });
         return {id: action.id, type: 'edit', item: wikimate.utils.deepClone(prev), inside: action.inside};
       case 'move':
-        //todo: what's need to do with move?
         story = wikimate.utils.replay(this.wikimate('journal'));
-        return {id: action.id, type: 'move', order: _.pluck(story, 'id'), inside: action.inside};
+        var container = story.itemStoryByItemId(action.inside);
+        return {id: action.id, type: 'move', order: _.pluck(container, 'id'), inside: action.inside};
       default:
         throw "Unknown action type: " + action.type;
     }
