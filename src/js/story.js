@@ -73,11 +73,9 @@
         placeholder: 'sort-placeholder',
         opacity: 0.8,
         update: function(event, ui) {
-          if ($(event.srcElement).hasClass('item')) {
-            ui.item.story_item('moved', {
-              order: _.pluck($this.find('> .item'), 'id')
-            });
-          }
+          ui.item.story_item('moved', {
+            order: _.pluck($this.find('> .item'), 'id')
+          });
         }
       });
     },
