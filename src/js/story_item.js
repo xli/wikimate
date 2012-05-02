@@ -118,7 +118,7 @@
         var item = this.story_item('data');
         if (text === '') {
           this.story_item('remove');
-        } else if (text != item.text) {
+        } else if (this.data('newItem') || text != item.text) {
           this.story_item('update', {text: text});
         } else {
           this.story_item('render');

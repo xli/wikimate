@@ -18,6 +18,17 @@ describe("Story", function() {
       expect($('#2').story_item('editable')).toEqual(false);
     });
 
+    it("add the item when text is not empty but same with default", function() {
+      var changes = []
+      $('#sandbox').wikimate({change: function(event, action) {
+        changes.push(action);
+      }});
+      $('#sandbox').wikimate('newItem', {type: 'todo'}).story_item('edit');
+      $('.item textarea').focusout();
+      expect(changes.length).toEqual(1);
+      expect($('#sandbox').wikimate('story').length).toEqual(1);
+    });
+
     it("deleting item", function() {
       $('#sandbox').wikimate({ story: [
         { "id": "1", "type": "paragraph", "text": "paragraph 1" },

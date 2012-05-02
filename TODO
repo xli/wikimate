@@ -1,3 +1,4 @@
+* a new todo with Esc will not be canceled
 * a wysiwyg plugin
 * more smooth way to auto increase textarea height
 * data-id instead of html id, avoid dup id?!, item div is the only one html id
