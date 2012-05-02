@@ -19,7 +19,7 @@ describe("Story", function() {
     });
 
     it("add the item when text is not empty but same with default", function() {
-      var changes = []
+      var changes = [];
       $('#sandbox').wikimate({change: function(event, action) {
         changes.push(action);
       }});
