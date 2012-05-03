@@ -14,6 +14,7 @@
 
   wikimate.plugins.rdoc = {
     title: 'Rich Document',
+    editor_options: {},
     emit: function(div, item) {
       return div.html(item.text);
     },
@@ -31,7 +32,7 @@
       var $this = this;
       var id = wikimate.utils.generateId();
       var textarea = $('<textarea/>').prop('id', id).text(item.text).appendTo(this.empty());
-      tinymce.init({
+      tinymce.init(_.extend({
         mode : "exact",
         elements: id,
         theme : "advanced",
@@ -59,7 +60,7 @@
           //   });
           // });
         }
-      });
+      }, wikimate.plugins.rdoc.editor_options));
       return this;
     }
   };
