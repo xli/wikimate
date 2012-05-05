@@ -26,7 +26,7 @@ describe("Journal", function() {
     });
 
     $('#sandbox .wikimate-story').dblclick();
-    $('.wikimate-story textarea').text("hello world")
+    $('.wikimate-story textarea').text("hello world");
     $('#sandbox').click();
 
     expect(ee.length).toEqual(2);
