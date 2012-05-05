@@ -62,7 +62,7 @@
       $(window).on(eventName, function(e) {
         var editingElement = $this.editor_shortcuts('editingElement');
         var eventTargetExistsInDom = $(e.target).closest('html')[0];
-        if (eventTargetExistsInDom && !$.contains(editingElement, e.target)) {
+        if (eventTargetExistsInDom && editingElement && !$.contains(editingElement, e.target)) {
           $this.editor_shortcuts('save');
         }
       });
