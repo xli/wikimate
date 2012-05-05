@@ -31,7 +31,17 @@
     edit: function(item) {
       var $this = this;
       var id = wikimate.utils.generateId();
-      var textarea = $('<textarea/>').prop('id', id).text(item.text).appendTo(this.empty());
+      var textarea = $('<textarea/>').prop('id', id).text(item.text).appendTo(this.empty()).editor_shortcuts({
+        save: function() {
+          save($this, tinymce.activeEditor);
+        },
+        cancel: function() {
+          cancel($this, tinymce.activeEditor);
+        },
+        close: function() {
+        },
+        ignoreReturn: true
+      });
       tinymce.init(_.extend({
         mode : "exact",
         elements: id,
@@ -51,14 +61,6 @@
         save_oncancelcallback: function(ed) {
           cancel($this, ed);
           return false;
-        },
-        setup: function(ed) {
-          // focusout maybe trigger by selecting a list or popups in editor
-          // ed.onInit.add(function(ed, evt) {
-          //   tinymce.dom.Event.add(ed.getDoc(), 'focusout', function(e) {
-          //     _.defer(save, $this, ed);
-          //   });
-          // });
         }
       }, wikimate.plugins.rdoc.editor_options));
       return this;
