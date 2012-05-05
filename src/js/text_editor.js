@@ -3,10 +3,6 @@ jQuery.plugin('wikimate_text_editor', (function($) {
     RETURN:   13
   };
 
-  function createSaveDot() {
-    return $('<a href="javascript:void(0)">Save</a>').prop('title', 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel');
-  }
-
   function syncHeight(textarea) {
     var expectedTextHeight = textarea.prop('scrollHeight');
     if (expectedTextHeight > textarea.innerHeight()) {
@@ -16,7 +12,11 @@ jQuery.plugin('wikimate_text_editor', (function($) {
   }
 
   function initActionBar($this, textarea) {
-    var bar = $('<div />').addClass('editor-action-bar').append(createSaveDot());
+    var hint = 'Click me/outside to save, or Ctrl/Cmd + s to save. ESC to cancel';
+    var saveButton = $('<a href="javascript:void(0)">Save</a>').prop('title', hint).click(function(e) {
+      $this.find('.plain-text-editor').editor_shortcuts('save');
+    });
+    var bar = $('<div />').addClass('editor-action-bar').append(saveButton);
     $this.append(bar).hover(function(e) {
       bar.show();
     }, function(e) {
@@ -52,7 +52,7 @@ jQuery.plugin('wikimate_text_editor', (function($) {
           if (text.trim().length > 0 && text.substr(-2) == "\n\n") {
             e.preventDefault();
             textarea.val(text.substr(0, text.length - 1));
-            textarea.focusout();
+            textarea.editor_shortcuts('save');
             $('<div/>').story_item({data: {type: item.type}, newItem: true}).insertAfter($this).story_item('edit');
           }
         }

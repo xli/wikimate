@@ -80,6 +80,10 @@
           .story_item('render');
       },
 
+      newItem: function() {
+        return this.data('newItem');
+      },
+
       status: function(newStatus) {
         if (newStatus) {
           status = newStatus;

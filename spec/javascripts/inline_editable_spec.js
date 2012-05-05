@@ -14,7 +14,7 @@ describe("InlineEditor", function() {
     expect($('#sandbox input:focus').val()).toEqual('hello');
   });
 
-  it("focusout to save", function() {
+  it("click outside to save", function() {
     var saved = [];
     var canceled = [];
     $('#sandbox').text('hello').wikimate_inline_editable({
@@ -27,7 +27,8 @@ describe("InlineEditor", function() {
     });
 
     $('#sandbox').dblclick();
-    $('#sandbox input').val('world').focusout();
+    $('#sandbox input').val('world');
+    $(window.document.body).click();
 
     expect($('#sandbox').html()).toEqual('world');
     expect(saved.length).toEqual(1);

@@ -30,7 +30,8 @@ describe("OneColumnLayout", function() {
     $('#sandbox').wikimate({});
     $('#sandbox').wikimate('newItem', {type: 'one_column_layout'}).story_item('edit');
 
-    $('#sandbox .item .wikimate-layout-heading input').val('hello').focusout();
+    $('#sandbox .item .wikimate-layout-heading input').val('hello');
+    $('#sandbox').click();
 
     expect($('#sandbox .item .wikimate-layout-heading').text()).toEqual('hello');
     var item = $('#sandbox .item').story_item('data');
@@ -58,7 +59,8 @@ describe("OneColumnLayout", function() {
     expect($('.wikimate-layout-panel .paragraph').length).toEqual(1);
     expect($('.wikimate-layout-panel .item textarea').length).toEqual(1);
 
-    $('.wikimate-layout-panel .item textarea').text('hello').focusout();
+    $('.wikimate-layout-panel .item textarea').text('hello');
+    $('#sandbox').click();
     expect($('.wikimate-layout-panel .item p').text()).toEqual('hello');
   });
 
@@ -67,7 +69,8 @@ describe("OneColumnLayout", function() {
     $('#sandbox').wikimate('newItem', {type: 'one_column_layout'});
 
     $('#sandbox .item .wikimate-layout-panel').story('newItem').story_item('edit');
-    $('.wikimate-layout-panel .item textarea').text('hello').focusout();
+    $('.wikimate-layout-panel .item textarea').text('hello');
+    $('#sandbox').click();
 
     var data = $('#sandbox .one_column_layout').story_item('data');
     expect(data.story.length).toEqual(1);
@@ -79,7 +82,8 @@ describe("OneColumnLayout", function() {
     $('#sandbox').wikimate('newItem', {type: 'one_column_layout'});
 
     $('#sandbox .item .wikimate-layout-panel').story('newItem').story_item('edit');
-    $('.wikimate-layout-panel .item textarea').text('hello').focusout();
+    $('.wikimate-layout-panel .item textarea').text('hello');
+    $('#sandbox').click();
     $('.wikimate-layout-panel .item').story_item('remove');
 
     var data = $('#sandbox .one_column_layout').story_item('data');
@@ -92,7 +96,8 @@ describe("OneColumnLayout", function() {
     $('#sandbox').wikimate('newItem', {type: 'one_column_layout'}).story_item('save');
 
     $('#sandbox .item .wikimate-layout-panel').story('newItem').story_item('edit');
-    $('.wikimate-layout-panel .item textarea').text('hello').focusout();
+    $('.wikimate-layout-panel .item textarea').text('hello');
+    $('#sandbox').click();
 
     expect(changes.length).toEqual(2);
     expect(changes[0].type).toEqual('add');
@@ -109,10 +114,12 @@ describe("OneColumnLayout", function() {
     var layout2 = $('#sandbox .one_column_layout .wikimate-story').story('newItem', {type: 'one_column_layout'}).story_item('save');
 
     layout2.story_item('edit');
-    layout2.find('input').val('hello').focusout();
+    layout2.find('input').val('hello');
+    $('#sandbox').click();
 
     layout1.story_item('edit');
-    layout1.find('> .item-content > .wikimate-layout-heading > input').val('world').focusout();
+    layout1.find('> .item-content > .wikimate-layout-heading > input').val('world');
+    $('#sandbox').click();
     
     var story = $('#sandbox').wikimate('story');
     expect(story.length).toEqual(1);

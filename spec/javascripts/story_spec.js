@@ -13,7 +13,8 @@ describe("Story", function() {
         { "id": "2", "type": "paragraph", "text": "paragraph 2" }
       ]});
       $('#1').story_item('edit');
-      $('#1 textarea').text('hello world').focusout();
+      $('#1 textarea').text('hello world');
+      $('#sandbox').click();
       expect($('#1').story_item('editable')).toEqual(false);
       expect($('#2').story_item('editable')).toEqual(false);
     });
@@ -24,7 +25,8 @@ describe("Story", function() {
         changes.push(action);
       }});
       $('#sandbox').wikimate('newItem', {type: 'todo'}).story_item('edit');
-      $('.item textarea').focusout();
+      $('.item textarea');
+      $('#sandbox').click();
       expect(changes.length).toEqual(1);
       expect($('#sandbox').wikimate('story').length).toEqual(1);
     });
@@ -35,7 +37,8 @@ describe("Story", function() {
         { "id": "2", "type": "paragraph", "text": "paragraph 2" }
       ]});
       $('#1').story_item('edit');
-      $('#1 textarea').text('').focusout();
+      $('#1 textarea').text('');
+      $('#sandbox').click();
       expect($('#1').story_item('editable')).toEqual(false);
       expect($('#2').story_item('editable')).toEqual(false);
     });
@@ -46,7 +49,8 @@ describe("Story", function() {
         { "id": "2", "type": "paragraph", "text": "paragraph 2" }
       ]});
       $('#1').story_item('edit');
-      $('#1 textarea').text('paragraph 1').focusout();
+      $('#1 textarea').text('paragraph 1');
+      $('#sandbox').click();
       expect($('#1').story_item('editable')).toEqual(false);
       expect($('#2').story_item('editable')).toEqual(false);
     });
@@ -67,7 +71,8 @@ describe("Story", function() {
     ]});
 
     var item = $('#sandbox').wikimate('newItem', {text: 'hello'}, {after: '1'}).story_item('edit');
-    item.find('textarea').focusout();
+    item.find('textarea');
+    $('#sandbox').click();
 
     var items = $.map($('#sandbox .item'), function(item) {
       return $(item).text();
@@ -82,7 +87,8 @@ describe("Story", function() {
     ]});
 
     var item = $('#sandbox').wikimate('newItem', {text: ''}, {inside: '1'}).story_item('edit');
-    item.find('textarea').text("hello").focusout();
+    item.find('textarea').text("hello");
+    $('#sandbox').click();
 
     var items = $('#sandbox').wikimate('story');
     expect(items.length).toEqual(2);
@@ -111,6 +117,17 @@ describe("Story", function() {
     $('#sandbox .one_column_layout .add-new-factory').click();
     expect($('#sandbox .one_column_layout .item').length).toEqual(1);
     expect($('#sandbox .one_column_layout .factory')[0]).toBeDefined();
+  });
+
+  it("save editing item when click element out side of editing item", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "one_column_layout", "text": "heading", 'story': [] },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+    $('#2').story_item('edit');
+    $('#2 textarea').text("hello");
+    $('#1').click();
+    expect($('#sandbox #2 p').text()).toEqual('hello');
   });
 
   describe("Story Item", function() {

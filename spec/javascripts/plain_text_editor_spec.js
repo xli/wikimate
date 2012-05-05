@@ -11,7 +11,8 @@ describe("Plain Text Editor", function() {
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }
     ]});
     $('#1').story_item('edit');
-    $('#1 textarea').text('hello world').focusout();
+    $('#1 textarea').text('hello world');
+    $('#sandbox').click();
     expect($('#sandbox #1 p').text()).toEqual('hello world');
   });
 
@@ -27,7 +28,8 @@ describe("Plain Text Editor", function() {
       }
     });
     $('#2').story_item('edit');
-    $('#2 textarea').text('hello world').focusout();
+    $('#2 textarea').text('hello world');
+    $('#sandbox').click();
 
     expect(changes.length).toEqual(1);
     expect(changes[0]).toEqual({id: '2', type: 'edit', item: { "id": "2", "type": "paragraph", "text": "hello world" }});
@@ -45,7 +47,8 @@ describe("Plain Text Editor", function() {
       }
     });
     $('#1').story_item('edit');
-    $('#1 textarea').text('paragraph 1').focusout();
+    $('#1 textarea').text('paragraph 1');
+    $('#sandbox').click();
     expect(changes.length).toEqual(0);
     expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
   });
@@ -61,7 +64,8 @@ describe("Plain Text Editor", function() {
     expect($('#1 textarea').length).toEqual(0);
     expect($('#sandbox div textarea')).toBeDefined();
 
-    $('#sandbox div textarea').text("hello world").focusout();
+    $('#sandbox div textarea').text("hello world");
+    $('#sandbox').click();
 
     var paragraphs = $.map($('#sandbox p'), function(item) {
       return $(item).text();
@@ -105,7 +109,8 @@ describe("Plain Text Editor", function() {
     }});
 
     $('#sandbox .wikimate-story').dblclick();
-    $('#sandbox div textarea').text("hello world").focusout();
+    $('#sandbox div textarea').text("hello world");
+    $('#sandbox').click();
     expect(changes.length).toEqual(1);
 
     expect(changes[0].id).toBeDefined();
@@ -128,7 +133,8 @@ describe("Plain Text Editor", function() {
 
     $('#1').story_item('edit');
     Keyboard.hitEnter($('#1 textarea'));
-    $('#sandbox div textarea').text("hello world").focusout();
+    $('#sandbox div textarea').text("hello world");
+    $('#sandbox').click();
     expect(changes.length).toEqual(1);
     
     expect(changes[0].id).toBeDefined();
@@ -148,7 +154,8 @@ describe("Plain Text Editor", function() {
     });
 
     $('#1').story_item('edit');
-    $('#1 textarea').text('').focusout();
+    $('#1 textarea').text('');
+    $('#sandbox').click();
 
     expect(changes.length).toEqual(1);
 
@@ -193,15 +200,18 @@ describe("Plain Text Editor", function() {
 
     // add
     $('#sandbox .wikimate-story').dblclick();
-    $('#sandbox div textarea').text("hello").focusout();
+    $('#sandbox div textarea').text("hello");
+    $('#sandbox').click();
 
     // edit
     $('#' + changes[0].id).story_item('edit');
-    $('#sandbox div textarea').text("world").focusout();
+    $('#sandbox div textarea').text("world");
+    $('#sandbox').click();
 
     // delete
     $('#' + changes[0].id).story_item('edit');
-    $('#sandbox div textarea').text("").focusout();
+    $('#sandbox div textarea').text("");
+    $('#sandbox').click();
 
     expect(changes.length).toEqual(3);
     expect(changes[0].type).toEqual('add');
@@ -217,7 +227,8 @@ describe("Plain Text Editor", function() {
 
     $('#sandbox .wikimate-story').dblclick();
     $('#sandbox div textarea').text("");
-    $('#sandbox div textarea').focusout();
+    $('#sandbox div textarea');
+    $('#sandbox').click();
     expect(changes.length).toEqual(0);
   });
 
@@ -230,7 +241,8 @@ describe("Plain Text Editor", function() {
       }
     });
     $('#1').story_item('edit');
-    $('#sandbox div textarea').focusout();
+    $('#sandbox div textarea');
+    $('#sandbox').click();
     expect(changes.length).toEqual(0);
   });
 
@@ -296,21 +308,6 @@ describe("Plain Text Editor", function() {
     expect(changes[0].item.text).toEqual('hello');
   });
 
-  it("is able to redefine focusout behaviour", function() {
-    $('#sandbox').wikimate({ story: [
-      { "id": "1", "type": "paragraph", "text": "paragraph 1" },
-      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
-    ]});
-    var events = [];
-    $('#1').wikimate_text_editor({focusout: function(e) {
-      events.push(e);
-    }});
-    $('#1 textarea').text('hello world').focusout();
-    expect($('#sandbox #1 textarea').length).toEqual(1);
-    expect(events.length).toEqual(1);
-    expect(events[0].target).toEqual($('#1 textarea')[0]);
-  });
-
   it("fires close event when editor is saving", function() {
     $('#sandbox').wikimate({ story: [
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
@@ -320,13 +317,14 @@ describe("Plain Text Editor", function() {
     $('#1').wikimate_text_editor({close: function(e) {
       events.push(e);
     }});
-    $('#1 textarea').text('hello world').focusout();
+    $('#1 textarea').text('hello world');
+    $('#sandbox').click();
     expect($('#sandbox #1 p').text()).toEqual('hello world');
     expect(events.length).toEqual(1);
     expect(events[0]).toEqual('save');
   });
 
-  it("fires close event when editor is cancel", function() {
+  it("fires close event when editor is canceling", function() {
     $('#sandbox').wikimate({ story: [
       { "id": "1", "type": "paragraph", "text": "paragraph 1" },
       { "id": "2", "type": "paragraph", "text": "paragraph 2" }

@@ -37,7 +37,8 @@ describe("Factory", function() {
     $('#sandbox').wikimate('newItem', {type: 'factory'});
     $('.new-todo').click();
     expect(changes.length).toEqual(0);
-    $('#sandbox .item textarea').text("hello").focusout();
+    $('#sandbox .item textarea').text("hello");
+    $('#sandbox').click();
     expect(changes.length).toEqual(1);
     expect(changes[0].type).toEqual('add');
   });

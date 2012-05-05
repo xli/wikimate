@@ -1,7 +1,6 @@
 /**
  * Attached simple editor shortcuts convention:
  *  Esc to cancel
- *  Focusout to save
  *  Ctrl/Cmd + s to save
  *  Enter to save, ignored when pass option ignoreReturn = true
  */
@@ -13,15 +12,7 @@
     s:        83
   };
 
-  function onSave(options, $this) {
-    on(options.save, $this, [options.value]);
-    on(options.close, $this, ['save']);
-  }
-
-  function onCancel(options, $this) {
-    on(options.cancel, $this, [options.value]);
-    on(options.close, $this, ['cancel']);
-  }
+  var eventName = 'click.story_item_editor';
 
   function on(callback, $this, args) {
     if (callback) {
@@ -36,30 +27,66 @@
      *   cancel: callback function, one argument options.value, applied to editor_shortcuts element jQuery object
      *   value: a value passed to callback functions
      *   ignoreReturn: does not do save when the value is true, default is false
+     *   close: callback functions, one argument 'save'/'cancel', applied to editor_shortcuts element jQuery object
      */
     init: function(options) {
-      return this.focusout(function(e) {
-        if (options.focusout) {
-          on(options.focusout, $(this), [e]);
-        } else {
-          onSave(options, $(this));
+      return this.data('options', options)
+        .editor_shortcuts('bindShortcuts')
+        .editor_shortcuts('bindClickOutsideSave');
+    },
+
+    save: function() {
+      var options = this.data('options');
+      if (options) {
+        $(window).off(eventName);
+        on(options.save, this, [options.value]);
+        on(options.close, this, ['save']);
+      }
+    },
+
+    cancel: function() {
+      var options = this.data('options');
+      if (options) {
+        $(window).off(eventName);
+        on(options.cancel, this, [options.value]);
+        on(options.close, this, ['cancel']);
+      }
+    },
+
+    editingElement: function() {
+      return this.parent()[0];
+    },
+
+    bindClickOutsideSave: function() {
+      var $this = this;
+      $(window).on(eventName, function(e) {
+        var editingElement = $this.editor_shortcuts('editingElement');
+        var eventTargetExistsInDom = $(e.target).closest('html')[0];
+        if (eventTargetExistsInDom && !$.contains(editingElement, e.target)) {
+          $this.editor_shortcuts('save');
         }
-      }).keydown(function(e) {
+      });
+      return this;
+    },
+
+    bindShortcuts: function() {
+      var options = this.data('options');
+      return this.keydown(function(e) {
         if (e.which == KeyCode.ESC) {
           e.preventDefault();
           e.stopPropagation();
-          onCancel(options, $(this));
+          $(this).editor_shortcuts('cancel');
         } else if (e.which == KeyCode.RETURN) {
           if (options.ignoreReturn) {
             return;
           }
           e.preventDefault();
           e.stopPropagation();
-          onSave(options, $(this));
+          $(this).editor_shortcuts('save');
         } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
           e.preventDefault();
           e.stopPropagation();
-          onSave(options, $(this));
+          $(this).editor_shortcuts('save');
         }
       });
     }
