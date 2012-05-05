@@ -20,7 +20,7 @@
       return div.html('Double-Click to Edit or Add:').append(list);
     },
     edit: function() {
-      return transform(this, 'paragraph').story_item('edit');
+      return transform(this, wikimate.default_story_item_type).story_item('edit');
     },
     bind: function(div, item) {
       var itemEle = this;

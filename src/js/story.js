@@ -97,6 +97,7 @@
     CHANGE: 'wikimate:change'
   });
 
+  window.wikimate.default_story_item_type = 'paragraph';
   $.extend(wikimate.fn, {
     newItem: function(data, position) {
       return this.find('> .wikimate-story').story('newItem', data, position);
@@ -105,6 +106,9 @@
       if (options) {
         if (options.change) {
           this.on(wikimate.events.CHANGE, options.change);
+        }
+        if (options.default_story_item_type) {
+          wikimate.default_story_item_type = options.default_story_item_type;
         }
         var storyElement = $('<div />').story('init', options.story);
         var newFactoryItem = $('<div title="Add new Item">[+]</a>').addClass('add-new-factory').on('click', function(e) {

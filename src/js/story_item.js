@@ -20,7 +20,7 @@
     }
 
     function initItem(data) {
-      var item = $.extend({id: wikimate.utils.generateId(), type: 'paragraph'}, data || {});
+      var item = $.extend({id: wikimate.utils.generateId(), type: wikimate.default_story_item_type}, data || {});
       var plugin = wikimate.plugins[item.type];
       item = plugin.defaultData === undefined ? item : _.defaults(item, plugin.defaultData());
       return _.defaults(item, {text: ''});

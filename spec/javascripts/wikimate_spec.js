@@ -4,6 +4,7 @@ describe("WikiMate", function() {
   });
   afterEach(function() {
     $('#sandbox').remove();
+    wikimate.default_story_item_type = 'paragraph';
   });
 
   it("renders text paragraphs story", function() {
@@ -30,5 +31,15 @@ describe("WikiMate", function() {
       { "id": "1", "type": "paragraph", "text": "paragraph 1" }
     ]});
     expect($('#1').data('data')).toBeDefined();
+  });
+
+  it("change default story item type", function() {
+    $('#sandbox').wikimate({default_story_item_type: 'todo'}).find('.wikimate-story').dblclick();
+    expect($('#sandbox .item').length).toEqual(1);
+    expect($('#sandbox .item').story_item('data').type).toEqual('todo');
+
+    $('#sandbox').wikimate('newItem', {type: 'factory'});
+    $('.factory').click();
+    expect($('#sandbox .item').prop('class')).toEqual('item todo');
   });
 });
