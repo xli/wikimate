@@ -295,4 +295,49 @@ describe("Plain Text Editor", function() {
     expect(changes[0].type).toEqual('edit');
     expect(changes[0].item.text).toEqual('hello');
   });
+
+  it("is able to redefine focusout behaviour", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "paragraph", "text": "paragraph 1" },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+    var events = [];
+    $('#1').wikimate_text_editor({focusout: function(e) {
+      events.push(e);
+    }});
+    $('#1 textarea').text('hello world').focusout();
+    expect($('#sandbox #1 textarea').length).toEqual(1);
+    expect(events.length).toEqual(1);
+    expect(events[0].target).toEqual($('#1 textarea')[0]);
+  });
+
+  it("fires close event when editor is saving", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "paragraph", "text": "paragraph 1" },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+    var events = [];
+    $('#1').wikimate_text_editor({close: function(e) {
+      events.push(e);
+    }});
+    $('#1 textarea').text('hello world').focusout();
+    expect($('#sandbox #1 p').text()).toEqual('hello world');
+    expect(events.length).toEqual(1);
+    expect(events[0]).toEqual('save');
+  });
+
+  it("fires close event when editor is cancel", function() {
+    $('#sandbox').wikimate({ story: [
+      { "id": "1", "type": "paragraph", "text": "paragraph 1" },
+      { "id": "2", "type": "paragraph", "text": "paragraph 2" }
+    ]});
+    var events = [];
+    $('#1').wikimate_text_editor({close: function(e) {
+      events.push(e);
+    }});
+    Keyboard.hitEsc($('#1 textarea'));
+    expect($('#sandbox #1 p').text()).toEqual('paragraph 1');
+    expect(events.length).toEqual(1);
+    expect(events[0]).toEqual('cancel');
+  });
 });

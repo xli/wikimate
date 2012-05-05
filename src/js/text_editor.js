@@ -29,18 +29,20 @@ jQuery.plugin('wikimate_text_editor', (function($) {
   }
 
   return {
-    init: function() {
+    init: function(options) {
       var item = this.story_item('data');
       var $this = this;
-      var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').editor_shortcuts({
+      var textarea = $("<textarea/>").text(item.text).addClass('plain-text-editor').editor_shortcuts(_.extend({
         save: function() {
           $this.story_item('save', textarea.val());
         },
         cancel: function() {
           $this.story_item('cancel');
         },
+        close: function() {
+        },
         ignoreReturn: true
-      }).on('keyup', function(e) {
+      }, options)).on('keyup', function(e) {
         syncHeight(textarea);
         // in keyup so that we can findout the new RETURN is added into last line
         // could not find out a way to do this in keydown

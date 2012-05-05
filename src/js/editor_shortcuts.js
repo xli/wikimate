@@ -13,6 +13,22 @@
     s:        83
   };
 
+  function onSave(options, $this) {
+    on(options.save, $this, [options.value]);
+    on(options.close, $this, ['save']);
+  }
+
+  function onCancel(options, $this) {
+    on(options.cancel, $this, [options.value]);
+    on(options.close, $this, ['cancel']);
+  }
+
+  function on(callback, $this, args) {
+    if (callback) {
+      callback.apply($this, args);
+    }
+  }
+
   $.plugin('editor_shortcuts', {
     /**
      * Options
@@ -23,23 +39,27 @@
      */
     init: function(options) {
       return this.focusout(function(e) {
-        options.save.apply($(this), [options.value]);
+        if (options.focusout) {
+          on(options.focusout, $(this), [e]);
+        } else {
+          onSave(options, $(this));
+        }
       }).keydown(function(e) {
         if (e.which == KeyCode.ESC) {
           e.preventDefault();
           e.stopPropagation();
-          options.cancel.apply($(this), [options.value]);
+          onCancel(options, $(this));
         } else if (e.which == KeyCode.RETURN) {
           if (options.ignoreReturn) {
             return;
           }
           e.preventDefault();
           e.stopPropagation();
-          options.save.apply($(this), [options.value]);
+          onSave(options, $(this));
         } else if ((e.metaKey || e.ctrlKey) && e.which == KeyCode.s) { // cmd + s
           e.preventDefault();
           e.stopPropagation();
-          options.save.apply($(this), [options.value]);
+          onSave(options, $(this));
         }
       });
     }
