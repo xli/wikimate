@@ -2,12 +2,12 @@ jQuery.plugin('wikimate_text_editor', (function($) {
   var KeyCode = {
     RETURN:   13
   };
+  var extraHeight = 16;
 
   function syncHeight(textarea) {
     var expectedTextHeight = textarea.prop('scrollHeight');
     if (expectedTextHeight > textarea.innerHeight()) {
-      var lineHeight = textarea.css('line-height');
-      textarea.height(expectedTextHeight + parseInt(lineHeight, 10));
+      textarea.height(expectedTextHeight + extraHeight);
     }
   }
 
