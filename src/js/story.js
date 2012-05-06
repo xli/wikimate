@@ -1,4 +1,12 @@
 (function($) {
+  function clearSelection() {
+    if(document.selection && document.selection.empty) {
+      document.selection.empty();
+    } else if(window.getSelection) {
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+    }
+  }
 
   $.plugin('story', {
     init: function(items) {
@@ -87,6 +95,7 @@
         e.preventDefault();
         e.stopPropagation();
         if (e.target == $this[0]) {
+          clearSelection();
           $this.story('newItem').story_item('edit');
         }
       });
