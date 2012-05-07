@@ -34,7 +34,8 @@ describe("WikiMate", function() {
   });
 
   it("change default story item type", function() {
-    $('#sandbox').wikimate({default_story_item_type: 'todo'}).find('.wikimate-story').dblclick();
+    wikimate.default_story_item_type = 'todo';
+    $('#sandbox').wikimate({}).find('.wikimate-story').dblclick();
     expect($('#sandbox .item').length).toEqual(1);
     expect($('#sandbox .item').story_item('data').type).toEqual('todo');
 

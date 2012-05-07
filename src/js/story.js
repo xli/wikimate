@@ -116,9 +116,6 @@
         if (options.change) {
           this.on(wikimate.events.CHANGE, options.change);
         }
-        if (options.default_story_item_type) {
-          wikimate.default_story_item_type = options.default_story_item_type;
-        }
         var storyElement = $('<div />').story('init', options.story);
         var newFactoryItem = $('<div title="Add new Item">[+]</a>').addClass('add-new-factory').on('click', function(e) {
           return storyElement.story('newItem', {type: 'factory'});
