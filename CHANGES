@@ -1,0 +1,12 @@
+== 1.0
+
+* A story panel render story items by typed plugins
+* A journal panel recording history of the story
+* Create item by
+** double click empty space of the story element
+** a factory item that lists all of existing item types
+* Edit item by double click, move item by drag&drop
+* A handy plain text editor as default text paragraph editor, can be used in any plugin
+* Integrate a wysiwyg editor (TinyMC) plugin to support rich document
+* A simple todo plugin to show how to build specific content plugin
+* A one column layout to build hierarchy story tree.

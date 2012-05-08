@@ -1,8 +1,9 @@
 /**
  * Attached simple editor shortcuts convention:
- *  Esc to cancel
  *  Ctrl/Cmd + s to save
- *  Enter to save, ignored when pass option ignoreReturn = true
+ *  Click outside of editing element to save
+ *  Esc to cancel
+ *  Enter to save, optional, ignored when pass option ignoreReturn = true
  */
 (function($) {
   var KeyCode = {

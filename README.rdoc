@@ -1,3 +1,117 @@
 = WikiMate
 
-WikiMate is an wiki editor inspired by Smallest-Federated-Wiki project. 
+WikiMate is a sectional wiki editor inspired by Smallest-Federated-Wiki project. Different from the Smallest-Federated-Wiki, WikiMate just want to be a part of a wiki style content's editor.
+
+== Demo
+
+http://xli.github.com/wikimate/
+
+== Basic Usage
+
+    var story = ... // a Javascript Array, story items, saved or just []
+    $('#wiki').wikimate({ story: story, change: function(event, action) {
+      // save the action as you need
+      save(action)
+      // get the updated story.........
+      var newStory = $('#wiki').wikimate('story');
+      .........
+      // get the updated journal........
+      var newJournal = $('#wiki').wikimate('journal');
+      .........
+    }});
+
+Tell wikimate to render story journal:
+
+    var journal = ... // a Javascript Array that contains action objects, saved before or just [] by default
+    $('#wiki').wikimate('journal', journal);
+
+== Data Structure
+
+WikiMate uses similar data structure that Smallest-Federated-Wiki uses to create wiki:
+
+* Story, Array, a list of story items.
+** Story item, Object:
+*** id: uniq string id
+*** type: name of plugin used for rendering and editing the item
+*** text: text content of the item
+** Story item may have some other attributes designed by the plugin, for example:
+*** story: a list of story items, layout item may have this attribute to maintain all story items inside the layout
+* Journal, Array, a list of actions.
+** Journal is optional
+** Action data structure:
+*** id: uniq string id, from the item id
+*** type: 'add', 'edit', 'remove', 'move'
+*** item: optional, add/edit action has this attribute
+*** after: an item id, identify the position of the item that action is related.
+*** inside: a layout item id, identify the position of the item that action is related.
+*** order: a list of item id that presents order of all of items in a layout after item moved.
+
+== Modules
+
+WikiMate is modularized as jQuery plugins:
+
+* story: container of story items, also response to add new item and reorder items by drag&drop
+** story item: an item rendered/edited by plugin, responding for maintain story item data object.
+** text editor: a simple textarea editor with handy shortcuts.
+** inline editable: a simple single line text editor. Originally created for inline editing one column layout heading.
+** editor shortcuts: conventionalize text editor's shortcuts.
+* journal
+** undo
+
+=== Story
+
+* Double click to create new item
+* Move item by drag&drop
+
+=== Editor Shortcuts
+
+* Click outside of editing item to save
+* Ctrl/Cmd + s to save
+* Esc to cancel editing
+* Enter to save, optional
+
+=== Plain Text Editor
+
+* should finish current item editing and create new item with same item type after user typed 2 new line at the end of the item content.
+* textarea change event should not conflict with wikimate change event
+* auto increase height when user inputs more content
+* same height with item content when entering edit
+* bind with editor shortcuts
+* should not open another editor when click outside of current editing editor
+* save link/button
+
+=== Journal
+
+* remember all event history on wikimate obj? (or only for test?)
+* list journal events at bottom
+* highlight journal event change
+
+=== Plugins
+
+==== Paragraph
+
+Paragraph is default new item type in story.
+
+* break into p elements for text lines
+* double click to edit
+* edit by plain text editor
+
+==== Factory
+
+Factory presents all types of items that can be added into story.
+
+==== Todo
+
+A very simple todo plugin that lists all todos and have checkbox for completing the todo.
+Edit by plain text editor
+
+==== Rdoc
+
+Rdoc is a Rich Document plugin, integrating with tinyMCE WYSIWYG editor.
+
+==== One Column Layout
+
+One Column Layout is a layout presents heading and content.
+
+
+

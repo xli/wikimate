@@ -1,51 +1,20 @@
-* a new todo with Esc will not be canceled
-# * a wysiwyg plugin
-* more smooth way to auto increase textarea height
-* data-id instead of html id, avoid dup id?!, item div is the only one html id
-* body
-# ** render story items
-# ** append a text paragraph after double clicked anywhere inside body but not on any item
-# ** move item by drag&drop
-# ** add item should have attr after to describe where it added into
-? ** remove item by drag&drop into a trash????
-* plain text editor
-# should not fire change event when nothing changed
-# should fire change event after changed
-# should create new paragraph and finish current paragraph when user input new line following a new line in paragraph
-# should fire new item event(type=new) after saved new item
-# double click to edit by plain text editor and click outside to save
-# delete item when there is content after edited
-# textarea change event should not conflict with wikimate change event
-# same font size with show mode
-# auto increase height when user inputs more content
-# same height with paragraph when entering edit
-# ** CMD + S/CTRL + S to save
-# ** show save/cancel somewhere in editor
-** tab to jump to next item
-# ** should not open another editor when click outside of current editing editor
-# ** undo an action
-# ** save link/button
-* journal
-# ** remember all event history on wikimate obj? (or only for test?)
-# ** list journal events at bottom
-# ** highlight journal event change
-~ ** float panel to follow up scrolling
+Features:
+
 * plugins
 ** handle can not find plugin error
-#  paragraph
-#    break into p elements for text lines
-#    Esc to cancel
-** textile
+** a textile plugin
 **** regex pattern based substitutions
 **** substitute [[<text>]] as link
 **** substitute http://xxxx or https://xxxx as link
-** layout element plugin
+** 2 columns layout element plugin
 ** image plugin
 *** drag&drop image onto panel
-** chart element
+** chart plugin
+** table plugin
 
-# * a demo
-# ** 2 columns, left is wiki, right is a textarea as data store
+Bugs or problems need to be improved:
 
-# extract element editor&render as plugin
-# default text editor
+* BUG: dragging element may causing scrollbar to show up when drag&drop to reorder items
+* BUG: a new todo with Esc should be canceled
+* more smooth way to auto increase textarea height
+* data-id instead of html id, so that we can show one story item in 2 stories inside one page
