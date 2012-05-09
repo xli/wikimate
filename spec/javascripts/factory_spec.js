@@ -15,7 +15,7 @@ describe("Factory", function() {
     var result = _.map($('.item .new-plugin-item-link'), function(link) {
       return link.text;
     });
-    expect(result.sort()).toEqual(['One Column Layout', 'Rich Document', 'Todo list'].sort());
+    expect(result.sort()).toEqual(['Image', 'One Column Layout', 'Rich Document', 'Todo list'].sort());
   });
 
   it("new plugin item and enter edit mode when click the title listed", function() {
