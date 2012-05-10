@@ -43,4 +43,9 @@ describe("WikiMate", function() {
     $('.factory').click();
     expect($('#sandbox .item').prop('class')).toEqual('item todo');
   });
+
+  it("new paragraph with text", function() {
+    $('#sandbox').wikimate({}).wikimate('newItem', {type: 'paragraph', text: 'hello world'}).story_item('save');
+    expect($('#sandbox .item p').text()).toEqual('hello world');
+  });
 });
