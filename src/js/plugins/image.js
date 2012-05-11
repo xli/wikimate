@@ -7,7 +7,7 @@
     },
     bind: function(div, item) {
       var $this = this;
-      this.click(function(e) {
+      div.click(function(e) {
         if ($this.story_item('editable')) {
           $this.story_item('edit');
         }
