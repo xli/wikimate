@@ -20,6 +20,7 @@
     <script src='../src/js/text_editor.js' type='text/javascript'></script>
     <script src='../src/js/journal.js' type='text/javascript'></script>
     <script src='../src/js/undo.js' type='text/javascript'></script>
+    <script src='../src/js/dropfile.js' type='text/javascript'></script>
     <script src='../src/js/plugins/paragraph.js' type='text/javascript'></script>
     <script src='../src/js/plugins/factory.js' type='text/javascript'></script>
     <script src='../src/js/plugins/rdoc.js' type='text/javascript'></script>
@@ -320,7 +321,17 @@
         $('#wiki')
           .empty()
           .wikimate($.extend(wiki, {change: function(e, a) { saveData(); }}))
-          .wikimate('journal', wiki.journal);
+          .wikimate('journal', wiki.journal)
+          .dropfile({
+            field_name: "field_name",
+            post_url: "/",
+            start: function(xhr, file) {
+              console.log("uploading started");
+            },
+            complete: function(event, file) {
+              console.log("upload complete");
+            }
+          });
       }
       $(document).ready(function() {
         $('#reload').click(function() {
