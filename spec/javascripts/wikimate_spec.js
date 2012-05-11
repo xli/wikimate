@@ -48,4 +48,9 @@ describe("WikiMate", function() {
     $('#sandbox').wikimate({}).wikimate('newItem', {type: 'paragraph', text: 'hello world'}).story_item('save');
     expect($('#sandbox .item p').text()).toEqual('hello world');
   });
+
+  it("should render unknown item when the type of the item is known", function() {
+    $('#sandbox').wikimate({}).wikimate('newItem', {type: 'something', text: '<h1>hello world</h1>'}).story_item('save');
+    expect($('#sandbox .item').text()).toEqual('Unexpected item: {"type":"something","text":"<h1>hello world</h1>"}');
+  });
 });

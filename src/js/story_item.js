@@ -1,27 +1,31 @@
 (function($) {
   $.plugin('story_item', (function(){
+    function itemPlugin(item) {
+      return wikimate.plugins[item.type] || wikimate.plugins.unknown;
+    }
+
     function renderByPlugin($this) {
       var item = $this.story_item('data');
-      var plugin = wikimate.plugins[item.type];
       // add another div inside for removing conflict highlighting with text area
       // after changed to edit mode
       // it's also easier to keep item div element clean
       var content = $('<div />').addClass('item-content');
+      var plugin = itemPlugin(item);
       plugin.emit.apply($this, [content, item]);
       plugin.bind.apply($this, [content, item]);
       initActionBar(content);
+
       return $this.html(content);
     }
 
     function editByPlugin($this) {
       var item = $this.story_item('data');
-      var plugin = wikimate.plugins[item.type];
-      return plugin.edit.apply($this, [item]);
+      return itemPlugin(item).edit.apply($this, [item]);
     }
 
     function initItem(data) {
       var item = $.extend({id: wikimate.utils.generateId(), type: wikimate.default_story_item_type}, data || {});
-      var plugin = wikimate.plugins[item.type];
+      var plugin = itemPlugin(item);
       item = plugin.defaultData === undefined ? item : _.defaults(item, plugin.defaultData());
       return _.defaults(item, {text: ''});
     }

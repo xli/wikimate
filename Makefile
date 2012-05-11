@@ -19,6 +19,7 @@ BASE_FILES = ${SRC_DIR}/js/base.js\
 	${SRC_DIR}/js/plugins/rdoc.js\
 	${SRC_DIR}/js/plugins/todo.js\
 	${SRC_DIR}/js/plugins/image.js\
+	${SRC_DIR}/js/plugins/unknown.js\
 	${SRC_DIR}/js/plugins/layouts/one_column_layout.js\
 
 SHELL := /bin/bash
