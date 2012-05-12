@@ -340,8 +340,7 @@ $(document).ready(function() {
       url: 'javascripts/main.js',
       dataType: 'script',
       success: function(r) {
-        console.log(r);
-        view("Source Code to initialize the editor", r.responseText);
+        view("Source Code to initialize the editor", r);
       }
     })
   });
