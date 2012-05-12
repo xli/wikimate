@@ -337,9 +337,10 @@ $(document).ready(function() {
   $('#view_source').click(function(e) {
     // view("Source Code to initialize the editor", "var wiki = " + JSON.stringify(wiki, null, 2) + "\n$('#wiki').empty().wikimate({ story: wiki.story }).wikimate('journal', wiki.journal);");
     $.ajax({
-      url: '/javascripts/main.js',
-      type: 'text',
+      url: 'javascripts/main.js',
+      dataType: 'script',
       success: function(r) {
+        console.log(r);
         view("Source Code to initialize the editor", r.responseText);
       }
     })
