@@ -1,7 +1,6 @@
 Features:
 
 * plugins
-** handle can not find plugin error
 ** a textile plugin
 **** regex pattern based substitutions
 **** substitute [[<text>]] as link
