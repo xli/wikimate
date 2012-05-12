@@ -47,5 +47,18 @@ Or
 A dist directory will be created with everything inside.
 A packaged_demo.html is also inside dist for how to use.
 
+Dependency
+-------------------------------
 
+JavaScript:
+
+* jquery-1.7.2.js
+* underscore-1.3.1.js
+* jquery-ui-1.8.18.custom.min.js for image plugin
+* diff.js for journal module
+* tiny_mce 3.4.9 for rdoc plugin
+
+Package:
+
+* jshint & uglifyjs
 
