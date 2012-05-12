@@ -32,7 +32,10 @@ jshint:
 build: jshint
 	@@rm -rf ${DIST_DIR}
 	@@mkdir ${DIST_DIR}
-	@@cat ${BASE_FILES} > ${DIST_DIR}/wikimate.js
+	@@echo "/*" > ${DIST_DIR}/wikimate.js
+	@@cat MIT-LICENSE.txt >> ${DIST_DIR}/wikimate.js
+	@@echo "*/" >> ${DIST_DIR}/wikimate.js
+	@@cat ${BASE_FILES} >> ${DIST_DIR}/wikimate.js
 	uglifyjs ${DIST_DIR}/wikimate.js > ${DIST_DIR}/wikimate-min.js
 	@@cp -r lib ${DIST_DIR}
 	@@cp -r src/css ${DIST_DIR}
