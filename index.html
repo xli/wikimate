@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Wikimate : WikiMate is a sectional wiki content editor inspired by Smallest-Federated-Wiki project." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Wikimate</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/xli/wikimate">View on GitHub</a>
+
+          <h1 id="project_title">Wikimate</h1>
+          <h2 id="project_tagline">WikiMate is a sectional wiki content editor inspired by Smallest-Federated-Wiki project.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/xli/wikimate/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/xli/wikimate/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Basic Usage</h2>
+
+<pre><code>$('#wiki').wikimate({
+  // Story is a Javascript Array that contains story items
+  // see the Data Structure section for details
+  story: [... story items ...],
+  // Callback when a change action happened (add, edit/delete story item)
+  change: function(event, action) {
+    // save the action as you need
+    save(action)
+    // get the updated story.........
+    var newStory = $('#wiki').wikimate('story');
+    .........
+  }
+});
+</code></pre>
+
+<p>Tell wikimate to render story journal:</p>
+
+<pre><code>// Journal is a Javascript Array that contains action objects
+// see the Data Structure section for details
+var journal = ... 
+$('#wiki').wikimate('journal', journal);
+
+// To get the up-to-date journal
+var newJournal = $('#wiki').wikimate('journal');
+</code></pre>
+
+<p>More details at: <a href="https://github.com/xli/wikimate">https://github.com/xli/wikimate</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Wikimate maintained by <a href="https://github.com/xli">xli</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
