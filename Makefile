@@ -34,5 +34,9 @@ build: jshint
 	@@mkdir ${DIST_DIR}
 	@@cat ${BASE_FILES} > ${DIST_DIR}/wikimate.js
 	uglifyjs ${DIST_DIR}/wikimate.js > ${DIST_DIR}/wikimate-min.js
+	@@cp -r lib ${DIST_DIR}
+	@@cp -r src/css ${DIST_DIR}
+	@@cp -r src/images ${DIST_DIR}
+	@@cp examples/packaged_demo.html ${DIST_DIR}
 
 .PHONY: build
