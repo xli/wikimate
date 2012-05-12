@@ -35,6 +35,13 @@ Tell wikimate to render story journal:
     // To get the up-to-date journal
     var newJournal = $('#wiki').wikimate('journal');
 
+Download Package
+-------------------------------
+
+http://xli.github.com/wikimate/wikimate-0.1.zip
+
+See packaged_demo.html as example for how to use in your application.
+
 Build Package
 -------------------------------
 
