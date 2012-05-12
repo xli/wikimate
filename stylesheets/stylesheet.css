@@ -61,7 +61,7 @@ body {
   background: #212121;
   font-size: 16px;
   font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+/*  line-height: 1.5;*/
   -webkit-font-smoothing: antialiased;
 }
 
@@ -159,23 +159,17 @@ img {
 }
 
 pre, code {
-  width: 100%;
   color: #222;
   background-color: #fff;
 
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  font-size: 14px;
-
+  font-size: 12px;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-
-
-
 }
 
 pre {
-  width: 100%;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,.1);
   overflow: auto;
@@ -272,9 +266,34 @@ Full-Width Styles
 
 .inner {
   position: relative;
-  max-width: 640px;
-  padding: 20px 10px;
-  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px 20px;
+  margin: 20px auto;
+}
+
+.action-bar {
+  padding: 0px 7px;
+  background-color: #eee;
+  box-shadow: 0 0 5px #ccc;
+  -webkit-box-shadow: 0 0 5px #ccc;
+  -moz-box-shadow: 0 0 5px #ccc;
+  -o-box-shadow: 0 0 5px #ccc;
+  -ms-box-shadow: 0 0 5px #ccc;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.editor {
+  background-color: white;
+  box-shadow: 0 0 15px #007EDF;
+  -webkit-box-shadow: 0 0 15px #007EDF;
+  -moz-box-shadow: 0 0 15px #007EDF;
+  -o-box-shadow: 0 0 15px #007EDF;
+  -ms-box-shadow: 0 0 15px #007EDF;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
 }
 
 #forkme_banner {

@@ -1,0 +1,213 @@
+.wikimate {
+  position: relative;
+}
+
+/* Story */
+
+.wikimate-story {
+  min-height: 100px;
+  padding-bottom: 2em;
+}
+
+.wikimate-story .item {
+  position: relative;
+}
+
+.wikimate-story .item .item-content {
+  position: relative;
+}
+
+.wikimate-story .item .item-action-bar {
+  position: absolute;
+  right: 2px;
+  bottom: 0px;
+  height: 16px;
+  background-color: #fff;
+  padding-left: 5px;
+  overflow: hidden;
+}
+
+.wikimate-story .item .item-action-bar .item-handle {
+  background-color: #fff;
+  background-image: url("./../images/drag_hand.png");
+  display: inline;
+  float: right;
+  height: 16px;
+  width: 16px;
+}
+
+.wikimate-story .item .item-action-bar a {
+  float: left;
+  font-size: 12px;
+  margin-right: 4px;
+  margin-top: 2px;
+}
+
+.wikimate-story .item .editor-action-bar {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  height: 16px;
+  width: 16px;
+  display: none;
+}
+.wikimate-story .item .editor-action-bar a {
+  font-size: 12px;
+  margin-right: 4px;
+  margin-top: 2px;
+}
+.wikimate-story .sort-placeholder {
+  background-color: #FFE;
+  border: 1px solid orange;
+}
+
+.ui-sortable-helper {
+  background-color: #FFE;
+  border: 1px solid orange;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #888;
+  padding: 3px 5px;
+}
+
+/* Journal */
+
+.wikimate-journal {
+  background-color: #EEE;
+  border-radius: 5px;
+  border: 1px solid #CCC;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.wikimate-journal .action {
+  background-color: #CCC;
+  color: #666;
+  cursor: pointer;
+  float: left;
+  margin: 3px;
+  padding: 2px;
+  text-align: center;
+  text-decoration: none;
+  width: 24px;
+  height: 24px;
+  vertical-align: bottom;
+}
+
+.wikimate-journal .action:hover {
+  background-color: #FFC;
+}
+
+.wikimate .highlight {
+  background-color: #FFD;
+  color: #000;
+  font-weight: normal;
+}
+
+.wikimate .diff {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  background-color: #FFE;
+  border: 1px solid orange;
+  padding: 3px 5px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #888;
+  z-index: 1000;
+  width: 300px;
+  opacity: 1;
+}
+
+.wikimate .diff del {
+  background-color: #fadad7;
+  color: #b30000;
+  text-decoration: none;
+}
+.wikimate .diff ins {
+  background-color: #eaf2c2;
+  color: #406619;
+  text-decoration: none;
+}
+
+/* Editors */
+
+.wikimate-inline-editor {
+  min-width: 80%;
+  border: 1px solid #CCC;
+  display: inline;
+  font-size: 12px;
+  outline: none;
+  padding: 4px;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+  -moz-box-shadow: inset 0 0 3px rgba(0,0,0,0.2);
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+.plain-text-editor {
+  background-color: #FFFFEE;
+  font-size: 1em;
+  overflow: hidden;
+  min-height: 4em;
+}
+
+/* Plugins */
+
+.wikimate-story .factory {
+  border: 1px dashed #ccc;
+  padding-top: 8px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  font-size: 0.8em;
+}
+
+.wikimate-story .factory ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.wikimate-story .factory li {
+}
+
+.add-new-factory {
+  margin-bottom: 5px;
+  color: gray;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.todo li {
+  list-style-type: none;
+  margin-left: 8px;
+}
+
+
+.one_column_layout {
+  margin: 10px 0 10px 0;
+  min-width: 150px;
+  border: 1px solid #CCC;
+  background-color: white;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0 0 5px rgba(0,0,0,0.25);
+  -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.25);
+  padding: 10px;
+}
+
+.wikimate-layout-heading {
+  border: 0;
+  border-bottom: 1px dotted #CCC;
+  padding: 5px 0;
+  margin: 0;
+  font-weight: 300;
+}
+
+.wikimate-layout-panel {
+  padding: 10px 0;
+  min-height: 200px;
+}
+
+
+.unknown {
+  background-color: #ddd;
+}
