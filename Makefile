@@ -16,10 +16,10 @@ BASE_FILES = ${SRC_DIR}/js/base.js\
 	${SRC_DIR}/js/undo.js\
 	${SRC_DIR}/js/dropfile.js\
 	${SRC_DIR}/js/plugins/factory.js\
-	${SRC_DIR}/js/plugins/paragraph.js\
 	${SRC_DIR}/js/plugins/rdoc.js\
 	${SRC_DIR}/js/plugins/todo.js\
 	${SRC_DIR}/js/plugins/image.js\
+	${SRC_DIR}/js/plugins/markdown.js\
 	${SRC_DIR}/js/plugins/unknown.js\
 	${SRC_DIR}/js/plugins/layouts/one_column_layout.js\
 
@@ -40,6 +40,9 @@ build: jshint
 	@@cp -r lib ${DIST_DIR}
 	@@cp -r src/css ${DIST_DIR}
 	@@cp -r src/images ${DIST_DIR}
+	@@cp examples/demo.js ${DIST_DIR}
+	@@cp examples/demo.css ${DIST_DIR}
+	@@cp examples/readme.js ${DIST_DIR}
 	@@cp examples/packaged_demo.html ${DIST_DIR}
 
 .PHONY: build

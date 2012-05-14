@@ -6,11 +6,18 @@ WikiMate is a sectional wiki content editor inspired by Smallest-Federated-Wiki 
 Demo & Try it out
 ------------------------------
 
-http://xli.github.com/wikimate/
+<http://xli.github.com/wikimate/>
 
-Basic Usage
-------------------------------
+User Reference
+--------
 
+* Double click to create/edit a section
+* Default section type is [Markdown](http://daringfireball.net/projects/markdown/)
+
+Developer Reference
+----------
+
+### Basic Usage
     $('#wiki').wikimate({
       // Story is a Javascript Array that contains story items
       // see the Data Structure section for details
@@ -25,7 +32,7 @@ Basic Usage
       }
     });
 
-Tell wikimate to render story journal:
+### Tell wikimate to render story journal
 
     // Journal is a Javascript Array that contains action objects
     // see the Data Structure section for details
@@ -34,6 +41,8 @@ Tell wikimate to render story journal:
 
     // To get the up-to-date journal
     var newJournal = $('#wiki').wikimate('journal');
+
+### More Details: <https://github.com/xli/wikimate/wiki>
 
 Download Package
 -------------------------------
@@ -52,7 +61,7 @@ Or
     make build
 
 A dist directory will be created with everything inside.
-A packaged_demo.html is also inside dist for how to use.
+A packaged_demo.html is also inside dist directory for how to use.
 
 Dependency
 -------------------------------
@@ -64,6 +73,7 @@ JavaScript:
 * jquery-ui-1.8.18.custom.min.js for image plugin
 * diff.js for journal module
 * tiny_mce 3.4.9 for rdoc plugin
+* showdown.js for markdown plugin
 
 Package:
 
