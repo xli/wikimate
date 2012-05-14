@@ -49,7 +49,7 @@ Download Package
 
 https://github.com/downloads/xli/wikimate/wikimate-0.1.zip
 
-See packaged_demo.html as example for how to use in your application.
+See examples/package_demo.html for how to use wikimate in your application.
 
 Build Package
 -------------------------------
