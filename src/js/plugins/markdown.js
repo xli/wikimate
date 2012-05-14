@@ -1,11 +1,13 @@
 (function($) {
-  wikimate.plugins.paragraph = {
-    // item: { "id": "1", "type": "paragraph", "text": "paragraph 1" }
+  function markdown(text) {
+    return new Showdown.converter().makeHtml(text);
+  }
+
+  wikimate.plugins.markdown = {
+    // item: { "id": "1", "type": "markdown", "text": "markdown text" }
+    title: "Markdown",
     emit: function(div, item) {
-      var html = $.map(item.text.split("\n"), function(text) {
-        return text.length > 0 ? "<p>" + text + "</p>" : '';
-      }).join('');
-      return div.html(html);
+      return div.html(markdown(item.text));
     },
     bind: function(div, item) {
       var $this = this;

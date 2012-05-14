@@ -15,6 +15,7 @@
 
 .wikimate-story .item .item-content {
   position: relative;
+  min-height: 10px;
 }
 
 .wikimate-story .item .item-action-bar {
