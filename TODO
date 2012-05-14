@@ -1,10 +1,8 @@
 Features:
 
+* integrate highlight.js for markdown plugin
 * plugins
 ** a textile plugin
-**** regex pattern based substitutions
-**** substitute [[<text>]] as link
-**** substitute http://xxxx or https://xxxx as link
 ** 2 columns layout element plugin
 ** image plugin
 *** drag&drop image onto panel
