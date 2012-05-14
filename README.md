@@ -47,7 +47,7 @@ Developer Reference
 Download Package
 -------------------------------
 
-http://xli.github.com/wikimate/wikimate-0.1.zip
+https://github.com/downloads/xli/wikimate/wikimate-0.1.zip
 
 See packaged_demo.html as example for how to use in your application.
 
