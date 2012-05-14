@@ -106,7 +106,6 @@
     CHANGE: 'wikimate:change'
   });
 
-  window.wikimate.default_story_item_type = 'paragraph';
   $.extend(wikimate.fn, {
     newItem: function(data, position) {
       return this.find('> .wikimate-story').story('newItem', data, position);

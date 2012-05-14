@@ -56,7 +56,7 @@ describe("OneColumnLayout", function() {
     $('#sandbox .item .wikimate-layout-panel').story('newItem').story_item('edit');
 
     expect($('.wikimate-layout-panel .item').length).toEqual(1);
-    expect($('.wikimate-layout-panel .paragraph').length).toEqual(1);
+    expect($('.wikimate-layout-panel .' + wikimate.default_story_item_type).length).toEqual(1);
     expect($('.wikimate-layout-panel .item textarea').length).toEqual(1);
 
     $('.wikimate-layout-panel .item textarea').text('hello');
@@ -104,7 +104,7 @@ describe("OneColumnLayout", function() {
     expect(changes[0].item.type).toEqual('one_column_layout');
 
     expect(changes[1].type).toEqual('add');
-    expect(changes[1].item.type).toEqual('paragraph');
+    expect(changes[1].item.type).toEqual(wikimate.default_story_item_type);
     expect(changes[1].inside).toEqual(changes[0].item.id);
   });
 

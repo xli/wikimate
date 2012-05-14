@@ -115,7 +115,7 @@ describe("Plain Text Editor", function() {
 
     expect(changes[0].id).toBeDefined();
     expect(changes[0].type).toEqual('add');
-    expect(changes[0].item.type).toEqual('paragraph');
+    expect(changes[0].item.type).toEqual(wikimate.default_story_item_type);
     expect(changes[0].item.text).toEqual('hello world');
     expect(changes[0].after).toBeUndefined();
   });

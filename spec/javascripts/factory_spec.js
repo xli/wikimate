@@ -43,12 +43,12 @@ describe("Factory", function() {
     expect(changes[0].type).toEqual('add');
   });
 
-  it("edit factory element will change element to a paragraph item", function() {
+  it("edit factory element will change element to default story item type item", function() {
     $('#sandbox').wikimate({});
     $('#sandbox').wikimate('newItem', {type: 'factory'}).story_item('edit');
 
-    expect($('#sandbox .item').prop('class')).toEqual('item paragraph');
-    expect($('#sandbox .item').data('data').type).toEqual('paragraph');
+    expect($('#sandbox .item').prop('class')).toEqual('item ' + wikimate.default_story_item_type);
+    expect($('#sandbox .item').data('data').type).toEqual(wikimate.default_story_item_type);
     expect($('#sandbox .item textarea').text()).toEqual("");
   });
 });

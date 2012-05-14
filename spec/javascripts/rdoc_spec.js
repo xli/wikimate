@@ -14,7 +14,7 @@ describe("RDoc", function() {
       $('#sandbox').wikimate({ story: []});
       $('#sandbox').wikimate('newItem', {text: 'hello', type: 'rdoc'}).story_item('edit');
     });
-    waits(150);
+    waits(500);
     runs(function() {
       expect($('.item').length).toEqual(1);
       expect($('.item .mceEditor').length).toEqual(1);
@@ -29,7 +29,7 @@ describe("RDoc", function() {
     });
 
     // auto focus of the editor need 100 ms
-    waits(150);
+    waits(500);
     runs(function() {
       expect($('#sandbox .item').prop('class')).toEqual('item rdoc');
       expect($('#sandbox .item textarea').css('display')).toEqual('none');

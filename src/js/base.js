@@ -16,6 +16,7 @@
     version: '0.0.1',
     plugins: {},
     events: {},
+    default_story_item_type: 'markdown',
     utils: (function() {
       function randomBytes(n) {
         var results = [];
