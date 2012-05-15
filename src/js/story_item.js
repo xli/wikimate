@@ -4,25 +4,6 @@
       return wikimate.plugins[item.type] || wikimate.plugins.unknown;
     }
 
-    function renderByPlugin($this) {
-      var item = $this.story_item('data');
-      // add another div inside for removing conflict highlighting with text area
-      // after changed to edit mode
-      // it's also easier to keep item div element clean
-      var content = $('<div />').addClass('item-content');
-      var plugin = itemPlugin(item);
-      plugin.emit.apply($this, [content, item]);
-      plugin.bind.apply($this, [content, item]);
-      initActionBar(content);
-
-      return $this.html(content);
-    }
-
-    function editByPlugin($this) {
-      var item = $this.story_item('data');
-      return itemPlugin(item).edit.apply($this, [item]);
-    }
-
     function initItem(data) {
       var item = $.extend({id: wikimate.utils.generateId(), type: wikimate.default_story_item_type}, data || {});
       var plugin = itemPlugin(item);
@@ -103,7 +84,8 @@
       },
 
       edit: function() {
-        return editByPlugin(this);
+        var item = this.story_item('data');
+        return itemPlugin(item).edit.apply(this, [item]);
       },
 
       data: function(newData) {
@@ -115,7 +97,17 @@
       },
 
       render: function() {
-        return renderByPlugin(this.story_item('status', 'rendering item'));
+        var item = this.story_item('status', 'rendering item').story_item('data');
+        // add another div inside for removing conflict highlighting with text area
+        // after changed to edit mode
+        // it's also easier to keep item div element clean
+        var content = $('<div />').addClass('item-content');
+        var plugin = itemPlugin(item);
+        plugin.emit.apply(this, [content, item]);
+        plugin.bind.apply(this, [content, item]);
+        initActionBar(content);
+
+        return this.html(content);
       },
 
       cancel: function() {
@@ -149,7 +141,7 @@
         this.story_item('status', 'updating item');
         var item = $.extend(this.story_item('data'), changes);
         if (this.data('newItem')) {
-          renderByPlugin(this.removeData('newItem'));
+          this.removeData('newItem').story_item('render');
           this.trigger(wikimate.events.CHANGE, {
             id: item.id,
             type: 'add',
@@ -158,7 +150,7 @@
             inside: this.parents('.item:first').prop('id')
           });
         } else {
-          renderByPlugin(this);
+          this.story_item('render');
           this.trigger(wikimate.events.CHANGE, {
             id: item.id,
             type: 'edit',
