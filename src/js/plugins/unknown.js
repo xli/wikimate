@@ -5,7 +5,7 @@
     },
     bind: function(div, item) {
     },
-    edit: function(item) {
+    edit: function(div, item) {
       return false;
     }
   };

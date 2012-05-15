@@ -28,7 +28,7 @@
       });
     },
 
-    edit: function(item) {
+    edit: function(div, item) {
       var $this = this;
       var id = wikimate.utils.generateId();
       var textarea = $('<textarea/>').prop('id', id).text(item.text).appendTo(this.empty()).editor_shortcuts({

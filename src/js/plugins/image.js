@@ -13,7 +13,7 @@
         }
       });
     },
-    edit: function(item) {
+    edit: function(div, item) {
       var itemElement = this;
       var title = this.story_item('newItem') ? "Add" : "Edit";
       $('<fieldset/>')

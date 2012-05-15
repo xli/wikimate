@@ -15,7 +15,7 @@
         }
       });
     },
-    edit: function(item) {
+    edit: function(div, item) {
       return this.wikimate_text_editor('init');
     }
   };

@@ -19,7 +19,7 @@
       this.data('newItem', true);
       return div.html('Double-Click to Edit or Add:').append(list);
     },
-    edit: function() {
+    edit: function(div, item) {
       return transform(this, wikimate.default_story_item_type).story_item('edit');
     },
     bind: function(div, item) {

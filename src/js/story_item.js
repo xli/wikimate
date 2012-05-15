@@ -85,7 +85,7 @@
 
       edit: function() {
         var item = this.story_item('data');
-        return itemPlugin(item).edit.apply(this, [item]);
+        return itemPlugin(item).edit.apply(this, [this.find('> .item-content'), item]);
       },
 
       data: function(newData) {

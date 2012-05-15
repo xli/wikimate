@@ -35,8 +35,8 @@
         return internalStoryElement.story('newItem', {type: 'factory'});
       });
     },
-    edit: function(item) {
-      this.find('> .item-content > .wikimate-layout-heading').dblclick();
+    edit: function(div, item) {
+      div.find('> .wikimate-layout-heading').dblclick();
       return this;
     }
   };
